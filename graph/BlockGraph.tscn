@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="AnimationNodeBlendTree" id=1]
+graph_offset = Vector2( 57.09, 78.66 )
+nodes/output/position = Vector2( 470, 160 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GraphEdit" type="GraphEdit" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 20.0
+scroll_offset = Vector2( 0, -40 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="GraphEdit"]
+margin_right = 12.0
+margin_bottom = 20.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+margin_right = 75.0
+margin_bottom = 20.0
+text = "Add Node"
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+margin_left = 79.0
+margin_right = 154.0
+margin_bottom = 20.0
+text = "Add Node"
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 1 )
