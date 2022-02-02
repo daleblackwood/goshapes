@@ -44,9 +44,9 @@ func _edit_begin(edit_proxy) -> void:
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
 	if not style:
-		set_style(BlockStyle.new())
+		set_style(edit_proxy.create_block_style())
 	if not path_mod:
-		set_path_mod(BlockPathMod.new())
+		set_path_mod(edit_proxy.create_path_mod())
 	SceneUtils.switch_signal(self, "curve_changed", "set_dirty", self, self)
 	SceneUtils.switch_signal(self, "on_built", "_on_built", self, self)
 	
@@ -155,8 +155,6 @@ func build():
 	if not use_collider:
 		SceneUtils.remove(self, "Collider")
 		collider_body = null
-		
-	#runner.clear_jobs(self)
 	
 	if path_mod.collider_type == BlockPathMod.ColliderType.Accurate:
 		runner.run_group(get_build_jobs(), self, "apply_all_meshes")
@@ -205,7 +203,8 @@ func get_collider_jobs(joblist: Array = []) -> Array:
 	
 
 func get_path_data(interpolate: int) -> PathData:
-	var path_data = PathUtils.curve_to_path(curve, interpolate, inverted, PoolIntArray(path_twists))
+	var twists = null if not path_mod.twist else PoolIntArray(path_twists)
+	var path_data = PathUtils.curve_to_path(curve, interpolate, inverted, twists)
 	if path_mod.line > 0:
 		return PathUtils.path_to_outline(path_data, path_mod.line)
 	return path_data

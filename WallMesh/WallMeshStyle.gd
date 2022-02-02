@@ -3,7 +3,7 @@ extends WallStyle
 
 export(Mesh) var mesh setget set_mesh
 export(float, 0.1, 10.0, 0.1) var scale = 1.0 setget set_scale
-export var closed = false setget set_closed
+export var closed = true setget set_closed
 export(Array, Material) var materials setget set_materials
 
 func set_mesh(value):

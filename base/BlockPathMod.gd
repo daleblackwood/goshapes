@@ -3,6 +3,7 @@ extends Resource
 class_name BlockPathMod
 
 export var flatten = true setget set_flatten
+export var twist = false setget set_twist
 export(float, 0.0, 40.0, 0.5) var line setget set_line
 export(int, 1, 4, 1) var interpolate = 1 setget set_interpolate
 enum ColliderType { None, CapOnly, Simple, Ridged, Accurate }
@@ -12,6 +13,11 @@ export(float, 0.0, 10.0, 1.0) var collider_ridge setget set_collider_ridge
 
 func set_flatten(value):
 	flatten = value
+	emit_changed()
+	
+	
+func set_twist(value):
+	twist = value
 	emit_changed()
 
 

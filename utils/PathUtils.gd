@@ -16,14 +16,17 @@ static func flatten_curve(curve: Curve3D) -> void:
 	
 	
 static func twist_curve(curve: Curve3D, path_twists = PoolIntArray()) -> void:
-	if path_twists:
-		var curve_point_count = curve.get_point_count()
-		var twist_count = path_twists.size()
+	var twist_count = 0 if path_twists == null else path_twists.size()
+	var curve_point_count = curve.get_point_count()
+	if twist_count > 0:
 		if twist_count > 0:
 			for i in curve_point_count:
 				var twist_i = i if i < twist_count - 1 else twist_count - 1
 				var twist = path_twists[twist_i]
 				curve.set_point_tilt(i, twist / 180.0 * PI)
+	else:
+		for i in curve_point_count:
+			curve.set_point_tilt(i, 0.0)
 	
 	
 static func get_curve_center(curve: Curve3D) -> Vector3:
@@ -53,7 +56,9 @@ static func curve_to_points(curve: Curve3D, interpolate: int, inverted: bool) ->
 	
 static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path_twists = PoolIntArray()) -> PathData:
 	curve = curve.duplicate()
-	twist_curve(curve, path_twists)
+	var use_twists = path_twists != null
+	if use_twists:
+		twist_curve(curve, path_twists)
 	var curved_path = curve_to_points(curve, interpolate, inverted)
 	var point_count = curved_path.point_count
 	var points = PoolVector3Array()
@@ -63,7 +68,7 @@ static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path
 	var length = 0.0
 	for i in point_count:
 		points[i] = curved_path.get_point(i)
-		if i == 0:
+		if not use_twists or i == 0:
 			ups[i] = Vector3.UP
 		else:
 			var dif = points[i] - points[i - 1]
@@ -138,7 +143,6 @@ static func cap_taper(a: Vector3, b: Vector3, width: float) -> Vector3:
 	
 static func invert(path: PathData) -> PathData:
 	var point_count = path.points.size()
-	var up_count = path.ups.size()
 	var result_points = PoolVector3Array()
 	result_points.resize(point_count)
 	var result_ups = PoolVector3Array()
@@ -149,12 +153,29 @@ static func invert(path: PathData) -> PathData:
 		result_ups[i] = path.get_up(index)
 	return PathData.new(result_points, result_ups)
 	
+
+#static func close(path: PathData) -> PathData:
+#	var first_point = path.get_point(0)
+#	var last_point = path.get_point(path.point_count - 1)
+#	if (last_point - first_point).length_squared() > 0.001:
+#		var point_count = path.points.size()
+#		var result_points = PoolVector3Array()
+#		result_points.resize(point_count + 1)
+#		var result_ups = PoolVector3Array()
+#		result_ups.resize(point_count + 1)
+#		for i in range(point_count):
+#			result_points[i] = path.get_point(i)
+#			result_ups[i] = path.get_up(i)
+#		result_points[point_count] = path.get_point(0)
+#		result_ups[point_count] = path.get_up(0)
+#		path = PathData.new(result_points, result_ups)
+#	return path
+	
 	
 static func taper_path(path: PathData, taper: float, clamp_opposite: bool = false) -> PathData:
 	var point_count = path.points.size()
 	var result = PoolVector3Array()
 	result.resize(point_count)
-	
 	for i in point_count:
 		var a = path.points[i]
 		var b = path.points[(i + 1) % point_count]
