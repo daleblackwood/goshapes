@@ -153,24 +153,6 @@ static func invert(path: PathData) -> PathData:
 		result_ups[i] = path.get_up(index)
 	return PathData.new(result_points, result_ups)
 	
-
-#static func close(path: PathData) -> PathData:
-#	var first_point = path.get_point(0)
-#	var last_point = path.get_point(path.point_count - 1)
-#	if (last_point - first_point).length_squared() > 0.001:
-#		var point_count = path.points.size()
-#		var result_points = PoolVector3Array()
-#		result_points.resize(point_count + 1)
-#		var result_ups = PoolVector3Array()
-#		result_ups.resize(point_count + 1)
-#		for i in range(point_count):
-#			result_points[i] = path.get_point(i)
-#			result_ups[i] = path.get_up(i)
-#		result_points[point_count] = path.get_point(0)
-#		result_ups[point_count] = path.get_up(0)
-#		path = PathData.new(result_points, result_ups)
-#	return path
-	
 	
 static func taper_path(path: PathData, taper: float, clamp_opposite: bool = false) -> PathData:
 	var point_count = path.points.size()
