@@ -47,7 +47,8 @@ var proxy: EditorProxy = EditorProxy.new()
 var menu_items = [
 	["Add New Block", self, "add_block"],
 	["Copy Attributes", proxy, "copy_attributes"],
-	["Paste Attributes", proxy, "paste_attributes"]
+	["Paste Attributes", proxy, "paste_attributes"],
+	["Redraw Selected", self, "redraw_selected"]
 ]
 
 func _enter_tree() -> void:
@@ -81,6 +82,15 @@ func add_block() -> void:
 	select_block(block)
 	
 	
+func redraw_selected() -> void:
+	var selected_nodes = selection_handler.get_selected_nodes()
+	for node in selected_nodes:
+		if node is Block:
+			node._edit_begin(proxy)
+			node.build()
+			node._edit_end()
+	
+	
 func _on_selection_changed() -> void:
 	if reselecting:
 		return
@@ -105,6 +115,16 @@ func _on_selection_changed() -> void:
 				selected_parent = selected_parent.get_parent()
 		if block and proxy.selected_block != selected_node:
 			select_block(block)
+			
+	var block_selected = false
+	for node in selected_nodes:
+		if node is Block:
+			block_selected = true
+	
+	if block_selected:
+		toolbar.show()
+	else:
+		toolbar.hide()
 				
 				
 func _on_tree_exiting() -> void:
@@ -124,11 +144,6 @@ func select_block(block: Block) -> void:
 		print("selected block " + block.name)
 		proxy.selected_block = block
 		call_deferred("connect_block")
-	
-	if proxy.selected_block == null:
-		toolbar.hide()
-	else:
-		toolbar.show()
 		
 		
 func copy_block_params(block: Block) -> void:
