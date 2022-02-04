@@ -32,6 +32,7 @@ func build(style, path: PathData):
 		var meshset = meshsets[i]
 		meshset = MeshUtils.scale_mesh(meshset, scale)
 		meshset = MeshUtils.wrap_mesh_to_path(meshset, path, closed)
+		meshset = MeshUtils.taper_mesh(meshset, path, path.taper)
 		if material_count > 0:
 			meshset.material = materials[i % material_count]
 		meshsets[i] = meshset

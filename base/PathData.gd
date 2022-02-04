@@ -1,9 +1,10 @@
 tool
 class_name PathData
 
-var points = PoolVector3Array()
-var ups = PoolVector3Array()
+var points := PoolVector3Array()
+var ups := PoolVector3Array()
 var point_count: int setget ,get_point_count
+var taper := 0.0
 
 func _init(points = PoolVector3Array(), ups = PoolVector3Array()) -> void:
 	self.points = points

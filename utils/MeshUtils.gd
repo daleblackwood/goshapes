@@ -420,8 +420,25 @@ static func scale_mesh(meshset: MeshSet, new_scale: float) -> MeshSet:
 	verts.resize(vert_count)
 	for i in vert_count:
 		var v = meshset.verts[i]
-		var scaled = Vector3(v.x * new_scale, v.y * new_scale, v.z * new_scale)
-		verts[i] = scaled
+		verts[i] = v * new_scale
+	result.verts = verts
+	return result
+	
+	
+static func taper_mesh(meshset: MeshSet, path: PathData, taper: float) -> MeshSet:
+	var center = PathUtils.get_path_center(path)
+	var result = meshset.clone()
+	var vert_count = meshset.verts.size()
+	var verts = PoolVector3Array(meshset.verts)
+	verts.resize(vert_count)
+	for i in vert_count:
+		var v = meshset.verts[i]
+		var p = PathUtils.get_closest_point(path, v)
+		var t = (v.y - p.y) * taper
+		var dir = v - center
+		dir.y = 0.0
+		dir = dir.normalized()
+		verts[i] = v - t * dir
 	result.verts = verts
 	return result
 	

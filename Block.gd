@@ -3,6 +3,7 @@ extends Path
 class_name Block
 
 export var inverted = false setget set_inverted
+export(float, -1.0, 2.0) var taper = 0.0 setget set_taper
 export var recenter = false setget set_recenter
 export var cascade_twists = false
 export(Array, int) var path_twists setget set_path_twists
@@ -61,6 +62,11 @@ func _edit_end() -> void:
 func set_style(value: Resource) -> void:
 	ResourceUtils.switch_signal(self, "set_dirty", style, value)
 	style = value
+	set_dirty()
+	
+	
+func set_taper(value: float) -> void:
+	taper = value
 	set_dirty()
 	
 	
@@ -207,6 +213,7 @@ func get_path_data(interpolate: int) -> PathData:
 	var path_data = PathUtils.curve_to_path(curve, interpolate, inverted, twists)
 	if path_mod.line > 0:
 		return PathUtils.path_to_outline(path_data, path_mod.line)
+	path_data.taper = taper
 	return path_data
 	
 	

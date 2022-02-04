@@ -116,6 +116,23 @@ static func move_path(path: PathData, offset: Vector3) -> PathData:
 	return PathData.new(result, path.ups)
 	
 	
+static func get_closest_point_index(path: PathData, v: Vector3) -> int:
+	var closest = 0
+	var closestsq = 100.0
+	for i in range(path.point_count):
+		var dsq = (path.get_point(i) - v).length_squared()
+		if dsq > closestsq:
+			continue
+		closest = i
+		closestsq = dsq
+	return closest
+	
+	
+static func get_closest_point(path: PathData, v: Vector3) -> Vector3:
+	var index = get_closest_point_index(path, v)
+	return path.get_point(index)
+	
+	
 static func move_path_down(path: PathData, amount: float = 0.0) -> PathData:
 	return move_path_up(path, -amount)
 	
@@ -152,6 +169,15 @@ static func invert(path: PathData) -> PathData:
 		result_points[i] = path.get_point(index)
 		result_ups[i] = path.get_up(index)
 	return PathData.new(result_points, result_ups)
+	
+	
+static func get_path_center(path: PathData) -> Vector3:
+	var point_count = path.points.size()
+	var center = Vector3.ZERO
+	for i in point_count:
+		center += path.get_point(i)
+	return center / float(point_count)
+	
 	
 	
 static func taper_path(path: PathData, taper: float, clamp_opposite: bool = false) -> PathData:
