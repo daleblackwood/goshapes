@@ -7,8 +7,8 @@ export(float, -1.0, 2.0) var taper = 0.0 setget set_taper
 export var recenter = false setget set_recenter
 export var cascade_twists = false
 export(Array, int) var path_twists setget set_path_twists
-export(Resource) var path_mod setget set_path_mod
-export(Resource) var style setget set_style
+export(Resource) var path_mod = BlockPathMod.new() setget set_path_mod
+export(Resource) var style = BlockStyle.new()  setget set_style
 
 signal edit_begin(edit_proxy)
 signal edit_end

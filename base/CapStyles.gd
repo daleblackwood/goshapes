@@ -3,7 +3,8 @@ class_name CapStyles
 enum Type {
 	None,
 	Flat_Cap,
-	Line_Cap
+	Line_Cap,
+	Plane_Cap
 }
 
 
@@ -46,4 +47,5 @@ static func get_type_name(type_value: int):
 	match type_value:
 		Type.Flat_Cap: return "CapFlat"
 		Type.Line_Cap: return "CapLine"
+		Type.Plane_Cap: return "CapPlane"
 	return null
