@@ -6,14 +6,17 @@ func build(style, path: PathData):
 	if style != null and style.grid_size > 0.0:
 		gs = style.grid_size
 		
+	var points = get_cap_points(style, path)
+	var point_count = points.size()
+		
 	var path2d = PoolVector2Array()
-	path2d.resize(path.point_count)
-	for i in range(path.point_count):
+	path2d.resize(point_count)
+	for i in range(point_count):
 		path2d
 	
-	var pmin = path.points[0]
-	var pmax = path.points[0]
-	for p in path.points:
+	var pmin = points[0]
+	var pmax = points[0]
+	for p in points:
 		pmin.x = min(p.x, pmin.x)
 		pmax.x = max(p.x, pmax.x)
 		pmin.z = min(p.z, pmin.z)
@@ -46,11 +49,3 @@ func build(style, path: PathData):
 	var set = MeshUtils.combine_sets(meshes)
 	set.material = style.material
 	return set
-
-	
-func inside_count(path: PoolVector2Array, points: PoolVector2Array) -> int:
-	var result = 0
-	for p in points:
-		if Geometry.is_point_in_polygon(p, path):
-			result += 1
-	return result

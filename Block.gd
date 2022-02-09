@@ -173,10 +173,9 @@ func build():
 	
 func get_build_jobs(joblist: Array = []) -> Array:
 	var path_data = get_path_data(path_mod.interpolate)
-	if style.cap_style:
-		var cap_builder = CapStyles.create_builder(style.cap_type)
-		if cap_builder:
-			joblist.append(BuildJob.new(cap_builder, style.cap_style.duplicate(), path_data))
+	var cap_job = get_cap_job(path_data)
+	if cap_job != null:
+		joblist.append(cap_job)
 	if style.wall_style:
 		var wall_builder = WallStyles.create_builder(style.wall_type)
 		if wall_builder:
@@ -188,12 +187,23 @@ func get_build_jobs(joblist: Array = []) -> Array:
 			joblist.append(BuildJob.new(base_builder, style.base_style.duplicate(), path_data))
 	return joblist
 	
+	
+func get_cap_job(path_data: PathData) -> BuildJob:
+	if style.cap_style:
+		var cap_builder = CapStyles.create_builder(style.cap_type)
+		if cap_builder:
+			var cap_style_copy = style.cap_style.duplicate()
+			if style.wall_style:
+				cap_style_copy.wall_style = style.wall_style.duplicate()
+			return BuildJob.new(cap_builder, cap_style_copy, path_data)
+	return null
+	
 			
 func get_collider_jobs(joblist: Array = []) -> Array:
 	var path_data = get_path_data(path_mod.interpolate)
-	var cap_builder = CapStyles.create_builder(style.cap_type)
-	if cap_builder:
-		joblist.append(BuildJob.new(cap_builder, style.cap_style.duplicate(), path_data))
+	var cap_job = get_cap_job(path_data)
+	if cap_job != null:
+		joblist.append(cap_job)
 	if path_mod.collider_type != BlockPathMod.ColliderType.CapOnly:
 		var wall_builder = WallStyles.create_builder(WallStyles.Type.Bevel_Wall)
 		if wall_builder:
@@ -214,6 +224,7 @@ func get_path_data(interpolate: int) -> PathData:
 	if path_mod.line > 0:
 		return PathUtils.path_to_outline(path_data, path_mod.line)
 	path_data.taper = taper
+	path_data.curve = curve.duplicate()
 	return path_data
 	
 	

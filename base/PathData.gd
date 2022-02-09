@@ -5,6 +5,7 @@ var points := PoolVector3Array() setget set_points
 var ups := PoolVector3Array() setget set_ups
 var point_count: int setget ,get_point_count
 var taper := 0.0
+var curve: Curve3D
 
 
 func _init(points = PoolVector3Array(), ups = PoolVector3Array()) -> void:
