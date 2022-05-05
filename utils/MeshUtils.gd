@@ -252,41 +252,15 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 	# calculate directions for segments
 	var lengths = []
 	lengths.resize(point_count)
-	var length = 0.0
+	var path_length = 0.0
 	for i in point_count:
 		var n = (i + 1) % point_count
 		var dif = points[n] - points[i]
 		var section_length = dif.length()
 		lengths[i] = section_length
-		length += section_length
-	# calculate segment sizes
-	var min_x = INF
-	var max_x = -INF
-	for v in meshset.verts:
-		if v.x < min_x:
-			min_x = v.x
-		if v.x > max_x:
-			max_x = v.x
-	var orig_seg_length = max_x - min_x
-	var seg_count = int(round(length / orig_seg_length))
-	var seg_length = length / seg_count
-	var x_multi = seg_length / orig_seg_length
-	# tile verts along x, build sets
-	var sets = []
-	for i in seg_count:
-		var set = meshset.clone()
-		var vert_count = set.verts.size()
-		var start_x = i * seg_length
-		for j in vert_count:
-			var v = set.verts[j]
-			v.x = start_x + v.x * x_multi
-			set.set_vert(j, v)
-			var uv = set.uvs[j]
-			uv *= seg_length
-			uv.x += seg_length * i
-			set.set_uv(j, uv)
-		sets.append(set)
-	var set = combine_sets(sets)
+		path_length += section_length
+	
+	var set = mesh_clone_to_length(meshset, path_length)
 	# wrap combined verts around path
 	var vert_count = set.verts.size()
 	for i in vert_count:
@@ -320,6 +294,42 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 		n = n.cross(-right)
 		set.set_normal(i, n)
 	return set
+	
+	
+static func mesh_clone_to_length(meshset: MeshSet, path_length: float) -> MeshSet:
+	# calculate segment sizes
+	var min_x = INF
+	var max_x = -INF
+	for v in meshset.verts:
+		if v.x < min_x:
+			min_x = v.x
+		if v.x > max_x:
+			max_x = v.x
+	var mesh_length = max_x - min_x
+	var seg_count = get_segment_count_for_path(path_length, mesh_length)
+	var seg_length = path_length / seg_count
+	var x_multi = seg_length / mesh_length
+	# tile verts along x, build sets
+	var sets = []
+	for i in seg_count:
+		var set = meshset.clone()
+		var vert_count = set.verts.size()
+		var start_x = i * seg_length
+		for j in vert_count:
+			var v = set.verts[j]
+			v.x = start_x + v.x * x_multi
+			set.set_vert(j, v)
+			var uv = set.uvs[j]
+			uv *= seg_length
+			uv.x += seg_length * i
+			set.set_uv(j, uv)
+		sets.append(set)
+	var set = combine_sets(sets)
+	return set
+	
+	
+static func get_segment_count_for_path(path_length: float, segment_length: float) -> int:
+	return int(round(path_length / segment_length))
 	
 
 static func weld_sets(sets: Array, threshhold: float = 0.01) -> MeshSet:

@@ -6,6 +6,9 @@ func build(style, path: PathData):
 		return null
 
 	var ref_mesh = style.mesh as Mesh
+	if not ref_mesh:
+		return null
+		
 	var surface_count = ref_mesh.get_surface_count()
 	var materials = []
 	if style.materials:
@@ -16,9 +19,6 @@ func build(style, path: PathData):
 			materials[i] = ref_mesh.surface_get_material(i)
 	var scale = style.scale
 	var closed = style.closed
-	
-	if not ref_mesh:
-		return null
 	
 	var material_count = materials.size()
 		

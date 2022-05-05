@@ -4,7 +4,7 @@ extends CapBuilder
 func build(style, path: PathData):
 	var material = style.material
 	
-	var points = path.points
+	var points = get_cap_points(style, path)
 	var point_count = points.size()
 	if point_count < 2:
 		return
