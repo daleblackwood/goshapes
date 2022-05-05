@@ -13,7 +13,7 @@ var host
 var callback: String
 var id = -1
 var group
-var is_async = false
+var is_async = true
 
 
 func run(host, callback: String) -> void:
