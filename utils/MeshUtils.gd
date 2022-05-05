@@ -239,6 +239,17 @@ static func flip_normals(meshset: MeshSet) -> MeshSet:
 		meshset.set_normal(i, -meshset.verts[i])
 	return meshset
 	
+	
+static func calc_mesh_height(mesh: Mesh, scale: float = 1) -> float:
+	var min_y = 0
+	for i in range(mesh.get_surface_count()):
+		var arr = mesh.surface_get_arrays(i)
+		var verts = arr[ArrayMesh.ARRAY_VERTEX]
+		for vert in verts:
+			if vert.y < min_y:
+				min_y = vert.y
+	return min_y * -scale
+	
 
 static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> MeshSet:
 	var points = path.points

@@ -249,6 +249,8 @@ func get_collider_jobs(joblist: Array = []) -> Array:
 			wall_style.height = style.base_depth
 			if style.wall_type == WallStyles.Type.Bevel_Wall:
 				wall_style.height = style.wall_style.height
+			elif style.wall_type == WallStyles.Type.Mesh_Wall and wall_style.height == 0:
+				wall_style.height = MeshUtils.calc_mesh_height(style.wall_style.mesh, style.wall_style.scale)
 			if path_mod.collider_type == BlockPathMod.ColliderType.Ridged:
 				path_data = PathUtils.move_path_down(path_data, -path_mod.collider_ridge)
 				wall_style.height += path_mod.collider_ridge
