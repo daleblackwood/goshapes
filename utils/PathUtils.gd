@@ -104,6 +104,45 @@ static func path_to_outline(path: PathData, width: float) -> PathData:
 		path_ups[point_total - 1 - i] = up
 	return PathData.new(path_points, path_ups)
 	
+
+static func round_path(path: PathData, round_dist: float, interpolate: int = 0) -> PathData:
+	if interpolate < 1:
+		interpolate = 1
+	var iterations = interpolate + 1
+	var sub_dist = round_dist
+	for i in range(iterations):
+		path = round_path_it(path, sub_dist)
+		sub_dist /= PI
+	return path
+	
+	
+static func round_path_it(path: PathData, round_dist: float) -> PathData:
+	var point_count = path.points.size()
+	var points = PoolVector3Array()
+	points.resize(point_count * 2)
+	var ups = PoolVector3Array()
+	ups.resize(point_count * 2)
+	for i in point_count:
+		var p = path.points[i]
+		var prev = path.points[i - 1 if i > 0 else point_count - 1]
+		var next = path.points[i + 1 if i < point_count - 1 else 0]
+		var a = move_point_towards(p, prev, round_dist * 0.5)
+		var b = move_point_towards(p, next, round_dist * 0.5)
+		points.set(i * 2, a)
+		points.set(i * 2 + 1, b)
+		ups.set(i * 2, path.ups[i])
+		ups.set(i * 2 + 1, path.ups[i])
+	return PathData.new(points, ups)
+	
+	
+static func move_point_towards(source: Vector3, dest: Vector3, distance: float) -> Vector3:
+	var diff = dest - source
+	diff *= 0.5
+	if diff.length_squared() > distance * distance * 2.0:
+		diff = diff.normalized() * distance
+		return source + diff
+	return source + diff * 0.5
+	
 	
 static func move_path(path: PathData, offset: Vector3) -> PathData:
 	var point_count = path.points.size()

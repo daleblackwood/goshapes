@@ -8,6 +8,7 @@ export var recenter = false setget set_recenter
 export var cascade_twists = false
 export(Array, int) var path_twists setget set_path_twists
 export(Resource) var path_mod = BlockPathMod.new() setget set_path_mod
+export(String, FILE, "*.tres") var style_file setget set_style_file, get_style_file
 export(Resource) var style = BlockStyle.new()  setget set_style
 
 signal edit_begin(edit_proxy)
@@ -57,6 +58,17 @@ func _edit_end() -> void:
 	ResourceUtils.switch_signal(self, "_on_style_changed", style, null)
 	SceneUtils.switch_signal(self, "curve_changed", "set_dirty", self, null)
 	SceneUtils.switch_signal(self, "on_built", "_on_built", self, null)
+	
+
+func set_style_file(path: String) -> void:
+	var res = load(path)
+	set_style(res)
+	
+	
+func get_style_file() -> String:
+	if style == null or style.resource_local_to_scene:
+		return ""
+	return style.resource_path
 	
 	
 func set_style(value: Resource) -> void:
@@ -222,9 +234,12 @@ func get_path_data(interpolate: int) -> PathData:
 	var twists = null if not path_mod.twist else PoolIntArray(path_twists)
 	var path_data = PathUtils.curve_to_path(curve, interpolate, inverted, twists)
 	if path_mod.line > 0:
-		return PathUtils.path_to_outline(path_data, path_mod.line)
-	path_data.taper = taper
-	path_data.curve = curve.duplicate()
+		path_data = PathUtils.path_to_outline(path_data, path_mod.line)
+	if path_mod.rounding > 0:
+		path_data = PathUtils.round_path(path_data, path_mod.rounding, interpolate)
+	if path_mod.line > 0:
+		path_data.taper = taper
+		path_data.curve = curve.duplicate()
 	return path_data
 	
 	
