@@ -13,6 +13,12 @@ static func flatten_curve(curve: Curve3D) -> void:
 		p = curve.get_point_out(i)
 		p.y = 0
 		curve.set_point_out(i, p)
+		
+		
+static func remove_control_points(curve: Curve3D) -> void:
+	for i in range(curve.get_point_count()):
+		curve.set_point_in(i, Vector3.ZERO)
+		curve.set_point_out(i, Vector3.ZERO)
 	
 	
 static func twist_curve(curve: Curve3D, path_twists = PoolIntArray()) -> void:

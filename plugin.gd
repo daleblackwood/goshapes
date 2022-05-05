@@ -48,7 +48,9 @@ var menu_items = [
 	["Add New Block", self, "add_block"],
 	["Copy Attributes", proxy, "copy_attributes"],
 	["Paste Attributes", proxy, "paste_attributes"],
-	["Redraw Selected", self, "redraw_selected"]
+	["Redraw Selected", self, "call_selected", "build"],
+	["Remove Control Points", self, "call_selected", "remove_control_points"],
+	["Recenter Shape", self, "call_selected", "recenter"]
 ]
 
 func _enter_tree() -> void:
@@ -68,8 +70,11 @@ func _enter_tree() -> void:
 	
 	
 func _menu_item_selected(index: int) -> void:
-	var menu_item = menu_items[index]
-	menu_item[1].call(menu_item[2])
+	var mi = menu_items[index]
+	if mi.size() > 3:
+		mi[1].call(mi[2], mi[3])
+	else:
+		mi[1].call(mi[2])
 	
 		
 func add_block() -> void:
@@ -80,15 +85,21 @@ func add_block() -> void:
 	parent.add_child(block)
 	block.set_owner(parent)
 	select_block(block)
-	
-	
-func redraw_selected() -> void:
+			
+			
+func call_selected(method: String, arg = null) -> void:
 	var selected_nodes = selection_handler.get_selected_nodes()
 	for node in selected_nodes:
 		if node is Block:
-			node._edit_begin(proxy)
-			node.build()
-			node._edit_end()
+			var is_editing = node.is_editing
+			if not is_editing:
+				node._edit_begin(proxy)
+			if arg != null:
+				node.call(method, arg)
+			else:
+				node.call(method)
+			if not is_editing:
+				node._edit_end()
 	
 	
 func _on_selection_changed() -> void:

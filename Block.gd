@@ -23,6 +23,8 @@ var collider_shape: CollisionShape
 var edit_proxy = null
 var is_line: bool setget ,get_is_line
 var cap_data: PathData = null
+var is_editing = false setget ,_get_is_editing
+var mouse_down = false
 
 func _enter_tree() -> void:
 	connect("edit_begin", self, "_edit_begin")
@@ -42,7 +44,13 @@ func _exit_tree() -> void:
 	_edit_end()
 		
 		
+func _get_is_editing() -> bool:
+	return self.edit_proxy != null
+	
+		
 func _edit_begin(edit_proxy) -> void:
+	if self.edit_proxy != null:
+		return
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
 	if not style:
@@ -117,14 +125,18 @@ func set_path_twists(value: Array):
 	
 func set_recenter(value):
 	if value:
-		var center = PathUtils.get_curve_center(curve)
-		PathUtils.move_curve(curve, -center)
-		transform.origin += center
-		if mesh_node:
-			mesh_node.transform = Transform()
-		if collider_body:
-			collider_body.transform = Transform()
-		set_dirty()
+		recenter()
+		
+		
+func recenter():
+	var center = PathUtils.get_curve_center(curve)
+	PathUtils.move_curve(curve, -center)
+	transform.origin += center
+	if mesh_node:
+		mesh_node.transform = Transform()
+	if collider_body:
+		collider_body.transform = Transform()
+	set_dirty()
 	
 
 	
@@ -151,6 +163,11 @@ func _update():
 		return
 	build()
 	is_dirty = false
+	
+func _input(event):
+	if event is InputEventMouseButton:
+		if event.button_index == 0:
+			mouse_down = event.is_pressed()
 
 	
 func build():
@@ -162,6 +179,10 @@ func build():
 	
 	if not style:
 		print("no style")
+		return
+		
+	if mouse_down:
+		set_dirty()
 		return
 	
 	var runner = edit_proxy.runner
@@ -181,6 +202,11 @@ func build():
 	else:
 		runner.run_group(get_build_jobs(), self, "apply_block_meshes")
 		runner.run_group(get_collider_jobs(), self, "apply_collider")
+		
+		
+func remove_control_points() -> void:
+	PathUtils.remove_control_points(curve)
+	set_dirty()
 	
 	
 func get_build_jobs(joblist: Array = []) -> Array:
