@@ -50,7 +50,9 @@ var menu_items = [
 	["Paste Attributes", proxy, "paste_attributes"],
 	["Redraw Selected", self, "call_selected", "build"],
 	["Remove Control Points", self, "call_selected", "remove_control_points"],
-	["Recenter Shape", self, "call_selected", "recenter"]
+	["Recenter Shape", self, "call_selected", "recenter"],
+	["Select All Blocks", self, "select_all_blocks"],
+	["Place Objects on Ground", self, "ground_objects"]
 ]
 
 func _enter_tree() -> void:
@@ -59,10 +61,10 @@ func _enter_tree() -> void:
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
-	toolbar.hide()
+	#toolbar.hide()
 	
 	var menu := MenuButton.new()
-	menu.set_text("Shapes")
+	menu.set_text("Blocks")
 	for i in range(menu_items.size()):
 		menu.get_popup().add_item(menu_items[i][0], i)
 	menu.get_popup().connect("id_pressed", self, "_menu_item_selected")
@@ -98,6 +100,7 @@ func call_selected(method: String, arg = null) -> void:
 				node.call(method, arg)
 			else:
 				node.call(method)
+			node.set_dirty()
 			if not is_editing:
 				node._edit_end()
 	
@@ -135,7 +138,7 @@ func _on_selection_changed() -> void:
 	if block_selected:
 		toolbar.show()
 	else:
-		toolbar.hide()
+		pass#toolbar.hide()
 				
 				
 func _on_tree_exiting() -> void:
@@ -157,9 +160,35 @@ func select_block(block: Block) -> void:
 		call_deferred("connect_block")
 		
 		
+func select_all_blocks(parent: Node = null) -> void:
+	if parent == null:
+		parent = get_tree().root
+		selection_handler.clear()
+	if parent is Block:
+		selection_handler.add_node(parent)
+	for i in parent.get_child_count():
+		select_all_blocks(parent.get_child(i))
+		
+		
 func copy_block_params(block: Block) -> void:
 	proxy.last_style = block.style
 	proxy.last_path_mod = block.path_mod
+		
+		
+func ground_objects() -> void:
+	var space_state = get_tree().root.get_world().direct_space_state
+	var selected_nodes = selection_handler.get_selected_nodes()
+	for node in selected_nodes:
+		var spatial = node as Spatial
+		if spatial == null:
+			continue
+		var from = spatial.global_transform.origin
+		from.y = 1000.0
+		var to = from
+		to.y = -1000.0
+		var result = space_state.intersect_ray(from, to, [spatial])
+		if result.has("position"):
+			spatial.global_transform.origin = result.position
 		
 		
 func connect_block() -> void:
