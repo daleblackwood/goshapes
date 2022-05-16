@@ -6,6 +6,8 @@ var selection_handler = get_editor_interface().get_selection()
 
 var reselecting = false
 var toolbar: HBoxContainer
+var block_menu_button: MenuButton
+var block_menu_items = []
 
 class EditorProxy:
 	
@@ -44,14 +46,19 @@ class EditorProxy:
 	
 var proxy: EditorProxy = EditorProxy.new()
 
-var menu_items = [
+var menu_items_all = [
 	["Add New Block", self, "add_block"],
+	["Select All Blocks", self, "select_all_blocks"],
+]
+var menu_items_block = [
 	["Copy Attributes", proxy, "copy_attributes"],
 	["Paste Attributes", proxy, "paste_attributes"],
 	["Redraw Selected", self, "call_selected", "build"],
 	["Remove Control Points", self, "call_selected", "remove_control_points"],
 	["Recenter Shape", self, "call_selected", "recenter"],
-	["Select All Blocks", self, "select_all_blocks"],
+	["Place Objects on Ground", self, "ground_objects"]
+] + menu_items_all
+var menu_items_other = menu_items_all + [
 	["Place Objects on Ground", self, "ground_objects"]
 ]
 
@@ -61,18 +68,24 @@ func _enter_tree() -> void:
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
-	#toolbar.hide()
 	
-	var menu := MenuButton.new()
-	menu.set_text("Blocks")
+	block_menu_button = MenuButton.new()
+	block_menu_button.set_text("Blocks")
+	block_menu_button.get_popup().connect("id_pressed", self, "_menu_item_selected")
+	toolbar.add_child(block_menu_button)
+	set_menu_items(menu_items_other)
+	
+	
+func set_menu_items(menu_items: Array) -> void:
+	var popup = block_menu_button.get_popup()
+	popup.clear()
+	block_menu_items = menu_items
 	for i in range(menu_items.size()):
-		menu.get_popup().add_item(menu_items[i][0], i)
-	menu.get_popup().connect("id_pressed", self, "_menu_item_selected")
-	toolbar.add_child(menu)
+		popup.add_item(menu_items[i][0], i)
 	
 	
 func _menu_item_selected(index: int) -> void:
-	var mi = menu_items[index]
+	var mi = block_menu_items[index]
 	if mi.size() > 3:
 		mi[1].call(mi[2], mi[3])
 	else:
@@ -136,9 +149,9 @@ func _on_selection_changed() -> void:
 			block_selected = true
 	
 	if block_selected:
-		toolbar.show()
+		set_menu_items(menu_items_block)
 	else:
-		pass#toolbar.hide()
+		set_menu_items(menu_items_other)
 				
 				
 func _on_tree_exiting() -> void:

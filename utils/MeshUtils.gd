@@ -302,7 +302,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 		var pt = pa + orig_x * right - v.y * down + v.z * out
 		set.set_vert(i, pt)
 		var n = set.normals[i]
-		n = n.cross(-right)
+		n = (n.x * right + n.y * up + n.z * out).normalized()
 		set.set_normal(i, n)
 	return set
 	
