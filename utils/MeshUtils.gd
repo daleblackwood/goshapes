@@ -331,8 +331,7 @@ static func mesh_clone_to_length(meshset: MeshSet, path_length: float) -> MeshSe
 			v.x = start_x + v.x * x_multi
 			set.set_vert(j, v)
 			var uv = set.uvs[j]
-			uv *= seg_length
-			uv.x += seg_length * i
+			uv.x += float(i)
 			set.set_uv(j, uv)
 		sets.append(set)
 	var set = combine_sets(sets)

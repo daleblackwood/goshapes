@@ -97,7 +97,15 @@ func add_block() -> void:
 	var block = Path.new()
 	block.name = "Block"
 	block.set_script(preload("Block.gd"))
-	var parent = (proxy.selected_block as Spatial).get_parent_spatial()
+	var parent = proxy.selected_block as Spatial
+	if parent == null:
+		var selected_nodes = selection_handler.get_selected_nodes()
+		if selected_nodes.size() > 0:
+			parent = selected_nodes.front() as Spatial
+	if parent == null:
+		parent = get_editor_interface().get_edited_scene_root()
+	if parent is Block:
+		parent = parent.get_parent_spatial()
 	parent.add_child(block)
 	block.set_owner(parent)
 	select_block(block)
