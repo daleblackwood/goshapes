@@ -53,10 +53,9 @@ var menu_items_all = [
 var menu_items_block = [
 	["Copy Attributes", proxy, "copy_attributes"],
 	["Paste Attributes", proxy, "paste_attributes"],
-	["Redraw Selected", self, "call_selected", "build"],
-	["Remove Control Points", self, "call_selected", "remove_control_points"],
-	["Recenter Shape", self, "call_selected", "recenter"],
-	["Place Objects on Ground", self, "ground_objects"]
+	["Redraw Selected", self, "modify_selected"],
+	["Remove Control Points", self, "modify_selected", "remove_control_points"],
+	["Recenter Shape", self, "modify_selected", "recenter"]
 ] + menu_items_all
 var menu_items_other = menu_items_all + [
 	["Place Objects on Ground", self, "ground_objects"]
@@ -86,7 +85,9 @@ func set_menu_items(menu_items: Array) -> void:
 	
 func _menu_item_selected(index: int) -> void:
 	var mi = block_menu_items[index]
-	if mi.size() > 3:
+	if mi.size() > 4:
+		mi[1].call(mi[2], mi[3], mi[4])
+	elif mi.size() > 3:
 		mi[1].call(mi[2], mi[3])
 	else:
 		mi[1].call(mi[2])
@@ -102,20 +103,21 @@ func add_block() -> void:
 	select_block(block)
 			
 			
-func call_selected(method: String, arg = null) -> void:
+func modify_selected(method: String = "", arg = null) -> void:
 	var selected_nodes = selection_handler.get_selected_nodes()
 	for node in selected_nodes:
 		if node is Block:
-			var is_editing = node.is_editing
-			if not is_editing:
-				node._edit_begin(proxy)
-			if arg != null:
-				node.call(method, arg)
-			else:
-				node.call(method)
-			node.set_dirty()
-			if not is_editing:
+			var was_editing = node.is_editing
+			if was_editing:
 				node._edit_end()
+			if method != "":
+				if arg != null:
+					node.call(method, arg)
+				else:
+					node.call(method)
+			node._build(proxy.runner)
+			if was_editing:
+				node._edit_begin(proxy)
 	
 	
 func _on_selection_changed() -> void:

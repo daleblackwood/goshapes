@@ -137,7 +137,6 @@ func recenter():
 	if collider_body:
 		collider_body.transform = Transform()
 	set_dirty()
-	
 
 	
 func set_dirty():
@@ -158,19 +157,24 @@ func _update():
 		return
 	if not is_dirty:
 		return
+	if mouse_down:
+		call_deferred("_update")
+		return
 	if is_dragging:
 		call_deferred("_update")
 		return
+	
 	build()
 	is_dirty = false
+	
 	
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == 0:
 			mouse_down = event.is_pressed()
-
 	
-func build():
+	
+func build() -> void:
 	if path_mod.flatten:
 		PathUtils.flatten_curve(curve)
 		
@@ -180,14 +184,17 @@ func build():
 	if not style:
 		print("no style")
 		return
-		
-	if mouse_down:
-		set_dirty()
-		return
 	
 	var runner = edit_proxy.runner
 	if runner.is_busy:
 		set_dirty()
+		return
+		
+	_build(runner)
+		
+
+func _build(runner: JobRunner) -> void:
+	if not style:
 		return
 		
 	var use_collider = path_mod.collider_type > 0
@@ -202,6 +209,8 @@ func build():
 	else:
 		runner.run_group(get_build_jobs(), self, "apply_block_meshes")
 		runner.run_group(get_collider_jobs(), self, "apply_collider")
+		
+	is_dirty = false
 		
 		
 func remove_control_points() -> void:
