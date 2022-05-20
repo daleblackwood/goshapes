@@ -488,15 +488,16 @@ static func build_meshes(meshset_or_array, mesh: ArrayMesh = null) -> ArrayMesh:
 	
 	
 static func build_mesh(meshset: MeshSet, mesh: ArrayMesh = null) -> ArrayMesh:
-	var arr = []
-	arr.resize(ArrayMesh.ARRAY_MAX)
-	arr[ArrayMesh.ARRAY_VERTEX] = PoolVector3Array(meshset.verts)
-	arr[ArrayMesh.ARRAY_NORMAL] = PoolVector3Array(meshset.normals)
-	arr[ArrayMesh.ARRAY_TEX_UV] = PoolVector2Array(meshset.uvs)
-	arr[ArrayMesh.ARRAY_INDEX] = PoolIntArray(meshset.tris)
 	if mesh == null:
 		mesh = ArrayMesh.new()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	if meshset.vert_count > 0:
+		var arr = []
+		arr.resize(ArrayMesh.ARRAY_MAX)
+		arr[ArrayMesh.ARRAY_VERTEX] = PoolVector3Array(meshset.verts)
+		arr[ArrayMesh.ARRAY_NORMAL] = PoolVector3Array(meshset.normals)
+		arr[ArrayMesh.ARRAY_TEX_UV] = PoolVector2Array(meshset.uvs)
+		arr[ArrayMesh.ARRAY_INDEX] = PoolIntArray(meshset.tris)
+		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	if meshset.material:
 		var surf_idx = mesh.get_surface_count() - 1
 		mesh.surface_set_material(surf_idx, meshset.material)

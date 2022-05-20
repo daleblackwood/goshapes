@@ -9,34 +9,69 @@ var toolbar: HBoxContainer
 var block_menu_button: MenuButton
 var block_menu_items = []
 
+class BlockAttributes:
+	
+	var style: Resource
+	var path_mod: Resource
+	
+	func copy(block: Block) -> void:
+		style = block.style
+		path_mod = block.path_mod
+		
+	func apply(block: Block) -> void:
+		block.style = style
+		block.path_mod = path_mod
+		
+	func apply_style(block: Block) -> void:
+		block.style = style
+		
+	func apply_path_mod(block: Block) -> void:
+		block.path_mod = path_mod
+		
+	
+
 class EditorProxy:
 	
 	var runner = JobRunner.new()
-	var last_style: Resource
-	var last_path_mod: Resource
-	var copied_style: Resource
-	var copied_path_mod: Resource
+	var attributes_last := BlockAttributes.new()
+	var attributes_copied := BlockAttributes.new()
 	var selected_block: Block = null
+	var last_selected: Block = null
+	
+	func set_selected(block: Block) -> void:
+		if block == selected_block:
+			return
+		if selected_block != null:
+			attributes_last.copy(selected_block)
+		selected_block = block
+		if block != null:
+			last_selected = block
 	
 	func create_block_style() -> Resource:
-		if last_style != null:
-			return _get_resource(last_style)
+		if attributes_last.style != null:
+			return _get_resource(attributes_last.style)
 		return BlockStyle.new()
 		
 	func create_path_mod() -> Resource:
-		if last_path_mod != null:
-			return _get_resource(last_path_mod)
+		if attributes_last.path_mod != null:
+			return _get_resource(attributes_last.path_mod)
 		return BlockPathMod.new()
 		
 	func copy_attributes() -> void:
-		copied_style = selected_block.style
-		copied_path_mod = selected_block.path_mod
+		attributes_copied.copy(last_selected)
 		
 	func paste_attributes() -> void:
-		if copied_style != null:
-			selected_block.style = _get_resource(copied_style)
-		if copied_path_mod != null:
-			selected_block.path_mod = _get_resource(copied_path_mod)
+		attributes_copied.apply(selected_block)
+		
+	func paste_style() -> void:
+		attributes_copied.apply_style(selected_block)
+		
+	func paste_path_mod() -> void:
+		attributes_copied.apply_path_mod(selected_block)
+		
+	func clear_style() -> void:
+		selected_block.style = BlockStyle.new()
+		selected_block._build(runner)
 		
 	func _get_resource(resource: Resource) -> Resource:
 		if resource.resource_local_to_scene:
@@ -51,9 +86,12 @@ var menu_items_all = [
 	["Select All Blocks", self, "select_all_blocks"],
 ]
 var menu_items_block = [
+	["Redraw Selected", self, "modify_selected"],
 	["Copy Attributes", proxy, "copy_attributes"],
 	["Paste Attributes", proxy, "paste_attributes"],
-	["Redraw Selected", self, "modify_selected"],
+	["Paste Style", proxy, "paste_style"],
+	["Paste Path Mods", proxy, "paste_path_mod"],
+	["Reset Style", proxy, "reset_style"],
 	["Remove Control Points", self, "modify_selected", "remove_control_points"],
 	["Recenter Shape", self, "modify_selected", "recenter"]
 ] + menu_items_all
@@ -94,9 +132,6 @@ func _menu_item_selected(index: int) -> void:
 	
 		
 func add_block() -> void:
-	var block = Path.new()
-	block.name = "Block"
-	block.set_script(preload("Block.gd"))
 	var parent = proxy.selected_block as Spatial
 	if parent == null:
 		var selected_nodes = selection_handler.get_selected_nodes()
@@ -106,8 +141,13 @@ func add_block() -> void:
 		parent = get_editor_interface().get_edited_scene_root()
 	if parent is Block:
 		parent = parent.get_parent_spatial()
+	var block = Path.new()
+	block.name = "Block"
+	block.set_script(preload("Block.gd"))
 	parent.add_child(block)
 	block.set_owner(parent)
+	if proxy.last_selected != null and parent == proxy.last_selected.get_parent_spatial():
+		block.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
 	select_block(block)
 			
 			
@@ -134,7 +174,7 @@ func _on_selection_changed() -> void:
 		
 	var editor_root = get_editor_interface().get_edited_scene_root()
 	if not editor_root:
-		proxy.selected_block = null
+		select_block(null)
 		return
 	var selected_nodes = selection_handler.get_selected_nodes()
 	if selected_nodes.size() != 1:
@@ -166,20 +206,18 @@ func _on_selection_changed() -> void:
 				
 func _on_tree_exiting() -> void:
 	print("tree exiting")
-	proxy.selected_block = null
+	proxy.set_selected(null)
 
 
 func select_block(block: Block) -> void:
 	if block != proxy.selected_block:
-		if proxy.selected_block:
-			copy_block_params(proxy.selected_block)
-			proxy.selected_block.emit_signal("edit_end")
-		proxy.selected_block = null
+		if proxy.selected_block != null:
+			proxy.selected_block._edit_end()
+		proxy.set_selected(null)
 		reselecting = false
 		
 	if block and block is Block and block != proxy.selected_block:
-		print("selected block " + block.name)
-		proxy.selected_block = block
+		proxy.set_selected(block)
 		call_deferred("connect_block")
 		
 		
@@ -216,7 +254,7 @@ func ground_objects() -> void:
 		
 func connect_block() -> void:
 	print("selected block " + proxy.selected_block.name)
-	proxy.selected_block.emit_signal("edit_begin", proxy)
+	proxy.selected_block._edit_begin(proxy)
 	var selected_nodes = selection_handler.get_selected_nodes()
 	if selected_nodes.size() != 1 || selected_nodes[0] != proxy.selected_block:
 		selection_handler.clear()

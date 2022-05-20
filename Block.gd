@@ -7,12 +7,10 @@ export(float, -1.0, 2.0) var taper = 0.0 setget set_taper
 export var recenter = false setget set_recenter
 export var cascade_twists = false
 export(Array, int) var path_twists setget set_path_twists
-export(Resource) var path_mod = BlockPathMod.new() setget set_path_mod
+export(Resource) var path_mod = null setget set_path_mod
 export(String, FILE, "*.tres") var style_file setget set_style_file, get_style_file
-export(Resource) var style = BlockStyle.new()  setget set_style
+export(Resource) var style = null setget set_style
 
-signal edit_begin(edit_proxy)
-signal edit_end
 signal on_built(output)
 
 var is_dirty = false
@@ -27,8 +25,6 @@ var is_editing = false setget ,_get_is_editing
 var mouse_down = false
 
 func _enter_tree() -> void:
-	connect("edit_begin", self, "_edit_begin")
-	connect("edit_end", self, "_edit_end")
 	set_display_folded(true)
 	
 	
@@ -39,8 +35,6 @@ func _ready() -> void:
 	
 	
 func _exit_tree() -> void:
-	disconnect("edit_begin", self, "_edit_begin")
-	disconnect("edit_end", self, "_edit_end")
 	_edit_end()
 		
 		
@@ -54,9 +48,24 @@ func _edit_begin(edit_proxy) -> void:
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
 	if not style:
+		print("new style")
 		set_style(edit_proxy.create_block_style())
 	if not path_mod:
+		print("new path mod")
 		set_path_mod(edit_proxy.create_path_mod())
+	if curve.get_point_count() < 2:
+		print("new curve")
+		curve.clear_points()
+		if path_mod.line > 0.0:
+			var extent = path_mod.line * 0.5
+			curve.add_point(Vector3(-extent, 0, 0))
+			curve.add_point(Vector3(extent, 0, 0))
+		else:
+			var extent = 4.0
+			curve.add_point(Vector3(-extent, 0, -extent))
+			curve.add_point(Vector3(extent, 0, -extent))
+			curve.add_point(Vector3(extent, 0, extent))
+			curve.add_point(Vector3(-extent, 0, extent))
 	SceneUtils.switch_signal(self, "curve_changed", "set_dirty", self, self)
 	SceneUtils.switch_signal(self, "on_built", "_on_built", self, self)
 	

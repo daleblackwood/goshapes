@@ -27,7 +27,7 @@ static func get_owner(parent: Node):
 static func switch_signal(owner: Object, signal_name: String, method: String, old_target: Object, new_target: Object) -> void:
 	if old_target and old_target.is_connected(signal_name, owner, method):
 		old_target.disconnect(signal_name, owner, method)
-	if new_target:
+	if new_target and not new_target.is_connected(signal_name, owner, method):
 		new_target.connect(signal_name, owner, method)
 		
 		
