@@ -1,23 +1,23 @@
-tool
+@tool
 class_name PathData
 
-var points := PoolVector3Array() setget set_points
-var ups := PoolVector3Array() setget set_ups
-var point_count: int setget ,get_point_count
+var points := PackedVector3Array(): set = set_points
+var ups := PackedVector3Array(): set = set_ups
+var point_count: int: get = get_point_count
 var taper := 0.0
 var curve: Curve3D
 
 
-func _init(points = PoolVector3Array(), ups = PoolVector3Array()) -> void:
+func _init(points = PackedVector3Array(), ups = PackedVector3Array()) -> void:
 	self.points = points
 	self.ups = ups
 	
 	
-func set_points(value: PoolVector3Array):
+func set_points(value: PackedVector3Array):
 	points = value
 	
 	
-func set_ups(value: PoolVector3Array):
+func set_ups(value: PackedVector3Array):
 	ups = value
 	
 	

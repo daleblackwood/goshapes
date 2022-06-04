@@ -18,8 +18,8 @@ static func get_style_class(type_value: int):
 
 static func load_style_class(type_value: int, suffix: String):
 	var name = get_type_name(type_value)
-	if not name:
-		push_error("no " + suffix + " for type " + String(type_value))
+	if name == null:
+		push_error("no %s for type %d" % [suffix, type_value])
 		return null
 	return ClassUtils.load_style_class(name, suffix)
 	

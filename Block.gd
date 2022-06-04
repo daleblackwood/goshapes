@@ -1,28 +1,47 @@
-tool
-extends Path
+@tool
+extends Path3D
 class_name Block
 
-export var inverted = false setget set_inverted
-export(float, -1.0, 2.0) var taper = 0.0 setget set_taper
-export var recenter = false setget set_recenter
-export var cascade_twists = false
-export(Array, int) var path_twists setget set_path_twists
-export(Resource) var path_mod = null setget set_path_mod
-export(String, FILE, "*.tres") var style_file setget set_style_file, get_style_file
-export(Resource) var style = null setget set_style
+@export var inverted = false:
+	set(value): set_inverted(value)
+	
+#@export_range(-1.0, 2.0) var taper: float = 0.0: 
+@export_range(0.0, 2.0) var taper: float = 0.0: 
+	set = set_taper
+	
+@export var recenter = false:
+	set = set_recenter
+	
+@export var cascade_twists = false
+
+@export var path_twists : Array[int]:
+	set = set_path_twists
+	
+@export var path_mod: Resource:
+	set = set_path_mod
+	
+@export_file("*.tres") var style_file: String:
+	set = set_style_file,
+	get = get_style_file
+	
+@export var style: Resource:
+	set = set_style
 
 signal on_built(output)
 
 var is_dirty = false
 var is_dragging = false
-var mesh_node: MeshInstance
-var collider_body: StaticBody
-var collider_shape: CollisionShape
+var mesh_node: MeshInstance3D
+var collider_body: StaticBody3D
+var collider_shape: CollisionShape3D
 var edit_proxy = null
-var is_line: bool setget ,get_is_line
+var is_line: bool:
+	get = get_is_line
 var cap_data: PathData = null
-var is_editing = false setget ,_get_is_editing
+var is_editing = false:
+	get = _get_is_editing
 var mouse_down = false
+
 
 func _enter_tree() -> void:
 	set_display_folded(true)
@@ -110,8 +129,8 @@ func set_inverted(value):
 	set_dirty()
 	
 
-func set_path_twists(value: Array):
-	if value and path_twists and cascade_twists:
+func set_path_twists(value: Array[int]):
+	if value != null and path_twists != null and cascade_twists:
 		var prev_twist_count = path_twists.size()
 		var new_twist_count = value.size()
 		if new_twist_count == prev_twist_count:
@@ -134,17 +153,17 @@ func set_path_twists(value: Array):
 	
 func set_recenter(value):
 	if value:
-		recenter()
+		recenter_points()
 		
 		
-func recenter():
+func recenter_points():
 	var center = PathUtils.get_curve_center(curve)
 	PathUtils.move_curve(curve, -center)
 	transform.origin += center
 	if mesh_node:
-		mesh_node.transform = Transform()
+		mesh_node.transform = Transform3D()
 	if collider_body:
-		collider_body.transform = Transform()
+		collider_body.transform = Transform3D()
 	set_dirty()
 
 	
@@ -158,7 +177,7 @@ func get_is_line():
 	
 	
 func _update():
-	if not Engine.editor_hint:
+	if not Engine.is_editor_hint():
 		return
 	if not get_tree():
 		return
@@ -206,7 +225,7 @@ func _build(runner: JobRunner) -> void:
 	if not style:
 		return
 		
-	var use_collider = path_mod.collider_type > 0
+	var use_collider = path_mod.collider_type != BlockPathMod.ColliderType.None
 	if not use_collider:
 		SceneUtils.remove(self, "Collider")
 		collider_body = null
@@ -277,9 +296,9 @@ func get_collider_jobs(joblist: Array = []) -> Array:
 	
 
 func get_path_data(interpolate: int) -> PathData:
-	var twists = null if not path_mod.twist else PoolIntArray(path_twists)
+	var twists = null if not path_mod.twist else PackedInt32Array(path_twists)
 	var path_data = PathUtils.curve_to_path(curve, interpolate, inverted, twists)
-	if path_mod.line > 0:
+	if path_mod.line != 0:
 		path_data = PathUtils.path_to_outline(path_data, path_mod.line)
 	if path_mod.rounding > 0:
 		path_data = PathUtils.round_path(path_data, path_mod.rounding, interpolate)
@@ -300,8 +319,8 @@ func apply_block_meshes(group) -> void:
 		if meshset:
 			MeshUtils.build_meshes(meshset, mesh)
 	if not mesh_node:
-		mesh_node = SceneUtils.get_or_create(self, "Mesh", MeshInstance)
-	mesh_node.transform = Transform()
+		mesh_node = SceneUtils.get_or_create(self, "Mesh", MeshInstance3D)
+	mesh_node.transform = Transform3D()
 	mesh_node.mesh = mesh
 	
 	
@@ -311,10 +330,10 @@ func apply_collider(group) -> void:
 		if meshset:
 			MeshUtils.build_meshes(meshset, mesh)
 	if not collider_body:
-		collider_body = SceneUtils.get_or_create(self, "Collider", StaticBody)
-	collider_body.transform = Transform()
-	collider_shape = SceneUtils.get_or_create(collider_body, "CollisionShape", CollisionShape)
+		collider_body = SceneUtils.get_or_create(self, "Collider", StaticBody3D)
+	collider_body.transform = Transform3D()
+	collider_shape = SceneUtils.get_or_create(collider_body, "CollisionShape", CollisionShape3D)
 	#mesh.regen_normalmaps()
 	collider_shape.shape = mesh.create_trimesh_shape()
-	collider_shape.transform = Transform()
+	collider_shape.transform = Transform3D()
 	

@@ -21,7 +21,7 @@ static func remove_control_points(curve: Curve3D) -> void:
 		curve.set_point_out(i, Vector3.ZERO)
 	
 	
-static func twist_curve(curve: Curve3D, path_twists = PoolIntArray()) -> void:
+static func twist_curve(curve: Curve3D, path_twists = PackedInt32Array()) -> void:
 	var twist_count = 0 if path_twists == null else path_twists.size()
 	var curve_point_count = curve.get_point_count()
 	if twist_count > 0:
@@ -60,16 +60,16 @@ static func curve_to_points(curve: Curve3D, interpolate: int, inverted: bool) ->
 	return path
 	
 	
-static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path_twists = PoolIntArray()) -> PathData:
+static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path_twists = PackedInt32Array()) -> PathData:
 	curve = curve.duplicate()
 	var use_twists = path_twists != null
 	if use_twists:
 		twist_curve(curve, path_twists)
 	var curved_path = curve_to_points(curve, interpolate, inverted)
 	var point_count = curved_path.point_count
-	var points = PoolVector3Array()
+	var points = PackedVector3Array()
 	points.resize(point_count)
-	var ups = PoolVector3Array()
+	var ups = PackedVector3Array()
 	ups.resize(point_count)
 	var length = 0.0
 	for i in point_count:
@@ -87,9 +87,9 @@ static func path_to_outline(path: PathData, width: float) -> PathData:
 	var point_count = path.points.size()
 	var ups_count = path.ups.size()
 	var point_total = point_count * 2
-	var path_points = PoolVector3Array()
+	var path_points = PackedVector3Array()
 	path_points.resize(point_total)
-	var path_ups = PoolVector3Array()
+	var path_ups = PackedVector3Array()
 	path_ups.resize(point_total)
 	for i in point_count:
 		var dir = Vector3.FORWARD
@@ -116,17 +116,18 @@ static func round_path(path: PathData, round_dist: float, interpolate: int = 0) 
 		interpolate = 1
 	var iterations = interpolate + 1
 	var sub_dist = round_dist
+	var result = path
 	for i in range(iterations):
-		path = round_path_it(path, sub_dist)
+		result = round_path_it(result, sub_dist)
 		sub_dist /= PI
-	return path
+	return result
 	
 	
 static func round_path_it(path: PathData, round_dist: float) -> PathData:
 	var point_count = path.points.size()
-	var points = PoolVector3Array()
+	var points = PackedVector3Array()
 	points.resize(point_count * 2)
-	var ups = PoolVector3Array()
+	var ups = PackedVector3Array()
 	ups.resize(point_count * 2)
 	for i in point_count:
 		var p = path.points[i]
@@ -152,7 +153,7 @@ static func move_point_towards(source: Vector3, dest: Vector3, distance: float) 
 	
 static func move_path(path: PathData, offset: Vector3) -> PathData:
 	var point_count = path.points.size()
-	var result = PoolVector3Array()
+	var result = PackedVector3Array()
 	result.resize(point_count)
 	for i in point_count:
 		var p = path.points[i]
@@ -185,7 +186,7 @@ static func move_path_down(path: PathData, amount: float = 0.0) -> PathData:
 static func move_path_up(path: PathData, amount: float = 0.0) -> PathData:
 	var point_count = path.points.size()
 	var up_count = path.ups.size()
-	var result = PoolVector3Array()
+	var result = PackedVector3Array()
 	result.resize(point_count)
 	for i in point_count:
 		var up = Vector3.UP
@@ -205,9 +206,9 @@ static func cap_taper(a: Vector3, b: Vector3, width: float) -> Vector3:
 	
 static func invert(path: PathData) -> PathData:
 	var point_count = path.points.size()
-	var result_points = PoolVector3Array()
+	var result_points = PackedVector3Array()
 	result_points.resize(point_count)
-	var result_ups = PoolVector3Array()
+	var result_ups = PackedVector3Array()
 	result_ups.resize(point_count)
 	for i in point_count:
 		var index = point_count - 1 - i
@@ -227,7 +228,7 @@ static func get_path_center(path: PathData) -> Vector3:
 	
 static func taper_path(path: PathData, taper: float, clamp_opposite: bool = false) -> PathData:
 	var point_count = path.points.size()
-	var result = PoolVector3Array()
+	var result = PackedVector3Array()
 	result.resize(point_count)
 	for i in point_count:
 		var a = path.points[i]
@@ -247,10 +248,10 @@ static func taper_path(path: PathData, taper: float, clamp_opposite: bool = fals
 	return PathData.new(result, path.ups)
 	
 	
-static func bevel_path(path: PathData, taper: float) -> PathData:
+static func bevel_path(path: PathData, taper: float) -> PackedVector3Array:
 	var point_count = path.points.size()
 	var up_count = path.ups.size()
-	var result = PoolVector3Array()
+	var result = PackedVector3Array()
 	result.resize(point_count * 2)
 	for i in point_count:
 		var a = path.points[i]
@@ -263,7 +264,7 @@ static func bevel_path(path: PathData, taper: float) -> PathData:
 	return result
 	
 	
-static func get_length(points: PoolVector3Array) -> float:
+static func get_length(points: PackedVector3Array) -> float:
 	var point_count = points.size()
 	if point_count < 2:
 		return 0.0

@@ -1,4 +1,4 @@
-tool
+@tool
 extends BlockBuilder
 class_name BaseBuilder
 

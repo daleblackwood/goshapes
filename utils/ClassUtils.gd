@@ -13,7 +13,7 @@ static func load_style_class(style: String, suffix: String):
 static func parse_path(subpath: String, ext: String = "gd") -> String:
 	if subpath.begins_with("res://") == false:
 		subpath = BASEPATH + subpath
-	if subpath.find_last(".") <= subpath.find_last("/"):
+	if subpath.rfind(".") <= subpath.rfind("/"):
 		subpath += "." + ext
 	return subpath
 

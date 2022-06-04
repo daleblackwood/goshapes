@@ -1,4 +1,4 @@
-tool
+@tool
 extends CapBuilder
 
 func build(style, path: PathData):
@@ -24,13 +24,13 @@ func build(style, path: PathData):
 		var l = dif.length()
 		var u_size = Vector2(length, length + l)
 		var quad = MeshUtils.make_quad(b, a, d, c, u_size)
-		quad.uvs = PoolVector2Array([
+		quad.uvs = PackedVector2Array([
 			Vector2(0, length + l),
 			Vector2(0, length),
 			Vector2(width, length + l),
 			Vector2(width, length),
 		])
-		quad.normals = PoolVector3Array([Vector3.UP, Vector3.UP, Vector3.UP, Vector3.UP])
+		quad.normals = PackedVector3Array([Vector3.UP, Vector3.UP, Vector3.UP, Vector3.UP])
 		
 		var quads = split_quad(quad)
 		for set in quads:

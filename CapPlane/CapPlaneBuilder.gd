@@ -1,4 +1,4 @@
-tool
+@tool
 extends CapBuilder
 
 func build(style, path: PathData):
@@ -9,7 +9,7 @@ func build(style, path: PathData):
 	var points = get_cap_points(style, path)
 	var point_count = points.size()
 		
-	var path2d = PoolVector2Array()
+	var path2d = PackedVector2Array()
 	path2d.resize(point_count)
 	for i in range(point_count):
 		path2d
@@ -31,17 +31,17 @@ func build(style, path: PathData):
 	for gx in range(coln):
 		for gz in range(rown):
 			var clipx = gx * gs + pmin.x
-			var clipped = Geometry.clip_polygon(path.points, Plane(Vector3.LEFT, -clipx))
+			var clipped = Geometry3D.clip_polygon(path.points, Plane(Vector3.LEFT, -clipx))
 			if clipped.size() < 1:
 				continue
-			clipped = Geometry.clip_polygon(clipped, Plane(Vector3.RIGHT, clipx + gs))
+			clipped = Geometry3D.clip_polygon(clipped, Plane(Vector3.RIGHT, clipx + gs))
 			if clipped.size() < 1:
 				continue
 			var clipz = gz * gs + pmin.z
-			clipped = Geometry.clip_polygon(clipped, Plane(Vector3.FORWARD, -clipz))
+			clipped = Geometry3D.clip_polygon(clipped, Plane(Vector3.FORWARD, -clipz))
 			if clipped.size() < 1:
 				continue
-			clipped = Geometry.clip_polygon(clipped, Plane(Vector3.BACK, clipz + gs))
+			clipped = Geometry3D.clip_polygon(clipped, Plane(Vector3.BACK, clipz + gs))
 			if clipped.size() < 1:
 				continue
 			meshes.append(MeshUtils.make_cap(clipped))

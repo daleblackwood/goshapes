@@ -1,4 +1,4 @@
-tool
+@tool
 extends WallBuilder
 
 func build(style, path: PathData):

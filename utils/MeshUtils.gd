@@ -1,15 +1,14 @@
 class_name MeshUtils
 
-# mesh set
 class MeshSet:
 		
-	var verts = PoolVector3Array()
-	var uvs = PoolVector2Array()
-	var normals = PoolVector3Array()
-	var tris = PoolIntArray()
+	var verts = PackedVector3Array()
+	var uvs = PackedVector2Array()
+	var normals = PackedVector3Array()
+	var tris = PackedInt32Array()
 	var material: Material = null
-	var vert_count setget ,get_vert_count
-	var tri_count setget ,get_tri_count
+	var vert_count: int: get = get_vert_count
+	var tri_count: int: get = get_tri_count
 
 	func set_counts(vert_count: int, tri_count: int) -> void:
 		set_vert_count(vert_count)
@@ -54,14 +53,14 @@ class MeshSet:
 		
 		
 # statics	
-static func make_cap(points: PoolVector3Array) -> MeshSet:
+static func make_cap(points: PackedVector3Array) -> MeshSet:
 	var point_count = points.size()
 	
 	var set = MeshSet.new()
 	set.set_vert_count(point_count)
 	set.verts = points
 	
-	var tri_points = PoolVector2Array()
+	var tri_points = PackedVector2Array()
 	tri_points.resize(point_count)
 	
 	for i in point_count:
@@ -69,24 +68,9 @@ static func make_cap(points: PoolVector3Array) -> MeshSet:
 		set.set_normal(i, Vector3.UP)
 		tri_points[i] = Vector2(points[i].x, points[i].z)
 	
-	set.tris = Geometry.triangulate_polygon(tri_points)
+	set.tris = Geometry2D.triangulate_polygon(tri_points)
 	return set
 	
-"""
-static func make_walls(points: PoolVector3Array, height: float, taper: float = 0.0) -> MeshSet:
-	var point_count = points.size()
-	var sets = []
-	if taper > 0.0:
-		var bottom_points = PathUtils.bevel_path(points, taper)
-		bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * height)
-		build_tapered_sets(points, bottom_points, sets)
-	else:
-		var bottom_points = PathUtils.move_path(points, Vector3.DOWN * height)
-		build_extruded_sets(points, bottom_points, sets)
-	var set = weld_sets(sets)
-	return set
-"""
-
 
 static func make_walls(path: PathData, height: float, taper: float = 0.0, bevel: float = 0.0) -> MeshSet:
 	var sets = []
@@ -112,37 +96,37 @@ static func make_walls_tapered(path: PathData, height: float, taper: float = 0.0
 	var set = combine_sets(sets)
 	return set
 	
-""""
-static func make_walls_bevelled(path: PathData, height: float, taper: float = 0.0, bevel: float = 0.0, bevel_stages: int = 0) -> MeshSet:
-	var point_count = path.points.size()
-	var up_count = path.ups.size()
+
+# slow bevel function for later user
+#static func make_walls_bevelled(path: PathData, height: float, taper: float = 0.0, bevel: float = 0.0, bevel_stages: int = 0) -> MeshSet:
+#	var point_count = path.points.size()
+#	var up_count = path.ups.size()
+#
+#	var sets = []
+#	var bevel_dir = 1.0 if height >= 0.0 else -1.0
+#
+#	var top_path = path
+#	if bevel_stages > 0 and bevel > 0.0:
+#		var current_bevel = 0.0
+#		var bevel_ratio = 1.0 / float(bevel_stages)
+#		var bevel_inc = bevel_ratio * bevel
+#		for i in bevel_stages:
+#			var pc = cos((i + 1) * PI) * 0.5 + 0.5
+#			current_bevel = pc * bevel - current_bevel
+#			var bottom_points = PathUtils.bevel_path(top_points, current_bevel)
+#			bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * bevel_inc)
+#			build_tapered_sets(top_points, bottom_points, sets)
+#			top_points = bottom_points
+#
+#	var bottom_points = PathUtils.bevel_path(top_points, taper)
+#	bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * (height - taper))
+#	build_tapered_sets(top_points, bottom_points, sets)
+#
+#	var set = combine_sets(sets)
+#	return set
 	
-	var sets = []
-	var bevel_dir = 1.0 if height >= 0.0 else -1.0
 	
-	var top_path = path
-	if bevel_stages > 0 and bevel > 0.0:
-		var current_bevel = 0.0
-		var bevel_ratio = 1.0 / float(bevel_stages)
-		var bevel_inc = bevel_ratio * bevel
-		for i in bevel_stages:
-			var pc = cos((i + 1) * PI) * 0.5 + 0.5
-			current_bevel = pc * bevel - current_bevel
-			var bottom_points = PathUtils.bevel_path(top_points, current_bevel)
-			bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * bevel_inc)
-			build_tapered_sets(top_points, bottom_points, sets)
-			top_points = bottom_points
-		
-	var bottom_points = PathUtils.bevel_path(top_points, taper)
-	bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * (height - taper))
-	build_tapered_sets(top_points, bottom_points, sets)
-	
-	var set = combine_sets(sets)
-	return set
-"""
-	
-	
-static func build_tapered_sets(points: PoolVector3Array, bevelled_points: PoolVector3Array, sets: Array = []) -> Array:
+static func build_tapered_sets(points: PackedVector3Array, bevelled_points: PackedVector3Array, sets: Array = []) -> Array:
 	var point_count = points.size()
 	
 	for i in point_count:
@@ -157,7 +141,7 @@ static func build_tapered_sets(points: PoolVector3Array, bevelled_points: PoolVe
 	return sets
 	
 	
-static func build_extruded_sets(points: PoolVector3Array, extruded_points: PoolVector3Array, sets: Array = []) -> Array:
+static func build_extruded_sets(points: PackedVector3Array, extruded_points: PackedVector3Array, sets: Array = []) -> Array:
 	var point_count = points.size()
 	
 	var length = 0.0
@@ -179,16 +163,16 @@ static func build_extruded_sets(points: PoolVector3Array, extruded_points: PoolV
 static func make_quad(tl: Vector3, tr: Vector3, bl: Vector3, br: Vector3, u_size: Vector2 = Vector2.ZERO) -> MeshSet:
 	var normal = (tr - tl).cross(bl - tl).normalized()
 	var set = MeshSet.new()
-	set.verts = PoolVector3Array([tl, tr, bl, br])
+	set.verts = PackedVector3Array([tl, tr, bl, br])
 	if u_size != Vector2.ZERO:
-		set.uvs = PoolVector2Array([
+		set.uvs = PackedVector2Array([
 			Vector2(u_size.x, tl.y),
 			Vector2(u_size.y, tr.y),
 			Vector2(u_size.x, bl.y),
 			Vector2(u_size.y, br.y)
 		])
 	elif false:
-		set.uvs = PoolVector2Array([
+		set.uvs = PackedVector2Array([
 			Vector2(0, 0),
 			Vector2(1, 0),
 			Vector2(0, 1),
@@ -196,34 +180,34 @@ static func make_quad(tl: Vector3, tr: Vector3, bl: Vector3, br: Vector3, u_size
 		])
 	else:
 		set.uvs = vert_uv(set.verts, normal)
-	set.normals = PoolVector3Array([normal, normal, normal, normal])
-	set.tris = PoolIntArray([0, 1, 3, 2, 0, 3])
+	set.normals = PackedVector3Array([normal, normal, normal, normal])
+	set.tris = PackedInt32Array([0, 1, 3, 2, 0, 3])
 	return set
 	
 	
 static func make_tri(a: Vector3, b: Vector3, c:Vector3) -> MeshSet:
 	var normal = -(b - a).cross(c - a)
 	var set = MeshSet.new()
-	set.verts = PoolVector3Array([a, b, c])
+	set.verts = PackedVector3Array([a, b, c])
 	if false:
-		set.uvs = PoolVector2Array([
+		set.uvs = PackedVector2Array([
 			Vector2(0, 0),
 			Vector2(1, 0),
 			Vector2(1, 1)
 		])
 	else:
 		set.uvs = vert_uv(set.verts, normal)
-	set.normals = PoolVector3Array([normal, normal, normal])
-	set.tris = PoolIntArray([0, 2, 1])
+	set.normals = PackedVector3Array([normal, normal, normal])
+	set.tris = PackedInt32Array([0, 2, 1])
 	return set
 	
 	
-static func vert_uv(points: PoolVector3Array, normal: Vector3) -> PoolVector2Array:
+static func vert_uv(points: PackedVector3Array, normal: Vector3) -> PackedVector2Array:
 	normal.y = 0
 	var dot = normal.normalized().dot(Vector3.RIGHT)
 	var use_x = abs(dot) < 0.5
 	var point_count = points.size()
-	var result = PoolVector2Array()
+	var result = PackedVector2Array()
 	result.resize(point_count)
 	for i in point_count:
 		var v = points[i]
@@ -233,14 +217,14 @@ static func vert_uv(points: PoolVector3Array, normal: Vector3) -> PoolVector2Arr
 	
 	
 static func flip_normals(meshset: MeshSet) -> MeshSet:
-	meshset = meshset.clone()
-	var vert_vount = meshset.vert_count
+	var result = meshset.clone()
+	var vert_vount = result.vert_count
 	for i in vert_vount:
-		meshset.set_normal(i, -meshset.verts[i])
-	return meshset
+		result.set_normal(i, -result.verts[i])
+	return result
 	
 	
-static func calc_mesh_height(mesh: Mesh, scale: float = 1) -> float:
+static func calc_mesh_height(mesh: Mesh, scale: float = 1.0) -> float:
 	var min_y = 0
 	for i in range(mesh.get_surface_count()):
 		var arr = mesh.surface_get_arrays(i)
@@ -293,7 +277,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 		var ua = path.get_up(ai)
 		var ub = path.get_up(bi)
 		var pc = 0.0 if len_end == len_start else (v.x - len_start) / (len_end - len_start)
-		var up = lerp(ua, ub, pc)
+		var up = ua.lerp(ub, pc)
 		var right = (pb - pa).normalized()
 		var out = right.cross(up)
 		var down = -up
@@ -376,9 +360,9 @@ static func weld_sets(sets: Array, threshhold: float = 0.01) -> MeshSet:
 			trimap[i] = remap
 	
 	var set = MeshSet.new()
-	set.verts = PoolVector3Array(verts)
-	set.uvs = PoolVector2Array(uvs)
-	set.normals = PoolVector3Array(normals)
+	set.verts = PackedVector3Array(verts)
+	set.uvs = PackedVector2Array(uvs)
+	set.normals = PackedVector3Array(normals)
 	set.set_tri_count(tri_count)
 	
 	for i in tri_count:
@@ -436,7 +420,7 @@ static func combine_sets(sets: Array) -> MeshSet:
 static func scale_mesh(meshset: MeshSet, new_scale: float) -> MeshSet:
 	var result = meshset.clone()
 	var vert_count = meshset.verts.size()
-	var verts = PoolVector3Array(meshset.verts)
+	var verts = PackedVector3Array(meshset.verts)
 	verts.resize(vert_count)
 	for i in vert_count:
 		var v = meshset.verts[i]
@@ -449,7 +433,7 @@ static func taper_mesh(meshset: MeshSet, path: PathData, taper: float) -> MeshSe
 	var center = PathUtils.get_path_center(path)
 	var result = meshset.clone()
 	var vert_count = meshset.verts.size()
-	var verts = PoolVector3Array(meshset.verts)
+	var verts = PackedVector3Array(meshset.verts)
 	verts.resize(vert_count)
 	for i in vert_count:
 		var v = meshset.verts[i]
@@ -493,10 +477,10 @@ static func build_mesh(meshset: MeshSet, mesh: ArrayMesh = null) -> ArrayMesh:
 	if meshset.vert_count > 0:
 		var arr = []
 		arr.resize(ArrayMesh.ARRAY_MAX)
-		arr[ArrayMesh.ARRAY_VERTEX] = PoolVector3Array(meshset.verts)
-		arr[ArrayMesh.ARRAY_NORMAL] = PoolVector3Array(meshset.normals)
-		arr[ArrayMesh.ARRAY_TEX_UV] = PoolVector2Array(meshset.uvs)
-		arr[ArrayMesh.ARRAY_INDEX] = PoolIntArray(meshset.tris)
+		arr[ArrayMesh.ARRAY_VERTEX] = PackedVector3Array(meshset.verts)
+		arr[ArrayMesh.ARRAY_NORMAL] = PackedVector3Array(meshset.normals)
+		arr[ArrayMesh.ARRAY_TEX_UV] = PackedVector2Array(meshset.uvs)
+		arr[ArrayMesh.ARRAY_INDEX] = PackedInt32Array(meshset.tris)
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	if meshset.material:
 		var surf_idx = mesh.get_surface_count() - 1

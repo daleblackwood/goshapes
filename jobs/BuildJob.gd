@@ -1,10 +1,10 @@
-tool
+@tool
 extends Job
 class_name BuildJob
 	
 
 func _init(builder, style, path: PathData) -> void:
-	.set_input({
+	super.set_input({
 		"builder": builder,
 		"style": style,
 		"path": path

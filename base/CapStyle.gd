@@ -1,7 +1,7 @@
 extends Resource
 class_name CapStyle
 
-export(bool) var conform_to_wall = false setget set_conform_to_wall
+@export var conform_to_wall: bool = false: set = set_conform_to_wall
 
 var wall_style
 

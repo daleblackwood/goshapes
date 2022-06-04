@@ -1,12 +1,12 @@
-tool
+@tool
 class_name JobRunner
 
-var queue = []
+var queue: Array[Job] = []
 var run_count = 0
 var current_job
-var groups = []
+var groups: Array[JobGroup] = []
 var group_count = 0
-var is_busy setget ,get_is_busy
+var is_busy: bool = false: get = get_is_busy
 
 
 func get_is_busy() -> bool:
@@ -27,7 +27,7 @@ func clear_jobs(host) -> void:
 	var job_count = queue.size()
 	for i in range(job_count - 1, -1 , -1):
 		if queue[i].host == host:
-			queue.remove(i)
+			queue.remove_at(i)
 	if current_job:
 		current_job.host = null
 		current_job = null
@@ -62,8 +62,8 @@ func job_done(job) -> void:
 	next()
 	
 
-func group_done(group) -> void:
+func group_done(group: JobGroup) -> void:
 	var index = groups.find(group)
 	if index >= 0:
-		groups.remove(index)
+		groups.remove_at(index)
 	

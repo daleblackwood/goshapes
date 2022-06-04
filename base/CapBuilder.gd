@@ -2,7 +2,7 @@ extends BlockBuilder
 class_name CapBuilder
 
 
-func get_cap_points(style, path: PathData) -> PoolVector3Array:
+func get_cap_points(style, path: PathData) -> PackedVector3Array:
 	if style.conform_to_wall and style.wall_style != null and style.wall_style.has_method("get_mesh"):
 		var mesh = style.wall_style.get_mesh() as Mesh
 		var scale = 1.0
@@ -13,7 +13,7 @@ func get_cap_points(style, path: PathData) -> PoolVector3Array:
 	return path.points
 
 	
-func mesh_to_top_points(mesh: Mesh) -> PoolVector3Array:
+func mesh_to_top_points(mesh: Mesh) -> PackedVector3Array:
 	var top_points = []
 	var verts = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	for v in verts:
@@ -22,16 +22,16 @@ func mesh_to_top_points(mesh: Mesh) -> PoolVector3Array:
 		if abs(v.z) > 0.1:
 			continue
 		top_points.append(v)
-	top_points.sort_custom(self, "sort_on_x")
-	return PoolVector3Array(top_points)
+	top_points.sort_custom(Callable(self, "sort_on_x"))
+	return PackedVector3Array(top_points)
 	
 	
 func sort_on_x(a, b) -> bool:
 	return a.x < b.x
 		
 	
-func mesh_to_cap_points(mesh: Mesh, path: PathData, scale: float) -> PoolVector3Array:
-	var result = PoolVector3Array()
+func mesh_to_cap_points(mesh: Mesh, path: PathData, scale: float) -> PackedVector3Array:
+	var result = PackedVector3Array()
 	var top_points = mesh_to_top_points(mesh)
 	var meshset = MeshUtils.MeshSet.new()
 	var vert_count = top_points.size()

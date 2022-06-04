@@ -3,7 +3,7 @@ class_name SceneUtils
 static func get_or_create(parent: Node, name: String, type: Object) -> Node:
 	if not parent:
 		return null
-	var result: Node = parent.find_node(name)
+	var result: Node = parent.get_node(name)
 	if not result:
 		var owner = get_owner(parent)
 		if not owner:
@@ -16,7 +16,7 @@ static func get_or_create(parent: Node, name: String, type: Object) -> Node:
 	
 		
 static func get_owner(parent: Node):
-	if Engine.editor_hint:
+	if Engine.is_editor_hint():
 		var tree = parent.get_tree()
 		if not tree:
 			return null
@@ -25,19 +25,19 @@ static func get_owner(parent: Node):
 	
 	
 static func switch_signal(owner: Object, signal_name: String, method: String, old_target: Object, new_target: Object) -> void:
-	if old_target and old_target.is_connected(signal_name, owner, method):
-		old_target.disconnect(signal_name, owner, method)
-	if new_target and not new_target.is_connected(signal_name, owner, method):
-		new_target.connect(signal_name, owner, method)
+	if old_target and old_target.is_connected(signal_name, Callable(owner, method)):
+		old_target.disconnect(signal_name, Callable(owner, method))
+	if new_target and not new_target.is_connected(signal_name, Callable(owner, method)):
+		new_target.connect(signal_name, Callable(owner, method))
 		
 		
 static func remove(owner: Node, name: String) -> void:
-	var node = owner.find_node(name)
+	var node = owner.get_node(name)
 	if node:
 		owner.remove_child(node)
 		
 		
 static func get_edited_scene_root() -> Node:
-	if not Engine.editor_hint:
+	if not Engine.is_editor_hint():
 		return null
 	return EditorScript.new().get_editor_interface().get_edited_scene_root()

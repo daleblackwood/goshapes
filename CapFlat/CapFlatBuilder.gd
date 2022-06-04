@@ -1,4 +1,4 @@
-tool
+@tool
 extends CapBuilder
 
 func build(style, path: PathData):

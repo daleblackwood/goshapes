@@ -4,7 +4,7 @@ static func is_local(resource: Resource) -> bool:
 	if not resource:
 		return true
 	var resource_path = resource.resource_path
-	if not resource_path or resource_path.find("::") > 0:
+	if resource_path == null or resource_path.find("::") > 0:
 		return true
 	return false
 	
@@ -17,7 +17,7 @@ static func switch_signal(owner: Object, method: String, old_target: Resource, n
 static func is_readonly(resource: Resource) -> bool:
 	if not resource:
 		return false
-	if resource.resource_path and not resource.resource_local_to_scene:
+	if resource.resource_path != null and not resource.resource_local_to_scene:
 		return true
 	return false
 

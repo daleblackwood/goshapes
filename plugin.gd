@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorPlugin
 
 const GDBPATH = "res://addons/gdblocks"
@@ -101,14 +101,14 @@ var menu_items_other = menu_items_all + [
 
 func _enter_tree() -> void:
 	add_custom_type("Block", "Path", preload("Block.gd"), null)
-	selection_handler.connect("selection_changed", self, "_on_selection_changed")
+	selection_handler.connect("selection_changed", Callable(self, "_on_selection_changed"))
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
 	
 	block_menu_button = MenuButton.new()
 	block_menu_button.set_text("Blocks")
-	block_menu_button.get_popup().connect("id_pressed", self, "_menu_item_selected")
+	block_menu_button.get_popup().connect("id_pressed", Callable(self, "_menu_item_selected"))
 	toolbar.add_child(block_menu_button)
 	set_menu_items(menu_items_other)
 	
@@ -132,16 +132,16 @@ func _menu_item_selected(index: int) -> void:
 	
 		
 func add_block() -> void:
-	var parent = proxy.selected_block as Spatial
+	var parent = proxy.selected_block as Node3D
 	if parent == null:
 		var selected_nodes = selection_handler.get_selected_nodes()
 		if selected_nodes.size() > 0:
-			parent = selected_nodes.front() as Spatial
+			parent = selected_nodes.front() as Node3D
 	if parent == null:
 		parent = get_editor_interface().get_edited_scene_root()
 	if parent is Block:
 		parent = parent.get_parent_spatial()
-	var block = Path.new()
+	var block = Path3D.new()
 	block.name = "Block"
 	block.set_script(preload("Block.gd"))
 	parent.add_child(block)
@@ -240,7 +240,7 @@ func ground_objects() -> void:
 	var space_state = get_tree().root.get_world().direct_space_state
 	var selected_nodes = selection_handler.get_selected_nodes()
 	for node in selected_nodes:
-		var spatial = node as Spatial
+		var spatial = node as Node3D
 		if spatial == null:
 			continue
 		var from = spatial.global_transform.origin
@@ -253,7 +253,7 @@ func ground_objects() -> void:
 		
 		
 func connect_block() -> void:
-	print("selected block " + proxy.selected_block.name)
+	print("selected block %s" % proxy.selected_block.name)
 	proxy.selected_block._edit_begin(proxy)
 	var selected_nodes = selection_handler.get_selected_nodes()
 	if selected_nodes.size() != 1 || selected_nodes[0] != proxy.selected_block:
@@ -263,6 +263,6 @@ func connect_block() -> void:
 		
 
 func _exit_tree() -> void:
-	selection_handler.disconnect("selection_changed", self, "_on_selection_changed")
+	selection_handler.disconnect("selection_changed", Callable(self, "_on_selection_changed"))
 	print("GDBlocks disconnected ")
 	remove_autoload_singleton("BuildRunner")

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node
 class_name Job
 
@@ -13,7 +13,7 @@ var host
 var callback: String
 var id = -1
 var group
-var is_async = true
+var is_async = false
 
 
 func run(host, callback: String) -> void:
@@ -34,7 +34,7 @@ func run_sync() -> void:
 func run_async() -> void:
 	thread = Thread.new()
 	mutex = Mutex.new()
-	thread.start(self, "_async_begin", input.duplicate())
+	thread.start(func(): _async_begin(input.duplicate()))
 	
 	
 func _async_begin(input):
@@ -89,7 +89,7 @@ static func callback_job(job) -> void:
 static func callback_host(host, callback: String, job) -> void:
 	if not host:
 		return
-	if not callback:
+	if callback == null or callback.length() < 1:
 		callback = "job_done"
 	if host is Node:
 		host.call_deferred(callback, job)

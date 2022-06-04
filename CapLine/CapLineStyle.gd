@@ -1,7 +1,7 @@
-tool
+@tool
 extends CapStyle
 
-export(Material) var material setget set_material
+@export var material: Material: set = set_material
 
 func set_material(value):
 	material = value

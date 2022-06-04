@@ -1,10 +1,10 @@
-tool
+@tool
 extends WallStyle
 
-export(Mesh) var mesh setget set_mesh, get_mesh
-export(float, 0.1, 10.0, 0.1) var scale = 1.0 setget set_scale
-export var closed = true setget set_closed
-export(Array, Material) var materials setget set_materials
+@export var mesh: Mesh: set = set_mesh, get = get_mesh
+@export_range(0.1, 10.0, 0.1) var scale = 1.0: set = set_scale
+@export var closed = true: set = set_closed
+@export var materials: Array[Material]: set = set_materials
 
 func set_mesh(value):
 	mesh = value

@@ -1,8 +1,8 @@
-tool
+@tool
 extends CapStyle
 
-export(Material) var material setget set_material
-export(float, 1, 20, 0.5) var grid_size = 1 setget set_grid_size
+@export var material: Material: set = set_material
+@export_range(1, 20, 0.5) var grid_size = 1.0: set = set_grid_size
 
 
 func set_material(value):
