@@ -1,3 +1,4 @@
+@tool
 extends BlockBuilder
 class_name CapBuilder
 

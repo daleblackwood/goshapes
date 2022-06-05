@@ -1,9 +1,10 @@
+@tool
 class_name SceneUtils
 
 static func get_or_create(parent: Node, name: String, type: Object) -> Node:
 	if not parent:
 		return null
-	var result: Node = parent.get_node(name)
+	var result: Node = parent.find_child(name, false)
 	if not result:
 		var owner = get_owner(parent)
 		if not owner:
@@ -32,7 +33,7 @@ static func switch_signal(owner: Object, signal_name: String, method: String, ol
 		
 		
 static func remove(owner: Node, name: String) -> void:
-	var node = owner.get_node(name)
+	var node = owner.find_child(name, false)
 	if node:
 		owner.remove_child(node)
 		

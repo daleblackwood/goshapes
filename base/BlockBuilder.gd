@@ -1,3 +1,4 @@
+@tool
 class_name BlockBuilder
 	
 func build(style, path: PathData):

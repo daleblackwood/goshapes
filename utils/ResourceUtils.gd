@@ -1,3 +1,4 @@
+@tool
 class_name ResourceUtils		
 		
 static func is_local(resource: Resource) -> bool:

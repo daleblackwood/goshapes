@@ -1,3 +1,4 @@
+@tool
 class_name ClassUtils
 
 const BASEPATH = "res://addons/gdblocks/"
