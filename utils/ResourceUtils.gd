@@ -8,11 +8,6 @@ static func is_local(resource: Resource) -> bool:
 	if resource_path == null or resource_path.find("::") > 0:
 		return true
 	return false
-	
-	
-static func switch_signal(owner: Object, method: String, old_target: Resource, new_target: Resource) -> void:
-	var signal_target = new_target if is_local(new_target) else null
-	SceneUtils.switch_signal(owner, "changed", method, old_target, signal_target)
 					
 	
 static func is_readonly(resource: Resource) -> bool:

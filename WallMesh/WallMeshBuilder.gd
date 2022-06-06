@@ -2,7 +2,8 @@
 extends WallBuilder
 
 func build(style, path: PathData):
-	if not style:
+	if not style is WallStyle:
+		push_error("style must be WallStyle")
 		return null
 
 	var ref_mesh = style.mesh as Mesh
@@ -11,7 +12,7 @@ func build(style, path: PathData):
 		
 	var surface_count = ref_mesh.get_surface_count()
 	var materials = []
-	if style.materials:
+	if style.materials != null and style.materials.size() > 0:
 		materials = style.materials.duplicate()
 	elif surface_count > 0 and ref_mesh.surface_get_material(0):
 		materials.resize(surface_count)

@@ -47,10 +47,11 @@ class MeshSet:
 		return result
 		
 	func copy(other: MeshSet) -> void:
-		verts = other.verts
-		uvs = other.uvs
-		normals = other.normals
-		tris = other.tris
+		verts = PackedVector3Array(other.verts)
+		uvs = PackedVector2Array(other.uvs)
+		normals = PackedVector3Array(other.normals)
+		tris = PackedInt32Array(other.tris)
+		material = other.material
 		
 		
 # statics	
@@ -226,7 +227,9 @@ static func flip_normals(meshset: MeshSet) -> MeshSet:
 	
 	
 static func calc_mesh_height(mesh: Mesh, scale: float = 1.0) -> float:
-	var min_y = 0
+	if mesh == null:
+		return 0.0
+	var min_y = 0.0
 	for i in range(mesh.get_surface_count()):
 		var arr = mesh.surface_get_arrays(i)
 		var verts = arr[ArrayMesh.ARRAY_VERTEX]
@@ -478,9 +481,18 @@ static func build_mesh(meshset: MeshSet, mesh: ArrayMesh = null) -> ArrayMesh:
 	if meshset.vert_count > 0:
 		var arr = []
 		arr.resize(ArrayMesh.ARRAY_MAX)
-		arr[ArrayMesh.ARRAY_VERTEX] = PackedVector3Array(meshset.verts)
-		arr[ArrayMesh.ARRAY_NORMAL] = PackedVector3Array(meshset.normals)
-		arr[ArrayMesh.ARRAY_TEX_UV] = PackedVector2Array(meshset.uvs)
+		var verts = PackedVector3Array(meshset.verts)
+		if verts.size() < meshset.vert_count:
+			printerr("Incorrect vert count")
+		arr[ArrayMesh.ARRAY_VERTEX] = verts
+		var normals = PackedVector3Array(meshset.normals)
+		if normals.size() < meshset.vert_count:
+			normals.resize(meshset.vert_count)
+		arr[ArrayMesh.ARRAY_NORMAL] = normals
+		var uvs = PackedVector2Array(meshset.uvs)
+		if uvs.size() < meshset.vert_count:
+			uvs.resize(meshset.vert_count)
+		arr[ArrayMesh.ARRAY_TEX_UV] = uvs
 		arr[ArrayMesh.ARRAY_INDEX] = PackedInt32Array(meshset.tris)
 		mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	if meshset.material:
@@ -494,6 +506,7 @@ static func append_mesh(base_mesh: ArrayMesh, appendage: ArrayMesh) -> void:
 	for i in surface_count:
 		var arr = appendage.surface_get_arrays(i)
 		var mat = appendage.surface_get_material(i)
+		print("append_mesh.add_surface_from_arrays")
 		base_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 		var surf_idx = base_mesh.get_surface_count() - 1
 		base_mesh.surface_set_material(surf_idx, mat)

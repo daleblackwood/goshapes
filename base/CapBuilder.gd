@@ -4,6 +4,9 @@ class_name CapBuilder
 
 
 func get_cap_points(style, path: PathData) -> PackedVector3Array:
+	if not style is CapStyle:
+		push_error("style must be CapStyle")
+		return PackedVector3Array()
 	if style.conform_to_wall and style.wall_style != null and style.wall_style.has_method("get_mesh"):
 		var mesh = style.wall_style.get_mesh() as Mesh
 		var scale = 1.0

@@ -2,6 +2,10 @@
 extends CapBuilder
 
 func build(style, path: PathData):
+	if not style is CapStyle:
+		push_error("style must be CapStyle")
+		return null
+		
 	var material = style.material
 	
 	var points = get_cap_points(style, path)

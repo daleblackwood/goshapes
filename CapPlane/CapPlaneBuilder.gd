@@ -2,6 +2,10 @@
 extends CapBuilder
 
 func build(style, path: PathData):
+	if not style is CapStyle:
+		push_error("style must be CapStyle")
+		return null
+		
 	var gs := 1.0
 	if style != null and style.grid_size > 0.0:
 		gs = style.grid_size

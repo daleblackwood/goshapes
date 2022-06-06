@@ -112,6 +112,8 @@ func _enter_tree() -> void:
 	toolbar.add_child(block_menu_button)
 	set_menu_items(menu_items_other)
 	
+	print("Blocks addon inited.")
+	
 	
 func set_menu_items(menu_items: Array) -> void:
 	var popup = block_menu_button.get_popup()

@@ -23,13 +23,6 @@ static func get_owner(parent: Node):
 			return null
 		return tree.edited_scene_root
 	return parent.get_scene()
-	
-	
-static func switch_signal(owner: Object, signal_name: String, method: String, old_target: Object, new_target: Object) -> void:
-	if old_target and old_target.is_connected(signal_name, Callable(owner, method)):
-		old_target.disconnect(signal_name, Callable(owner, method))
-	if new_target and not new_target.is_connected(signal_name, Callable(owner, method)):
-		new_target.connect(signal_name, Callable(owner, method))
 		
 		
 static func remove(owner: Node, name: String) -> void:

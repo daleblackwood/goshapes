@@ -27,8 +27,6 @@ class_name Block
 @export var style: Resource:
 	set = set_style
 
-signal on_built(output)
-
 var is_dirty = false
 var is_dragging = false
 var mesh_node: MeshInstance3D
@@ -41,20 +39,23 @@ var cap_data: PathData = null
 var is_editing = false:
 	get = _get_is_editing
 var mouse_down = false
+var watcher_style := ResourceWatcher.new(Callable(self, "mark_dirty"))
+var watcher_pathmod := ResourceWatcher.new(Callable(self, "mark_dirty"))
 
+func _ready() -> void:
+	if curve == null:
+		curve = Curve3D.new()
+	if ResourceUtils.is_local(curve):
+		curve = curve.duplicate(true)
+		
 
 func _enter_tree() -> void:
 	set_display_folded(true)
 	
 	
-func _ready() -> void:
-	if ResourceUtils.is_local(curve):
-		SceneUtils.switch_signal(self, "curve_changed", "set_dirty", self, null)
-		curve = curve.duplicate(true)
-	
-	
 func _exit_tree() -> void:
-	_edit_end()
+	if _get_is_editing():
+		_edit_end()
 		
 		
 func _get_is_editing() -> bool:
@@ -62,7 +63,7 @@ func _get_is_editing() -> bool:
 	
 		
 func _edit_begin(edit_proxy) -> void:
-	if self.edit_proxy != null:
+	if _get_is_editing():
 		return
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
@@ -85,15 +86,17 @@ func _edit_begin(edit_proxy) -> void:
 			curve.add_point(Vector3(extent, 0, -extent))
 			curve.add_point(Vector3(extent, 0, extent))
 			curve.add_point(Vector3(-extent, 0, extent))
-	SceneUtils.switch_signal(self, "curve_changed", "set_dirty", self, self)
-	SceneUtils.switch_signal(self, "on_built", "_on_built", self, self)
+	curve_changed.connect(mark_dirty)
+	watcher_style.watch(style)
+	watcher_pathmod.watch(path_mod)
+	print("Editing block %s" % name)
 	
 	
 func _edit_end() -> void:
 	self.edit_proxy = null
-	ResourceUtils.switch_signal(self, "_on_style_changed", style, null)
-	SceneUtils.switch_signal(self, "curve_changed", "set_dirty", self, null)
-	SceneUtils.switch_signal(self, "on_built", "_on_built", self, null)
+	watcher_style.unwatch()
+	watcher_pathmod.unwatch()
+	curve_changed.disconnect(mark_dirty)
 	
 
 func set_style_file(path: String) -> void:
@@ -108,25 +111,25 @@ func get_style_file() -> String:
 	
 	
 func set_style(value: Resource) -> void:
-	ResourceUtils.switch_signal(self, "set_dirty", style, value)
 	style = value
-	set_dirty()
+	watcher_style.watch(style)
+	mark_dirty()
 	
 	
 func set_taper(value: float) -> void:
 	taper = value
-	set_dirty()
+	mark_dirty()
 	
 	
 func set_path_mod(value: Resource) -> void:
-	ResourceUtils.switch_signal(self, "set_dirty", path_mod, value)
 	path_mod = value
-	set_dirty()
+	watcher_pathmod.watch(path_mod)
+	mark_dirty()
 	
 
 func set_inverted(value):
 	inverted = value
-	set_dirty()
+	mark_dirty()
 	
 
 func set_path_twists(value: Array[int]):
@@ -148,7 +151,7 @@ func set_path_twists(value: Array[int]):
 				for i in range(change_i + 1, new_twist_count):
 					value[i] = value[i] + change_a
 	path_twists = value
-	set_dirty()
+	mark_dirty()
 	
 	
 func set_recenter(value):
@@ -164,10 +167,10 @@ func recenter_points():
 		mesh_node.transform = Transform3D()
 	if collider_body:
 		collider_body.transform = Transform3D()
-	set_dirty()
+	mark_dirty()
 
 	
-func set_dirty():
+func mark_dirty():
 	is_dirty = true
 	call_deferred("_update")
 	
@@ -215,7 +218,7 @@ func build() -> void:
 	
 	var runner = edit_proxy.runner
 	if runner.is_busy:
-		set_dirty()
+		mark_dirty()
 		return
 		
 	_build(runner)
@@ -243,7 +246,7 @@ func _build(runner: JobRunner) -> void:
 		
 func remove_control_points() -> void:
 	PathUtils.remove_control_points(curve)
-	set_dirty()
+	mark_dirty()
 	
 	
 func get_build_jobs(joblist: Array = []) -> Array:
@@ -251,24 +254,24 @@ func get_build_jobs(joblist: Array = []) -> Array:
 	var cap_job = get_cap_job(path_data)
 	if cap_job != null:
 		joblist.append(cap_job)
-	if style.wall_style:
+	if style.wall_style != null:
 		var wall_builder = WallStyles.create_builder(style.wall_type)
-		if wall_builder:
+		if wall_builder != null:
 			joblist.append(BuildJob.new(wall_builder, style.wall_style.duplicate(), path_data))	
-	if style.base_style:
+	if style.base_style != null:
 		var base_cap_builder = CapStyles.create_builder(style.base_type)
-		if base_cap_builder:
+		if base_cap_builder != null:
 			var base_builder = BaseBuilder.new(base_cap_builder, style.base_depth)
 			joblist.append(BuildJob.new(base_builder, style.base_style.duplicate(), path_data))
 	return joblist
 	
 	
 func get_cap_job(path_data: PathData) -> BuildJob:
-	if style.cap_style:
+	if style.cap_style != null:
 		var cap_builder = CapStyles.create_builder(style.cap_type)
-		if cap_builder:
+		if cap_builder != null:
 			var cap_style_copy = style.cap_style.duplicate()
-			if style.wall_style:
+			if style.wall_style != null:
 				cap_style_copy.wall_style = style.wall_style.duplicate()
 			return BuildJob.new(cap_builder, cap_style_copy, path_data)
 	return null
@@ -281,7 +284,7 @@ func get_collider_jobs(joblist: Array = []) -> Array:
 		joblist.append(cap_job)
 	if path_mod.collider_type != BlockPathMod.ColliderType.CapOnly:
 		var wall_builder = WallStyles.create_builder(WallStyles.Type.Bevel_Wall)
-		if wall_builder:
+		if wall_builder != null:
 			var wall_style = WallStyles.create_style(WallStyles.Type.Bevel_Wall)
 			wall_style.height = style.base_depth
 			if style.wall_type == WallStyles.Type.Bevel_Wall:
@@ -316,9 +319,9 @@ func apply_all_meshes(group) -> void:
 func apply_block_meshes(group) -> void:
 	var mesh = ArrayMesh.new()
 	for meshset in group.output:
-		if meshset:
+		if meshset != null:
 			MeshUtils.build_meshes(meshset, mesh)
-	if not mesh_node:
+	if mesh_node == null:
 		mesh_node = SceneUtils.get_or_create(self, "Mesh", MeshInstance3D)
 	mesh_node.transform = Transform3D()
 	mesh_node.mesh = mesh
@@ -327,9 +330,9 @@ func apply_block_meshes(group) -> void:
 func apply_collider(group) -> void:
 	var mesh = ArrayMesh.new()
 	for meshset in group.output:
-		if meshset:
+		if meshset != null:
 			MeshUtils.build_meshes(meshset, mesh)
-	if not collider_body:
+	if collider_body == null:
 		collider_body = SceneUtils.get_or_create(self, "Collider", StaticBody3D)
 	collider_body.transform = Transform3D()
 	collider_shape = SceneUtils.get_or_create(collider_body, "CollisionShape", CollisionShape3D)
