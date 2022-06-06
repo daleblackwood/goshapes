@@ -38,7 +38,7 @@ static func parse_dict_value(value):
 			var count = value.size()
 			var arr = []
 			arr.resize(count)
-			for i in count:
+			for i in range(count):
 				arr[i] = parse_dict_value(value)
 			return arr
 		if value is Resource:

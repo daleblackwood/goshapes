@@ -1,10 +1,13 @@
 @tool
 extends WallBuilder
+class_name WallMeshBuilder
 
 func build(style, path: PathData):
 	if not style is WallStyle:
 		push_error("style must be WallStyle")
 		return null
+		
+	print("WallMeshBuilder ", style, self)
 
 	var ref_mesh = style.mesh as Mesh
 	if not ref_mesh:
@@ -16,7 +19,7 @@ func build(style, path: PathData):
 		materials = style.materials.duplicate()
 	elif surface_count > 0 and ref_mesh.surface_get_material(0):
 		materials.resize(surface_count)
-		for i in surface_count:
+		for i in range(surface_count):
 			materials[i] = ref_mesh.surface_get_material(i)
 	var scale = style.scale
 	var closed = style.closed
@@ -29,7 +32,7 @@ func build(style, path: PathData):
 		
 	var meshsets = MeshUtils.mesh_to_sets(ref_mesh)
 	var meshset_count = meshsets.size()
-	for i in meshset_count:
+	for i in range(meshset_count):
 		var meshset = meshsets[i]
 		meshset = MeshUtils.scale_mesh(meshset, scale)
 		meshset = MeshUtils.wrap_mesh_to_path(meshset, path, closed)

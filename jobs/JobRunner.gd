@@ -43,7 +43,7 @@ func run_group(jobs: Array, host, callback: String) -> void:
 	group.id = group_count
 	group.runner = self
 	groups.append(group)
-	for i in job_count:
+	for i in range(job_count):
 		jobs[i].group = group
 		run(jobs[i], group, "job_done")
 				

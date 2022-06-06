@@ -14,13 +14,13 @@ func build(style, path: PathData):
 	var base_path = PathUtils.move_path_down(path, base_depth)
 	var meshset = cap_builder.build(style, base_path)
 	var vert_count = meshset.vert_count
-	for i in vert_count:
+	for i in range(vert_count):
 		var n = meshset.normals[i]
 		n.y = -n.y
 		meshset.set_normal(i, n)
 		
 	var tri_count = meshset.tri_count / 3
-	for i in tri_count:
+	for i in range(tri_count):
 		var a = meshset.tris[i * 3]
 		var c = meshset.tris[i * 3 + 2]
 		meshset.set_tri(i * 3, c)

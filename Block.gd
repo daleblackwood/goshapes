@@ -139,7 +139,7 @@ func set_path_twists(value: Array[int]):
 		if new_twist_count == prev_twist_count:
 			var change_i = -1
 			var change_a = 0.0
-			for i in new_twist_count:
+			for i in range(new_twist_count):
 				if not value[i]:
 					continue
 				if value[i] != path_twists[i]:

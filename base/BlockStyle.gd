@@ -16,6 +16,10 @@ class_name BlockStyle
 
 @export var base_style: Resource: set = set_base_style
 
+var watcher_cap := ResourceWatcher.new(Callable(self, "mark_dirty"))
+var watcher_wall := ResourceWatcher.new(Callable(self, "mark_dirty"))
+var watcher_base := ResourceWatcher.new(Callable(self, "mark_dirty"))
+
 var is_dirty = false
 
 func _init() -> void:
@@ -31,11 +35,8 @@ func set_cap_type(value: CapStyles.Type):
 
 
 func set_cap_style(value: Resource):
-	if cap_style != null:
-		cap_style.changed.disconnect(mark_dirty)
 	cap_style = value
-	if cap_style != null:
-		cap_style.changed.connect(mark_dirty)
+	watcher_cap.watch(cap_style)
 	mark_dirty()
 	
 	
@@ -45,11 +46,8 @@ func set_wall_type(value: WallStyles.Type):
 	
 	
 func set_wall_style(value: Resource):
-	if wall_style != null:
-		wall_style.changed.disconnect(mark_dirty)
 	wall_style = value
-	if wall_style != null:
-		wall_style.changed.connect(mark_dirty)
+	watcher_wall.watch(wall_style)
 	mark_dirty()
 	
 	
@@ -64,11 +62,8 @@ func set_base_type(value: CapStyles.Type):
 
 
 func set_base_style(value: Resource):
-	if base_style != null:
-		base_style.changed.disconnect(mark_dirty)
 	base_style = value
-	if base_style != null:
-		base_style.changed.connect(mark_dirty)
+	watcher_base.watch(base_style)
 	mark_dirty()
 
 	

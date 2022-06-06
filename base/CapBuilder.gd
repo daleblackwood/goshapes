@@ -40,7 +40,7 @@ func mesh_to_cap_points(mesh: Mesh, path: PathData, scale: float) -> PackedVecto
 	var meshset = MeshUtils.MeshSet.new()
 	var vert_count = top_points.size()
 	meshset.set_vert_count(vert_count)
-	for i in vert_count:
+	for i in range(vert_count):
 		meshset.set_vert(i, top_points[i])
 	meshset = MeshUtils.scale_mesh(meshset, scale)
 	var outmesh = MeshUtils.wrap_mesh_to_path(meshset, path, true)

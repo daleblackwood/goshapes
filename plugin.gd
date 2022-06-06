@@ -142,7 +142,7 @@ func add_block() -> void:
 	if parent == null:
 		parent = get_editor_interface().get_edited_scene_root()
 	if parent is Block:
-		parent = parent.get_parent_spatial()
+		parent = parent.get_parent_node_3d()
 	var block = Path3D.new()
 	block.name = "Block"
 	block.set_script(preload("Block.gd"))
@@ -229,7 +229,7 @@ func select_all_blocks(parent: Node = null) -> void:
 		selection_handler.clear()
 	if parent is Block:
 		selection_handler.add_node(parent)
-	for i in parent.get_child_count():
+	for i in range(parent.get_child_count()):
 		select_all_blocks(parent.get_child(i))
 		
 		

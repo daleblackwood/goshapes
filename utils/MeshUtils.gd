@@ -65,7 +65,7 @@ static func make_cap(points: PackedVector3Array) -> MeshSet:
 	var tri_points = PackedVector2Array()
 	tri_points.resize(point_count)
 	
-	for i in point_count:
+	for i in range(point_count):
 		set.set_uv(i, Vector2(points[i].x, points[i].z))
 		set.set_normal(i, Vector3.UP)
 		tri_points[i] = Vector2(points[i].x, points[i].z)
@@ -112,7 +112,7 @@ static func make_walls_tapered(path: PathData, height: float, taper: float = 0.0
 #		var current_bevel = 0.0
 #		var bevel_ratio = 1.0 / float(bevel_stages)
 #		var bevel_inc = bevel_ratio * bevel
-#		for i in bevel_stages:
+#		for i in range(bevel_stages):
 #			var pc = cos((i + 1) * PI) * 0.5 + 0.5
 #			current_bevel = pc * bevel - current_bevel
 #			var bottom_points = PathUtils.bevel_path(top_points, current_bevel)
@@ -131,7 +131,7 @@ static func make_walls_tapered(path: PathData, height: float, taper: float = 0.0
 static func build_tapered_sets(points: PackedVector3Array, bevelled_points: PackedVector3Array, sets: Array = []) -> Array:
 	var point_count = points.size()
 	
-	for i in point_count:
+	for i in range(point_count):
 		var tl = points[i]
 		var tr = points[(i + 1) % point_count]
 		var bl = bevelled_points[i * 2]
@@ -147,7 +147,7 @@ static func build_extruded_sets(points: PackedVector3Array, extruded_points: Pac
 	var point_count = points.size()
 	
 	var length = 0.0
-	for i in point_count:
+	for i in range(point_count):
 		var tl = points[i]
 		var tr = points[(i + 1) % point_count]
 		var tdif = (tr - tl)
@@ -211,7 +211,7 @@ static func vert_uv(points: PackedVector3Array, normal: Vector3) -> PackedVector
 	var point_count = points.size()
 	var result = PackedVector2Array()
 	result.resize(point_count)
-	for i in point_count:
+	for i in range(point_count):
 		var v = points[i]
 		var x = v.x if use_x else v.z
 		result.set(i, Vector2(x, v.y))
@@ -221,7 +221,7 @@ static func vert_uv(points: PackedVector3Array, normal: Vector3) -> PackedVector
 static func flip_normals(meshset: MeshSet) -> MeshSet:
 	var result = meshset.clone()
 	var vert_vount = result.vert_count
-	for i in vert_vount:
+	for i in range(vert_vount):
 		result.set_normal(i, -result.verts[i])
 	return result
 	
@@ -252,7 +252,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 	var lengths = []
 	lengths.resize(point_count)
 	var path_length = 0.0
-	for i in point_count:
+	for i in range(point_count):
 		var n = (i + 1) % point_count
 		var dif = points[n] - points[i]
 		var section_length = dif.length()
@@ -262,7 +262,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 	var set = mesh_clone_to_length(meshset, path_length)
 	# wrap combined verts around path
 	var vert_count = set.verts.size()
-	for i in vert_count:
+	for i in range(vert_count):
 		var v = set.verts[i]
 		var ai = 0
 		var len_start = 0.0
@@ -310,7 +310,7 @@ static func mesh_clone_to_length(meshset: MeshSet, path_length: float) -> MeshSe
 	var x_multi = seg_length / mesh_length
 	# tile verts along x, build sets
 	var sets = []
-	for i in seg_count:
+	for i in range(seg_count):
 		var set = meshset.clone()
 		var vert_count = set.verts.size()
 		var start_x = i * seg_length
@@ -345,7 +345,7 @@ static func weld_sets(sets: Array, threshhold: float = 0.01) -> MeshSet:
 	var normals = []
 	
 	var merged_vert_count = merged.verts.size()
-	for i in merged_vert_count:
+	for i in range(merged_vert_count):
 		var ivert = merged.verts[i]
 		var remap = -1
 		for j in vert_i:
@@ -369,7 +369,7 @@ static func weld_sets(sets: Array, threshhold: float = 0.01) -> MeshSet:
 	set.normals = PackedVector3Array(normals)
 	set.set_tri_count(tri_count)
 	
-	for i in tri_count:
+	for i in range(tri_count):
 		var value = merged.tris[i]
 		set.set_tri(i, trimap[value])
 	
@@ -379,7 +379,7 @@ static func weld_sets(sets: Array, threshhold: float = 0.01) -> MeshSet:
 static func offset_mesh(meshset: MeshSet, offset: Vector3) -> MeshSet:
 	var result = meshset.clone()
 	var vert_count = meshset.vert_count
-	for i in vert_count:
+	for i in range(vert_count):
 		var v = result.verts[i]
 		v += offset
 		result.set_vert(i, v)
@@ -405,14 +405,14 @@ static func combine_sets(sets: Array) -> MeshSet:
 			push_error("merging sets need to be mesh sets")
 			return null
 		var set_vert_count = set.verts.size()
-		for i in set_vert_count:
+		for i in range(set_vert_count):
 			result.set_vert(vert_i, set.verts[i])
 			result.set_uv(vert_i, set.uvs[i])
 			result.set_normal(vert_i, set.normals[i])
 			vert_i += 1
 			
 		var set_tri_count = set.tris.size()
-		for i in set_tri_count:
+		for i in range(set_tri_count):
 			result.set_tri(tri_i, set.tris[i] + vert_offset)
 			tri_i += 1
 			
@@ -426,7 +426,7 @@ static func scale_mesh(meshset: MeshSet, new_scale: float) -> MeshSet:
 	var vert_count = meshset.verts.size()
 	var verts = PackedVector3Array(meshset.verts)
 	verts.resize(vert_count)
-	for i in vert_count:
+	for i in range(vert_count):
 		var v = meshset.verts[i]
 		verts[i] = v * new_scale
 	result.verts = verts
@@ -439,7 +439,7 @@ static func taper_mesh(meshset: MeshSet, path: PathData, taper: float) -> MeshSe
 	var vert_count = meshset.verts.size()
 	var verts = PackedVector3Array(meshset.verts)
 	verts.resize(vert_count)
-	for i in vert_count:
+	for i in range(vert_count):
 		var v = meshset.verts[i]
 		var p = PathUtils.get_closest_point(path, v)
 		var t = (v.y - p.y) * taper
@@ -455,7 +455,7 @@ static func mesh_to_sets(mesh: Mesh) -> Array:
 	var surface_count = mesh.get_surface_count()
 	var result = []
 	result.resize(surface_count)
-	for i in surface_count:
+	for i in range(surface_count):
 		var meshset = MeshSet.new()
 		var arr = mesh.surface_get_arrays(i)
 		meshset.verts = arr[ArrayMesh.ARRAY_VERTEX]
@@ -503,7 +503,7 @@ static func build_mesh(meshset: MeshSet, mesh: ArrayMesh = null) -> ArrayMesh:
 	
 static func append_mesh(base_mesh: ArrayMesh, appendage: ArrayMesh) -> void:
 	var surface_count = appendage.get_surface_count()
-	for i in surface_count:
+	for i in range(surface_count):
 		var arr = appendage.surface_get_arrays(i)
 		var mat = appendage.surface_get_material(i)
 		print("append_mesh.add_surface_from_arrays")

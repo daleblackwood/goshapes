@@ -4,7 +4,7 @@ class_name PathUtils
 
 static func flatten_curve(curve: Curve3D) -> void:
 	var point_count = curve.get_point_count()
-	for i in point_count:
+	for i in range(point_count):
 		var p = curve.get_point_position(i)
 		p.y = 0.0
 		curve.set_point_position(i, p)
@@ -27,19 +27,19 @@ static func twist_curve(curve: Curve3D, path_twists = PackedInt32Array()) -> voi
 	var curve_point_count = curve.get_point_count()
 	if twist_count > 0:
 		if twist_count > 0:
-			for i in curve_point_count:
+			for i in range(curve_point_count):
 				var twist_i = i if i < twist_count - 1 else twist_count - 1
 				var twist = path_twists[twist_i]
 				curve.set_point_tilt(i, twist / 180.0 * PI)
 	else:
-		for i in curve_point_count:
+		for i in range(curve_point_count):
 			curve.set_point_tilt(i, 0.0)
 	
 	
 static func get_curve_center(curve: Curve3D) -> Vector3:
 	var point_count = curve.get_point_count()
 	var center = Vector3.ZERO
-	for i in point_count:
+	for i in range(point_count):
 		center += curve.get_point_position(i)
 	return center / float(point_count)
 	
@@ -47,7 +47,7 @@ static func get_curve_center(curve: Curve3D) -> Vector3:
 static func move_curve(curve: Curve3D, offset: Vector3) -> void:
 	var point_count = curve.get_point_count()
 	var center = Vector3.ZERO
-	for i in point_count:
+	for i in range(point_count):
 		var p = curve.get_point_position(i)
 		p += offset
 		curve.set_point_position(i, p)
@@ -73,7 +73,7 @@ static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path
 	var ups = PackedVector3Array()
 	ups.resize(point_count)
 	var length = 0.0
-	for i in point_count:
+	for i in range(point_count):
 		points[i] = curved_path.get_point(i)
 		if not use_twists or i == 0:
 			ups[i] = Vector3.UP
@@ -92,7 +92,7 @@ static func path_to_outline(path: PathData, width: float) -> PathData:
 	path_points.resize(point_total)
 	var path_ups = PackedVector3Array()
 	path_ups.resize(point_total)
-	for i in point_count:
+	for i in range(point_count):
 		var dir = Vector3.FORWARD
 		if i > 0:
 			var dif = path.points[i] - path.points[i - 1]
@@ -130,7 +130,7 @@ static func round_path_it(path: PathData, round_dist: float) -> PathData:
 	points.resize(point_count * 2)
 	var ups = PackedVector3Array()
 	ups.resize(point_count * 2)
-	for i in point_count:
+	for i in range(point_count):
 		var p = path.points[i]
 		var prev = path.points[i - 1 if i > 0 else point_count - 1]
 		var next = path.points[i + 1 if i < point_count - 1 else 0]
@@ -156,7 +156,7 @@ static func move_path(path: PathData, offset: Vector3) -> PathData:
 	var point_count = path.points.size()
 	var result = PackedVector3Array()
 	result.resize(point_count)
-	for i in point_count:
+	for i in range(point_count):
 		var p = path.points[i]
 		p += offset
 		result[i] = p
@@ -189,7 +189,7 @@ static func move_path_up(path: PathData, amount: float = 0.0) -> PathData:
 	var up_count = path.ups.size()
 	var result = PackedVector3Array()
 	result.resize(point_count)
-	for i in point_count:
+	for i in range(point_count):
 		var up = Vector3.UP
 		if i < up_count:
 			up = path.ups[i]
@@ -211,7 +211,7 @@ static func invert(path: PathData) -> PathData:
 	result_points.resize(point_count)
 	var result_ups = PackedVector3Array()
 	result_ups.resize(point_count)
-	for i in point_count:
+	for i in range(point_count):
 		var index = point_count - 1 - i
 		result_points[i] = path.get_point(index)
 		result_ups[i] = path.get_up(index)
@@ -221,7 +221,7 @@ static func invert(path: PathData) -> PathData:
 static func get_path_center(path: PathData) -> Vector3:
 	var point_count = path.points.size()
 	var center = Vector3.ZERO
-	for i in point_count:
+	for i in range(point_count):
 		center += path.get_point(i)
 	return center / float(point_count)
 	
@@ -231,7 +231,7 @@ static func taper_path(path: PathData, taper: float, clamp_opposite: bool = fals
 	var point_count = path.points.size()
 	var result = PackedVector3Array()
 	result.resize(point_count)
-	for i in point_count:
+	for i in range(point_count):
 		var a = path.points[i]
 		var b = path.points[(i + 1) % point_count]
 		var z = path.points[(i + point_count - 1) % point_count]
@@ -254,7 +254,7 @@ static func bevel_path(path: PathData, taper: float) -> PackedVector3Array:
 	var up_count = path.ups.size()
 	var result = PackedVector3Array()
 	result.resize(point_count * 2)
-	for i in point_count:
+	for i in range(point_count):
 		var a = path.points[i]
 		var bp = path.points[(i + 1) % point_count]
 		var right = (bp - a).normalized()

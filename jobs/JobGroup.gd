@@ -16,7 +16,7 @@ func job_done(job):
 		output.resize(job_count)
 	output[index] = job.output
 	var done = 0
-	for i in job_count:
+	for i in range(job_count):
 		if jobs[i].state == Job.State.DONE:
 			done += 1
 	if done == job_count:
