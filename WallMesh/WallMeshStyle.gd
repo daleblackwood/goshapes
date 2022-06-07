@@ -21,7 +21,7 @@ class_name WallMeshStyle
 			emit_changed()
 			
 	
-@export var materials: Array[Material]:
+@export var materials: Array[Material] = []:
 	set(value):
 		if materials != value:
 			materials = value

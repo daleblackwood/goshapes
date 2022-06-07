@@ -26,6 +26,8 @@ class_name Block
 	
 @export var style: Resource:
 	set = set_style
+	
+@export var edit_axis_matching = false
 
 var is_dirty = false
 var is_dragging = false
@@ -59,7 +61,7 @@ func _exit_tree() -> void:
 		
 		
 func _get_is_editing() -> bool:
-	return self.edit_proxy != null
+	return Engine.is_editor_hint() and self.edit_proxy != null
 	
 		
 func _edit_begin(edit_proxy) -> void:
@@ -171,8 +173,9 @@ func recenter_points():
 
 	
 func mark_dirty():
-	is_dirty = true
-	call_deferred("_update")
+	if _get_is_editing():
+		is_dirty = true
+		call_deferred("_update")
 	
 	
 func get_is_line():
@@ -180,7 +183,7 @@ func get_is_line():
 	
 	
 func _update():
-	if not Engine.is_editor_hint():
+	if not _get_is_editing():
 		return
 	if not get_tree():
 		return
@@ -227,6 +230,8 @@ func build() -> void:
 func _build(runner: JobRunner) -> void:
 	if not style:
 		return
+		
+	print("Build block %s" % name)
 		
 	var use_collider = path_mod.collider_type != BlockPathMod.ColliderType.None
 	if not use_collider:

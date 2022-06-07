@@ -13,7 +13,7 @@ var host
 var callback: String
 var id = -1
 var group
-var is_async = false
+var is_async = true
 
 
 func run(host, callback: String) -> void:
@@ -34,7 +34,7 @@ func run_sync() -> void:
 func run_async() -> void:
 	thread = Thread.new()
 	mutex = Mutex.new()
-	thread.start(func(): _async_begin(input.duplicate()))
+	thread.start(_async_begin, input.duplicate())
 	
 	
 func _async_begin(input):
