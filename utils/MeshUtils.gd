@@ -306,6 +306,8 @@ static func mesh_clone_to_length(meshset: MeshSet, path_length: float) -> MeshSe
 			max_x = v.x
 	var mesh_length = max_x - min_x
 	var seg_count = get_segment_count_for_path(path_length, mesh_length)
+	if seg_count < 1:
+		seg_count = 1
 	var seg_length = path_length / seg_count
 	var x_multi = seg_length / mesh_length
 	# tile verts along x, build sets

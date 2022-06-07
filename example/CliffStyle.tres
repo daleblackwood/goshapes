@@ -1,14 +1,13 @@
 [gd_resource type="Resource" load_steps=7 format=3 uid="uid://ujiltqujk2gc"]
 
-[ext_resource type="Script" path="res://addons/gdblocks/CapPlane/CapPlaneStyle.gd" id="1_0lral"]
+[ext_resource type="Script" path="res://addons/gdblocks/CapFlat/CapFlatStyle.gd" id="1_233tt"]
 [ext_resource type="Script" path="res://addons/gdblocks/base/BlockStyle.gd" id="2_c8u1q"]
 [ext_resource type="Script" path="res://addons/gdblocks/WallMesh/WallMeshStyle.gd" id="3_2teeu"]
 [ext_resource type="ArrayMesh" uid="uid://w4my7gvqt32v" path="res://addons/gdblocks/example/cliffface.obj" id="3_ebcot"]
 
-[sub_resource type="Resource" id="Resource_hgivl"]
-script = ExtResource( "1_0lral" )
+[sub_resource type="Resource" id="Resource_ofk6l"]
+script = ExtResource( "1_233tt" )
 conform_to_wall = false
-grid_size = 1.0
 
 [sub_resource type="Resource" id="Resource_affji"]
 script = ExtResource( "3_2teeu" )
@@ -19,8 +18,8 @@ materials = []
 
 [resource]
 script = ExtResource( "2_c8u1q" )
-cap_type = 3
-cap_style = SubResource( "Resource_hgivl" )
+cap_type = 1
+cap_style = SubResource( "Resource_ofk6l" )
 wall_type = 2
 wall_style = SubResource( "Resource_affji" )
 base_depth = 0.0

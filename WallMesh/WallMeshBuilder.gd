@@ -6,8 +6,6 @@ func build(style, path: PathData):
 	if not style is WallStyle:
 		push_error("style must be WallStyle")
 		return null
-		
-	print("WallMeshBuilder ", style, self)
 
 	var ref_mesh = style.mesh as Mesh
 	if not ref_mesh:
