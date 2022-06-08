@@ -8,6 +8,7 @@ var reselecting = false
 var toolbar: HBoxContainer
 var block_menu_button: MenuButton
 var block_menu_items = []
+var block_create_i: int = 0
 
 class BlockAttributes:
 	
@@ -144,7 +145,8 @@ func add_block() -> void:
 	if parent is Block:
 		parent = parent.get_parent_node_3d()
 	var block = Path3D.new()
-	block.name = "Block"
+	block_create_i += 1
+	block.name = StringName("Block%d" % block_create_i)
 	block.set_script(preload("Block.gd"))
 	parent.add_child(block)
 	block.set_owner(parent)

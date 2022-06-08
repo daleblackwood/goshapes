@@ -163,7 +163,7 @@ static func build_extruded_sets(points: PackedVector3Array, extruded_points: Pac
 
 	
 static func make_quad(tl: Vector3, tr: Vector3, bl: Vector3, br: Vector3, u_size: Vector2 = Vector2.ZERO) -> MeshSet:
-	var normal = (tr - tl).cross(bl - tl).normalized()
+	var normal = -(tr - tl).cross(bl - tl).normalized()
 	var set = MeshSet.new()
 	set.verts = PackedVector3Array([tl, tr, bl, br])
 	if u_size != Vector2.ZERO:

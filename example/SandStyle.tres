@@ -1,0 +1,27 @@
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://c2jeittli01da"]
+
+[ext_resource type="Material" uid="uid://ddynuojlxnj4g" path="res://addons/gdblocks/example/SandMat.tres" id="1_cgcno"]
+[ext_resource type="Script" path="res://addons/gdblocks/CapFlat/CapFlatStyle.gd" id="2_dl4l8"]
+[ext_resource type="Script" path="res://addons/gdblocks/base/BlockStyle.gd" id="3_yujyw"]
+[ext_resource type="Script" path="res://addons/gdblocks/WallBevel/WallBevelStyle.gd" id="4_y3eqg"]
+
+[sub_resource type="Resource" id="Resource_0odag"]
+script = ExtResource( "2_dl4l8" )
+conform_to_wall = false
+material = ExtResource( "1_cgcno" )
+
+[sub_resource type="Resource" id="Resource_toquf"]
+script = ExtResource( "4_y3eqg" )
+height = 11.6
+bevel = 0.0
+taper = 36.0
+material = ExtResource( "1_cgcno" )
+
+[resource]
+script = ExtResource( "3_yujyw" )
+cap_type = 1
+cap_style = SubResource( "Resource_0odag" )
+wall_type = 1
+wall_style = SubResource( "Resource_toquf" )
+base_depth = 0.0
+base_type = 0

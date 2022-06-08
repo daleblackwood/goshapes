@@ -3,10 +3,10 @@ extends Path3D
 class_name Block
 
 @export var inverted = false:
-	set(value): set_inverted(value)
+	set = set_inverted
 	
 #@export_range(-1.0, 2.0) var taper: float = 0.0: 
-@export_range(0.0, 2.0) var taper: float = 0.0: 
+@export var taper: float = 0.0: 
 	set = set_taper
 	
 @export var recenter = false:

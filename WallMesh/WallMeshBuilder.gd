@@ -13,8 +13,8 @@ func build(style, path: PathData):
 		
 	var surface_count = ref_mesh.get_surface_count()
 	var materials = []
-	if style.materials != null and style.materials.size() > 0:
-		materials = style.materials.duplicate()
+	if style.material != null:
+		materials = [style.material]
 	elif surface_count > 0 and ref_mesh.surface_get_material(0):
 		materials.resize(surface_count)
 		for i in range(surface_count):

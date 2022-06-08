@@ -1,0 +1,28 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://ddynuojlxnj4g"]
+
+[sub_resource type="Gradient" id="Gradient_wenk0"]
+colors = PackedColorArray(0.52549, 0.478431, 0.239216, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0j18p"]
+seed = 2
+frequency = 0.006
+fractal_octaves = 4
+fractal_gain = 1.84
+fractal_weighted_strength = 0.3
+
+[sub_resource type="NoiseTexture" id="NoiseTexture_qo58x"]
+generate_mipmaps = false
+seamless = true
+color_ramp = SubResource( "Gradient_wenk0" )
+noise = SubResource( "FastNoiseLite_0j18p" )
+
+[sub_resource type="NoiseTexture" id="NoiseTexture_3ppen"]
+generate_mipmaps = false
+seamless = true
+noise = SubResource( "FastNoiseLite_0j18p" )
+
+[resource]
+albedo_color = Color(1, 0.980392, 0.894118, 1)
+albedo_texture = SubResource( "NoiseTexture_qo58x" )
+normal_texture = SubResource( "NoiseTexture_3ppen" )
+uv1_triplanar = true

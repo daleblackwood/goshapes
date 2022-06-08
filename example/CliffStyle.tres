@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://addons/gdblocks/CapFlat/CapFlatStyle.gd" id="1_233tt"]
 [ext_resource type="Script" path="res://addons/gdblocks/base/BlockStyle.gd" id="2_c8u1q"]
 [ext_resource type="Script" path="res://addons/gdblocks/WallMesh/WallMeshStyle.gd" id="3_2teeu"]
-[ext_resource type="ArrayMesh" uid="uid://w4my7gvqt32v" path="res://addons/gdblocks/example/cliffface.obj" id="3_ebcot"]
-[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/gdblocks/example/CliffMat.material" id="4_6jtu0"]
+[ext_resource type="Material" uid="uid://clhwamwpcd0cu" path="res://addons/gdblocks/example/CliffMat.tres" id="4_tjqnb"]
 [ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/gdblocks/example/GrassMat.material" id="4_ycv51"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/gdblocks/example/cliffface-low.obj" id="5_tev8g"]
 
 [sub_resource type="Resource" id="Resource_ofk6l"]
 script = ExtResource( "1_233tt" )
@@ -14,10 +14,10 @@ material = ExtResource( "4_ycv51" )
 
 [sub_resource type="Resource" id="Resource_affji"]
 script = ExtResource( "3_2teeu" )
-mesh = ExtResource( "3_ebcot" )
-scale = 0.3
+mesh = ExtResource( "5_tev8g" )
+scale = 0.6
 closed = true
-materials = [ExtResource( "4_6jtu0" )]
+material = ExtResource( "4_tjqnb" )
 
 [resource]
 script = ExtResource( "2_c8u1q" )

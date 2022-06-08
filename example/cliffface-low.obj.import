@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cprh1f8pbew4q"
+path="res://.godot/imported/cliffface-low.obj-876b086a4e97087e76c66ee2b67fdce6.mesh"
+
+[deps]
+
+files=["res://.godot/imported/cliffface-low.obj-876b086a4e97087e76c66ee2b67fdce6.mesh"]
+
+source_file="res://addons/gdblocks/example/cliffface-low.obj"
+dest_files=["res://.godot/imported/cliffface-low.obj-876b086a4e97087e76c66ee2b67fdce6.mesh", "res://.godot/imported/cliffface-low.obj-876b086a4e97087e76c66ee2b67fdce6.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
