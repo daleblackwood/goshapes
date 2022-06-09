@@ -1,0 +1,29 @@
+[gd_resource type="Resource" load_steps=8 format=3 uid="uid://5x3oorgbhn6u"]
+
+[ext_resource type="Material" uid="uid://ddynuojlxnj4g" path="res://addons/gdblocks/example/SandMat.tres" id="1_mjbcg"]
+[ext_resource type="Script" path="res://addons/gdblocks/base/BlockStyle.gd" id="2_kq8c8"]
+[ext_resource type="Script" path="res://addons/gdblocks/CapPlane/CapPlaneStyle.gd" id="2_s3e7o"]
+[ext_resource type="ArrayMesh" uid="uid://boippxtwu56bv" path="res://addons/gdblocks/example/slope.obj" id="4_7mui1"]
+[ext_resource type="Script" path="res://addons/gdblocks/WallMesh/WallMeshStyle.gd" id="4_rryt8"]
+
+[sub_resource type="Resource" id="Resource_3f6ra"]
+script = ExtResource( "2_s3e7o" )
+conform_to_wall = false
+material = ExtResource( "1_mjbcg" )
+grid_size = 1.0
+
+[sub_resource type="Resource" id="Resource_i0htc"]
+script = ExtResource( "4_rryt8" )
+mesh = ExtResource( "4_7mui1" )
+scale = 3.6
+closed = true
+material = ExtResource( "1_mjbcg" )
+
+[resource]
+script = ExtResource( "2_kq8c8" )
+cap_type = 3
+cap_style = SubResource( "Resource_3f6ra" )
+wall_type = 2
+wall_style = SubResource( "Resource_i0htc" )
+base_depth = 0.0
+base_type = 0
