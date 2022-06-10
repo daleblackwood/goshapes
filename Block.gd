@@ -3,26 +3,35 @@ extends Path3D
 class_name Block
 
 @export var inverted = false:
-	set = set_inverted
+	set(value):
+		inverted = value
+		mark_dirty()
 	
-#@export_range(-1.0, 2.0) var taper: float = 0.0: 
-@export var taper: float = 0.0: 
-	set = set_taper
 	
 @export var recenter = false:
-	set = set_recenter
+	set(value):
+		if value:
+			recenter_points()
+			
 	
-@export var cascade_twists = false
+@export var cascade_twists = false:
+	set(value):
+		cascade_twists = value
+		mark_dirty()
+		
 
 @export var path_twists : Array[int]:
 	set = set_path_twists
 	
+	
 @export var path_mod: Resource:
 	set = set_path_mod
+	
 	
 @export_file("*.tres") var style_file: String:
 	set = set_style_file,
 	get = get_style_file
+	
 	
 @export var style: Resource:
 	set = set_style
@@ -43,6 +52,7 @@ var is_editing = false:
 var mouse_down = false
 var watcher_style := ResourceWatcher.new(Callable(self, "mark_dirty"))
 var watcher_pathmod := ResourceWatcher.new(Callable(self, "mark_dirty"))
+
 
 func _ready() -> void:
 	if curve == null:
@@ -67,31 +77,43 @@ func _get_is_editing() -> bool:
 func _edit_begin(edit_proxy) -> void:
 	if _get_is_editing():
 		return
+	print("editing %s" % name)
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
 	if not style:
-		print("new style")
-		set_style(edit_proxy.create_block_style())
+		print("init style")
+		_init_style()
 	if not path_mod:
-		print("new path mod")
-		set_path_mod(edit_proxy.create_path_mod())
+		print("init path mod")
+		_init_path_mod()
 	if curve.get_point_count() < 2:
-		print("new curve")
-		curve.clear_points()
-		if path_mod.line > 0.0:
-			var extent = path_mod.line * 0.5
-			curve.add_point(Vector3(-extent, 0, 0))
-			curve.add_point(Vector3(extent, 0, 0))
-		else:
-			var extent = 4.0
-			curve.add_point(Vector3(-extent, 0, -extent))
-			curve.add_point(Vector3(extent, 0, -extent))
-			curve.add_point(Vector3(extent, 0, extent))
-			curve.add_point(Vector3(-extent, 0, extent))
+		print("init curve")
+		_init_curve()
 	curve_changed.connect(mark_dirty)
 	watcher_style.watch(style)
 	watcher_pathmod.watch(path_mod)
-	print("Editing block %s" % name)
+	
+	
+func _init_style() -> void:
+	set_style(edit_proxy.create_block_style())
+	
+	
+func _init_path_mod() -> void:
+	set_path_mod(edit_proxy.create_path_mod())
+	
+	
+func _init_curve() -> void:
+	curve.clear_points()
+	if path_mod.line > 0.0:
+		var extent = path_mod.line * 0.5
+		curve.add_point(Vector3(-extent, 0, 0))
+		curve.add_point(Vector3(extent, 0, 0))
+	else:
+		var extent = 4.0
+		curve.add_point(Vector3(-extent, 0, -extent))
+		curve.add_point(Vector3(extent, 0, -extent))
+		curve.add_point(Vector3(extent, 0, extent))
+		curve.add_point(Vector3(-extent, 0, extent))
 	
 	
 func _edit_end() -> void:
@@ -118,19 +140,9 @@ func set_style(value: Resource) -> void:
 	mark_dirty()
 	
 	
-func set_taper(value: float) -> void:
-	taper = value
-	mark_dirty()
-	
-	
 func set_path_mod(value: Resource) -> void:
 	path_mod = value
 	watcher_pathmod.watch(path_mod)
-	mark_dirty()
-	
-
-func set_inverted(value):
-	inverted = value
 	mark_dirty()
 	
 
@@ -154,21 +166,12 @@ func set_path_twists(value: Array[int]):
 					value[i] = value[i] + change_a
 	path_twists = value
 	mark_dirty()
-	
-	
-func set_recenter(value):
-	if value:
-		recenter_points()
 		
 		
 func recenter_points():
 	var center = PathUtils.get_curve_center(curve)
 	PathUtils.move_curve(curve, -center)
 	transform.origin += center
-	if mesh_node:
-		mesh_node.transform = Transform3D()
-	if collider_body:
-		collider_body.transform = Transform3D()
 	mark_dirty()
 
 	
@@ -231,20 +234,12 @@ func _build(runner: JobRunner) -> void:
 	if not style:
 		return
 		
-	print("Build block %s" % name)
+	print("Build %s" % name)
 		
-	var use_collider = path_mod.collider_type != BlockPathMod.ColliderType.None
-	if not use_collider:
-		SceneUtils.remove(self, "Collider")
-		collider_body = null
-	
-	if path_mod.collider_type == BlockPathMod.ColliderType.Accurate:
-		runner.run_group(get_build_jobs(), self, "apply_all_meshes")
-	elif path_mod.collider_type == BlockPathMod.ColliderType.None:
-		runner.run_group(get_build_jobs(), self, "apply_block_meshes")
-	else:
-		runner.run_group(get_build_jobs(), self, "apply_block_meshes")
-		runner.run_group(get_collider_jobs(), self, "apply_collider")
+	for child in get_children():
+		child.free()
+		
+	run_build_jobs(runner)
 		
 	is_dirty = false
 		
@@ -252,6 +247,16 @@ func _build(runner: JobRunner) -> void:
 func remove_control_points() -> void:
 	PathUtils.remove_control_points(curve)
 	mark_dirty()
+	
+	
+func run_build_jobs(runner: JobRunner) -> void:
+	if path_mod.collider_type == BlockPathMod.ColliderType.Accurate:
+		runner.run_group(get_build_jobs(), self, "apply_all_meshes")
+	elif path_mod.collider_type == BlockPathMod.ColliderType.None:
+		runner.run_group(get_build_jobs(), self, "apply_block_meshes")
+	else:
+		runner.run_group(get_build_jobs(), self, "apply_block_meshes")
+		runner.run_group(get_collider_jobs(), self, "apply_collider")
 	
 	
 func get_build_jobs(joblist: Array = []) -> Array:
@@ -311,7 +316,6 @@ func get_path_data(interpolate: int) -> PathData:
 	if path_mod.rounding > 0:
 		path_data = PathUtils.round_path(path_data, path_mod.rounding, interpolate)
 	if path_mod.line > 0:
-		path_data.taper = taper
 		path_data.curve = curve.duplicate()
 	return path_data
 	
@@ -341,7 +345,5 @@ func apply_collider(group) -> void:
 		collider_body = SceneUtils.get_or_create(self, "Collider", StaticBody3D)
 	collider_body.transform = Transform3D()
 	collider_shape = SceneUtils.get_or_create(collider_body, "CollisionShape", CollisionShape3D)
-	#mesh.regen_normalmaps()
 	collider_shape.shape = mesh.create_trimesh_shape()
 	collider_shape.transform = Transform3D()
-	
