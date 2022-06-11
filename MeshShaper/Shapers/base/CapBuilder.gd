@@ -2,6 +2,9 @@
 extends MeshBuilder
 class_name CapBuilder
 
+func _init(_style: MeshShaper):
+	super._init(_style)
+
 
 func get_cap_points(style: CapShaper, path: PathData) -> PackedVector3Array:
 	if style.conform_to_wall and style.wall_style != null and style.wall_style.has_method("get_mesh"):

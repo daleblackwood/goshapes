@@ -11,7 +11,7 @@ class CapFlatBuilder extends CapBuilder:
 	
 	var style: CapFlatShaper
 	func _init(_style: CapFlatShaper):
-		super._init(style)
+		super._init(_style)
 		style = _style
 
 	func build_sets(path: PathData) -> Array:

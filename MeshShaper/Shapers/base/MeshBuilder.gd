@@ -8,6 +8,7 @@ var mesh_name := "Mesh"
 var base_style: MeshShaper
 
 func _init(_style: MeshShaper) -> void:
+	print("meshbuildinit ", _style)
 	base_style = _style
 	
 

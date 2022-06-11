@@ -248,8 +248,7 @@ func get_path_data(interpolate: int) -> PathData:
 		path_data = PathUtils.path_to_outline(path_data, path_options.line)
 	if path_options.rounding > 0:
 		path_data = PathUtils.round_path(path_data, path_options.rounding, interpolate)
-	if path_options.line > 0:
-		path_data.curve = curve.duplicate()
+	path_data.curve = curve.duplicate()
 	return path_data
 
 
