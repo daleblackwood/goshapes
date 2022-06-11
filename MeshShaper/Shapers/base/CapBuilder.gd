@@ -1,12 +1,9 @@
 @tool
-extends BlockBuilder
+extends MeshBuilder
 class_name CapBuilder
 
 
-func get_cap_points(style, path: PathData) -> PackedVector3Array:
-	if not style is CapStyle:
-		push_error("style must be CapStyle")
-		return PackedVector3Array()
+func get_cap_points(style: CapShaper, path: PathData) -> PackedVector3Array:
 	if style.conform_to_wall and style.wall_style != null and style.wall_style.has_method("get_mesh"):
 		var mesh = style.wall_style.get_mesh() as Mesh
 		var scale = 1.0
@@ -30,7 +27,7 @@ func mesh_to_top_points(mesh: Mesh) -> PackedVector3Array:
 	return PackedVector3Array(top_points)
 	
 	
-func sort_on_x(a, b) -> bool:
+func sort_on_x(a: Vector3, b: Vector3) -> bool:
 	return a.x < b.x
 		
 	

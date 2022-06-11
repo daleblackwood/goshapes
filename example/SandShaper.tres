@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://dwgdaewkhsjnj"]
+
+[ext_resource type="Material" uid="uid://ddynuojlxnj4g" path="res://addons/gdblocks/example/SandMat.tres" id="1_mo28d"]
+[ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dk4cp"]
+[ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
+[ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/WallBevelShaper.gd" id="4_g3xk8"]
+
+[sub_resource type="Resource" id="Resource_0odag"]
+script = ExtResource( "2_dk4cp" )
+build_collider = true
+conform_to_wall = false
+material = ExtResource( "1_mo28d" )
+
+[sub_resource type="Resource" id="Resource_toquf"]
+script = ExtResource( "4_g3xk8" )
+build_collider = true
+height = 11.6
+bevel = 0.0
+taper = 36.0
+material = ExtResource( "1_mo28d" )
+
+[resource]
+script = ExtResource( "3_f6xbb" )
+cap_type = 1
+cap_style = SubResource( "Resource_0odag" )
+wall_type = 1
+wall_style = SubResource( "Resource_toquf" )
+base_depth = 0.0
+base_type = 0
+collider_type = 4
+collider_ridge = 0.0

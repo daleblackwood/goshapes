@@ -1,3 +1,3 @@
 @tool
-extends BlockBuilder
+extends MeshBuilder
 class_name WallBuilder

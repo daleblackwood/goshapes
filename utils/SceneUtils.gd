@@ -6,14 +6,31 @@ static func get_or_create(parent: Node, name: String, type: Object) -> Node:
 		return null
 	var result: Node = parent.find_child(name, false)
 	if not result:
-		var owner = get_owner(parent)
-		if not owner:
-			return null
-		result = type.new()
-		result.name = name
-		parent.add_child(result)
-		result.set_owner(owner)
+		result = create(parent, name, type)
 	return result
+	
+	
+static func create(parent: Node, name: String, type: Object) -> Node:
+	if not parent:
+		return null
+	var owner = get_owner(parent)
+	if not owner:
+		return null
+	var result = type.new()
+	result.name = name
+	add_child(parent, result)
+	return result
+	
+	
+static func add_child(parent: Node, child: Node) -> Node:
+	if not parent:
+		return null
+	var owner = get_owner(parent)
+	if not owner:
+		return null
+	parent.add_child(child)
+	child.set_owner(owner)
+	return child
 	
 		
 static func get_owner(parent: Node):

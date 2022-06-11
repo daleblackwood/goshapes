@@ -3,18 +3,15 @@ extends Job
 class_name BuildJob
 	
 
-func _init(builder, style, path: PathData) -> void:
+func _init(builder: ShapeBuilder, path: PathData) -> void:
 	super.set_input({
 		"builder": builder,
-		"style": style,
 		"path": path
 	})
 
 
 func _run(input):
-	var meshset = input.builder.build(input.style, input.path)
-	
-	#var mesh = ArrayMesh.new()
-	#MeshUtils.build_meshes(meshset, mesh)
-				
-	return meshset
+	var builder = input.builder
+	var build_func = builder.build.bind(builder) as Callable
+	var mesh = build_func.call(host, input.path)
+	return mesh

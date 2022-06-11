@@ -10,13 +10,13 @@ var mutex: Mutex
 var input
 var output
 var host
-var callback: String
+var callback: Callable
 var id = -1
 var group
-var is_async = true
+var is_async = false
 
 
-func run(host, callback: String) -> void:
+func run(host, callback: Callable) -> void:
 	self.host = host
 	self.callback = callback
 	state = State.RUNNING
@@ -79,20 +79,18 @@ func _exit_tree() -> void:
 		thread.wait_to_finish()
 			
 			
-static func callback_job(job) -> void:
+static func callback_job(job: Job) -> void:
 	if not job.host:
 		print("nothing waiting on job ", job.id, ": ", job, ": ", job.group)
 		return
 	callback_host(job.host, job.callback, job)
 	
 		
-static func callback_host(host, callback: String, job) -> void:
+static func callback_host(host, callback: Callable, jobHost) -> void:
 	if not host:
 		return
-	if callback == null or callback.length() < 1:
-		callback = "job_done"
 	if host is Node:
-		host.call_deferred(callback, job)
-	elif host.has_method(callback):
-		host.call(callback, job)
+		callback.call_deferred(jobHost)
+	else:
+		callback.call(jobHost)
 	

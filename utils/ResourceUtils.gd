@@ -16,6 +16,7 @@ static func is_readonly(resource: Resource) -> bool:
 	if resource.resource_path != null and not resource.resource_local_to_scene:
 		return true
 	return false
+	
 
 static func to_dict(resource: Resource):
 	if not resource:
@@ -29,6 +30,21 @@ static func to_dict(resource: Resource):
 		print("parse ", key, value)
 		if value:
 			result[key] = parse_dict_value(value)
+	return result
+	
+	
+static func local_duplicate(resource: Resource):
+	if not resource is Resource:
+		return null
+	var result = Resource.new()
+	var script = resource.get_script() as Script
+	result.set_script(script)
+	result.setup_local_to_scene()
+	for prop in script.get_script_property_list():
+		var key = prop.name as String
+		var value = resource.get(key)
+		if value:
+			result.set(key, value)
 	return result
 	
 

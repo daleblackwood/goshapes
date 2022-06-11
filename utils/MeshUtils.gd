@@ -1,57 +1,5 @@
 @tool
 class_name MeshUtils
-
-class MeshSet:
-		
-	var verts = PackedVector3Array()
-	var uvs = PackedVector2Array()
-	var normals = PackedVector3Array()
-	var tris = PackedInt32Array()
-	var material: Material = null
-	var vert_count: int: get = get_vert_count
-	var tri_count: int: get = get_tri_count
-
-	func set_counts(vert_count: int, tri_count: int) -> void:
-		set_vert_count(vert_count)
-		set_tri_count(tri_count)
-		
-	func set_vert_count(count: int) -> void:
-		verts.resize(count)
-		uvs.resize(count)
-		normals.resize(count)
-		
-	func get_vert_count() -> int:
-		return verts.size()
-		
-	func set_vert(i: int, v: Vector3) -> void:
-		verts.set(i, v)
-		
-	func set_uv(i: int, v: Vector2) -> void:
-		uvs.set(i, v)
-		
-	func set_normal(i: int, v: Vector3) -> void:
-		normals.set(i, v)
-		
-	func set_tri(i: int, vert_i: int) -> void:
-		tris.set(i, vert_i)
-		
-	func set_tri_count(count: int) -> void:
-		tris.resize(count)
-		
-	func get_tri_count() -> int:
-		return tris.size()
-
-	func clone() -> MeshSet:
-		var result = MeshSet.new()
-		result.copy(self)
-		return result
-		
-	func copy(other: MeshSet) -> void:
-		verts = PackedVector3Array(other.verts)
-		uvs = PackedVector2Array(other.uvs)
-		normals = PackedVector3Array(other.normals)
-		tris = PackedInt32Array(other.tris)
-		material = other.material
 		
 		
 # statics	
@@ -273,9 +221,9 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 			if v.x < len_end:
 				break
 			len_start = len_end
-		ai = clampint(ai, 0, point_count - 1)
+		ai = clampi(ai, 0, point_count - 1)
 		var bi = ai + 1
-		bi = clampint(bi, 0, point_count - 1)
+		bi = clampi(bi, 0, point_count - 1)
 		var pa = points[ai]
 		var pb = points[bi]
 		var ua = path.get_up(ai)
@@ -502,22 +450,12 @@ static func build_mesh(meshset: MeshSet, mesh: ArrayMesh = null) -> ArrayMesh:
 		mesh.surface_set_material(surf_idx, meshset.material)
 	return mesh
 	
-	
+
 static func append_mesh(base_mesh: ArrayMesh, appendage: ArrayMesh) -> void:
 	var surface_count = appendage.get_surface_count()
 	for i in range(surface_count):
 		var arr = appendage.surface_get_arrays(i)
 		var mat = appendage.surface_get_material(i)
-		print("append_mesh.add_surface_from_arrays")
 		base_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 		var surf_idx = base_mesh.get_surface_count() - 1
 		base_mesh.surface_set_material(surf_idx, mat)
-	
-
-static func clampint(value: int, min_value: int, max_value: int) -> int:
-	if value < min_value:
-		return min_value
-	if value > max_value:
-		return max_value
-	return value
-

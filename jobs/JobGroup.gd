@@ -2,14 +2,14 @@
 class_name JobGroup
 
 var jobs: Array
-var host
-var callback: String
+var host: Node
+var callback: Callable
 var output = []
 var jobs_done
 var id = -1
 var runner
 
-func job_done(job):
+func job_done(job: Job):
 	var index = jobs.find(job)
 	var job_count = jobs.size()
 	if output.size() != job_count:
