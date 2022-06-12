@@ -1,10 +1,10 @@
-[gd_resource type="Resource" load_steps=9 format=3 uid="uid://2euitd2dubsb"]
+[gd_resource type="Resource" load_steps=9 format=3 uid="uid://c6fei8sahdx8u"]
 
-[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/gdblocks/example/GrassMat.material" id="1_76p8i"]
+[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/gdblocks/samples/GrassMat.material" id="1_76p8i"]
 [ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/CapFlatShaper.gd" id="2_hvx43"]
 [ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/BlockShaper.gd" id="3_r3cdr"]
-[ext_resource type="Material" uid="uid://clhwamwpcd0cu" path="res://addons/gdblocks/example/CliffMat.tres" id="4_co0h7"]
-[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/gdblocks/example/cliffface-low.obj" id="5_hrgry"]
+[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/gdblocks/samples/CliffMat.tres" id="4_co0h7"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/gdblocks/samples/cliffface-low.obj" id="5_hrgry"]
 [ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/WallMeshShaper.gd" id="6_8bp2j"]
 
 [sub_resource type="Resource" id="Resource_ofk6l"]

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" load_steps=7 format=3 uid="uid://dwgdaewkhsjnj"]
+[gd_resource type="Resource" load_steps=7 format=3 uid="uid://b3gfl7kqagio3"]
 
-[ext_resource type="Material" uid="uid://ddynuojlxnj4g" path="res://addons/gdblocks/example/SandMat.tres" id="1_mo28d"]
+[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/gdblocks/samples/SandMat.tres" id="1_mo28d"]
 [ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dk4cp"]
 [ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
 [ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/WallBevelShaper.gd" id="4_g3xk8"]

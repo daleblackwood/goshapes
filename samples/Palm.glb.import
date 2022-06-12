@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bminxc530cpcp"
-path="res://.godot/imported/Rock.glb-0ac05be5187c86cd50004a195e70fa79.scn"
+uid="uid://cifjqxblh2axc"
+path="res://.godot/imported/Palm.glb-40f225682bf9b06f5c8c730988ee173d.scn"
 
 [deps]
 
-source_file="res://addons/gdblocks/example/Rock.glb"
-dest_files=["res://.godot/imported/Rock.glb-0ac05be5187c86cd50004a195e70fa79.scn"]
+source_file="res://addons/gdblocks/samples/Palm.glb"
+dest_files=["res://.godot/imported/Palm.glb-40f225682bf9b06f5c8c730988ee173d.scn"]
 
 [params]
 

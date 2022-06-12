@@ -8,13 +8,7 @@ func get_builder() -> ShapeBuilder:
 	
 	
 func get_name() -> String:
-	var result = get_script().resource_name
-	var dotI = result.findn(".")
-	if dotI > 0:
-		result = result.substr(0, dotI)
-	result = result.substr(result.findn("/") + 1)
-	result = result.replace("Shaper", "")
-	return result
+	return ResourceUtils.find_name(get_script())
 	
 	
 func build(host: Node3D, path: PathData) -> void:

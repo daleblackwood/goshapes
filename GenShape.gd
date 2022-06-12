@@ -48,8 +48,8 @@ var is_dragging = false
 var edit_proxy = null
 var cap_data: PathData = null
 var mouse_down = false
-var watcher_shaper := ResourceWatcher.new(Callable(self, "mark_dirty"))
-var watcher_pathmod := ResourceWatcher.new(Callable(self, "mark_dirty"))
+var watcher_shaper := ResourceWatcher.new(mark_dirty)
+var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 
 
 func _ready() -> void:

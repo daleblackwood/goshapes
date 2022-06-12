@@ -1,4 +1,4 @@
-[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://clhwamwpcd0cu"]
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://c2cqyi3fjigxj"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ngv7x"]
 fractal_octaves = 3
