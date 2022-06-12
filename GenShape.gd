@@ -249,6 +249,20 @@ func get_path_data(interpolate: int) -> PathData:
 	if path_options.rounding > 0:
 		path_data = PathUtils.round_path(path_data, path_options.rounding, interpolate)
 	path_data.curve = curve.duplicate()
+	
+	for i in range(path_data.point_count):
+		var p = path_data.get_point(i)
+		if path_options.points_on_ground:
+			var space = get_world_3d().direct_space_state
+			var ray = PhysicsRayQueryParameters3D.new()
+			ray.from = global_transform * Vector3(p.x, 1000, p.z)
+			ray.to = global_transform * Vector3(p.x, -1000, p.z)
+			var hit = space.intersect_ray(ray)
+			if hit.has("position"):
+				p = global_transform.inverse() * hit.position
+		if path_options.offset_y:
+			p.y += path_options.offset_y
+		path_data.set_point(i, p)
 	return path_data
 
 

@@ -30,6 +30,12 @@ func get_point(index: int) -> Vector3:
 	return points[index]
 	
 	
+func set_point(index: int, v: Vector3) -> void:
+	if index < 0 or index >= points.size():
+		return
+	return points.set(index, v)
+	
+	
 func get_point_count() -> int:
 	return points.size()
 	

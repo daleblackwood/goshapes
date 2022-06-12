@@ -8,7 +8,7 @@ var reselecting = false
 var toolbar: HBoxContainer
 var block_menu_button: MenuButton
 var block_menu_items = []
-var block_create_i: int = 0
+var create_i: int = 0
 
 class BlockAttributes:
 	
@@ -83,7 +83,8 @@ class EditorProxy:
 var proxy: EditorProxy = EditorProxy.new()
 
 var menu_items_all = [
-	["Add New Block", self, "add_block"],
+	["Add New BlockShape", self, "add_block"],
+	["Add New ScatterShape", self, "add_scatter"],
 	["Select All Blocks", self, "select_all_blocks"],
 ]
 var menu_items_block = [
@@ -134,7 +135,7 @@ func _menu_item_selected(index: int) -> void:
 		mi[1].call(mi[2])
 	
 		
-func add_block() -> void:
+func add_blank() -> GenShape:
 	var parent = proxy.selected_block as Node3D
 	if parent == null:
 		var selected_nodes = selection_handler.get_selected_nodes()
@@ -144,15 +145,26 @@ func add_block() -> void:
 		parent = get_editor_interface().get_edited_scene_root()
 	if parent is GenShape:
 		parent = parent.get_parent_node_3d()
-	var block = Path3D.new()
-	block_create_i += 1
-	block.name = StringName("Shape%d" % block_create_i)
-	block.set_script(preload("GenShape.gd"))
-	parent.add_child(block)
-	block.set_owner(parent)
-	if proxy.last_selected != null and parent == proxy.last_selected.get_parent_spatial():
-		block.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
-	select_block(block)
+	var result = Path3D.new()
+	create_i += 1
+	result.name = StringName("Shape%d" % create_i)
+	result.set_script(preload("GenShape.gd"))
+	parent.add_child(result)
+	result.set_owner(parent)
+	if proxy.last_selected != null and parent == proxy.last_selected.get_parent():
+		result.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
+	select_block(result)
+	return result
+	
+	
+func add_block() -> void:
+	var shape = add_blank()
+	shape.set_shaper(BlockShaper.new())
+	
+	
+func add_scatter() -> void:
+	var shape = add_blank()
+	shape.set_shaper(ScatterShaper.new())
 			
 			
 func modify_selected(method: String = "", arg = null) -> void:

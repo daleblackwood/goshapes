@@ -30,3 +30,17 @@ class_name PathOptions
 	set(value):
 		interpolate = value
 		emit_changed()
+		
+	
+@export var points_on_ground = false:
+	set(value):
+		if points_on_ground != value:
+			points_on_ground = value
+			emit_changed()
+			
+			
+@export var offset_y = 0.0:
+	set(value):
+		if offset_y != value:
+			offset_y = value
+			emit_changed()
