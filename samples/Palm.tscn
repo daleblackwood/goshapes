@@ -85,6 +85,7 @@ roughness = 0.67
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_6fgo1"]
 height = 3.13856
+radius = 0.25
 
 [node name="Palm" type="StaticBody3D"]
 
@@ -95,5 +96,5 @@ skeleton = NodePath("")
 surface_material_override/1 = SubResource( "StandardMaterial3D_ljh2r" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.999944, 0.0106114, 0, -0.0106114, 0.999944, 0, 1.47649, 0)
+transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource( "CylinderShape3D_6fgo1" )
