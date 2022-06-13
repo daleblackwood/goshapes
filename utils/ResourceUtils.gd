@@ -76,15 +76,13 @@ static func find_name(resource: Resource) -> String:
 static func copy_props(src: Resource, dest: Resource) -> void:
 	if src == null or dest == null:
 		return
-	var src_script = src.get_script() as Script
-	var dest_script = dest.get_script() as Script
-	if src_script == null or dest_script == null:
-		return
-	var src_props = src_script.get_property_list()
-	var dest_props = dest_script.get_property_list()
+	var src_props = src.get_property_list()
+	var dest_props = dest.get_property_list()
 	if src_props.size() < 1 or dest_props.size() < 1:
 		return
 	for src_prop in src_props:
+		if (src_prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE) == 0:
+			continue
 		for dest_prop in dest_props:
 			if src_prop.name == dest_prop.name and src_prop.type == dest_prop.type:
 				dest.set(src_prop.name, src.get(src_prop.name))
