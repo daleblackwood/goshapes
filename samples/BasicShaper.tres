@@ -1,9 +1,9 @@
 [gd_resource type="Resource" load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/CapFlatShaper.gd" id="2_6wmwc"]
-[ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/BlockShaper.gd" id="3_ykx3b"]
-[ext_resource type="Material" path="res://addons/gdblocks/samples/GrassMat.material" id="4_nu2on"]
-[ext_resource type="Script" path="res://addons/gdblocks/MeshShaper/Shapers/WallBevelShaper.gd" id="4_top7b"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_6wmwc"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_ykx3b"]
+[ext_resource type="Material" path="res://addons/goshapes/samples/GrassMat.material" id="4_nu2on"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="4_top7b"]
 
 [sub_resource type="Resource" id="Resource_12vy7"]
 script = ExtResource( "2_6wmwc" )

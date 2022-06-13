@@ -8,7 +8,6 @@ var mesh_name := "Mesh"
 var base_style: MeshShaper
 
 func _init(_style: MeshShaper) -> void:
-	print("meshbuildinit ", _style)
 	base_style = _style
 	
 
@@ -48,6 +47,7 @@ func apply_mesh(host: Node3D, new_mesh: ArrayMesh) -> void:
 func apply_collider(host: Node3D, mesh: ArrayMesh) -> void:
 	var collider_body = StaticBody3D.new()
 	collider_body.name = "Collider%s" % host.get_child_count()
+	collider_body.collision_layer = base_style.collision_layer
 	SceneUtils.add_child(host, collider_body)
 	var collider_shape = CollisionShape3D.new()
 	collider_shape.name = "CollisionShape"

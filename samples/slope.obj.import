@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://boippxtwu56bv"
-path="res://.godot/imported/slope.obj-1411e5159388d11743ac2124f516a409.mesh"
+path="res://.godot/imported/slope.obj-164b3e8f5646bd00cc72d07a677a3fec.mesh"
 
 [deps]
 
-files=["res://.godot/imported/slope.obj-1411e5159388d11743ac2124f516a409.mesh"]
+files=["res://.godot/imported/slope.obj-164b3e8f5646bd00cc72d07a677a3fec.mesh"]
 
-source_file="res://addons/gdblocks/samples/slope.obj"
-dest_files=["res://.godot/imported/slope.obj-1411e5159388d11743ac2124f516a409.mesh", "res://.godot/imported/slope.obj-1411e5159388d11743ac2124f516a409.mesh"]
+source_file="res://addons/goshapes/samples/slope.obj"
+dest_files=["res://.godot/imported/slope.obj-164b3e8f5646bd00cc72d07a677a3fec.mesh", "res://.godot/imported/slope.obj-164b3e8f5646bd00cc72d07a677a3fec.mesh"]
 
 [params]
 

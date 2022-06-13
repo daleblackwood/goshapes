@@ -6,6 +6,7 @@ var ups := PackedVector3Array(): set = set_ups
 var point_count: int: get = get_point_count
 var taper := 0.0
 var curve: Curve3D
+var placement_mask = 0
 
 
 func _init(points = PackedVector3Array(), ups = PackedVector3Array()) -> void:

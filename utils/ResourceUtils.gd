@@ -27,7 +27,6 @@ static func to_dict(resource: Resource):
 		if key.begins_with("resource"):
 			continue
 		var value = resource.get(key)
-		print("parse ", key, value)
 		if value:
 			result[key] = parse_dict_value(value)
 	return result
@@ -66,10 +65,27 @@ static func find_name(resource: Resource) -> String:
 	if resource.resource_name != null and resource.resource_name.length() > 0:
 		return resource.resource_name
 	var name = resource.resource_path
-	print(name)
 	var dotI = name.rfindn(".")
 	if dotI > 0:
 		name = name.substr(0, dotI)
 	name = name.substr(name.rfindn("/") + 1)
 	name = name.replace("Shaper", "")
 	return name
+	
+	
+static func copy_props(src: Resource, dest: Resource) -> void:
+	if src == null or dest == null:
+		return
+	var src_script = src.get_script() as Script
+	var dest_script = dest.get_script() as Script
+	if src_script == null or dest_script == null:
+		return
+	var src_props = src_script.get_property_list()
+	var dest_props = dest_script.get_property_list()
+	if src_props.size() < 1 or dest_props.size() < 1:
+		return
+	for src_prop in src_props:
+		for dest_prop in dest_props:
+			if src_prop.name == dest_prop.name and src_prop.type == dest_prop.type:
+				dest.set(src_prop.name, src.get(src_prop.name))
+	

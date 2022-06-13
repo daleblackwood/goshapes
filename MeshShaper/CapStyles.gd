@@ -18,7 +18,7 @@ static func get_name(type_value: int):
 
 static func load_class(type_value: int):
 	var shaper_name = get_name(type_value)
-	var result = load("res://addons/gdblocks/MeshShaper/Shapers/%sShaper.gd" % shaper_name)
+	var result = load("res://addons/goshapes/MeshShaper/Shapers/%sShaper.gd" % shaper_name)
 	return result
 	
 	

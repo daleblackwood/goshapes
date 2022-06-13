@@ -75,6 +75,12 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			evenness = value
 			emit_changed()
 			
+@export_flags_3d_physics var collision_layer: int = 0:
+	set(value):
+		if collision_layer != value:
+			collision_layer = value
+			emit_changed()
+			
 			
 func _init():
 	super._init()
@@ -121,7 +127,8 @@ class ShatterBuilder extends ShapeBuilder:
 		var x = min_x
 		var instances = 0
 		var object_name = ResourceUtils.find_name(object)
-		print("object ", object_name)
+		var collision_layer = style.collision_layer
+		var placement_mask = path.placement_mask
 		while x < max_x:
 			x += inc
 			var z = min_z
@@ -149,15 +156,22 @@ class ShatterBuilder extends ShapeBuilder:
 					var ray = PhysicsRayQueryParameters3D.new()
 					ray.from = host.global_transform * Vector3(pos.x, 1000, pos.z)
 					ray.to = host.global_transform * Vector3(pos.x, -1000, pos.z)
+					ray.collision_mask = 0xFF & (~collision_layer)
 					var hit = space.intersect_ray(ray)
-					if hit.has("position"):
+					if hit.has("collider"):
+						if placement_mask > 0 and ((1 << placement_mask) & (1 << hit.collider.collision_layer)) == 0:
+							continue
 						pos = host.global_transform.inverse() * hit.position
+					elif placement_mask > 0:
+						continue
 				else:
 					pos.y = curve.get_closest_point(pos).y
 				var inst = object.instantiate()
 				instances += 1
 				inst.name = "%s%d" % [object_name, instances]
 				inst.transform.origin = pos
+				if collision_layer > 0 and inst is CollisionObject3D:
+					inst.collision_layer = collision_layer
 				var basis = Basis()
 				var angle = PI * 2.0 * r_angle
 				if random_angle:

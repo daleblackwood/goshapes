@@ -15,18 +15,18 @@ class BlockAttributes:
 	var shaper: Resource
 	var path_options: Resource
 	
-	func copy(block: GenShape) -> void:
+	func copy(block: Goshape) -> void:
 		shaper = block.shaper
 		path_options = block.path_options
 		
-	func apply(block: GenShape) -> void:
+	func apply(block: Goshape) -> void:
 		block.shaper = shaper
 		block.path_options = path_options
 		
-	func apply_shaper(block: GenShape) -> void:
+	func apply_shaper(block: Goshape) -> void:
 		block.shaper = shaper
 		
-	func apply_path_options(block: GenShape) -> void:
+	func apply_path_options(block: Goshape) -> void:
 		block.path_options = path_options
 		
 	
@@ -36,10 +36,10 @@ class EditorProxy:
 	var runner = JobRunner.new()
 	var attributes_last := BlockAttributes.new()
 	var attributes_copied := BlockAttributes.new()
-	var selected_block: GenShape = null
-	var last_selected: GenShape = null
+	var selected_block: Goshape = null
+	var last_selected: Goshape = null
 	
-	func set_selected(block: GenShape) -> void:
+	func set_selected(block: Goshape) -> void:
 		if block == selected_block:
 			return
 		if selected_block != null:
@@ -102,19 +102,19 @@ var menu_items_other = menu_items_all + [
 ]
 
 func _enter_tree() -> void:
-	add_custom_type("GenShape", "Path", preload("GenShape.gd"), null)
+	add_custom_type("Goshape", "Path", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
 	
 	block_menu_button = MenuButton.new()
-	block_menu_button.set_text("GenShapes")
+	block_menu_button.set_text("Goshapes")
 	block_menu_button.get_popup().connect("id_pressed", _menu_item_selected)
 	toolbar.add_child(block_menu_button)
 	set_menu_items(menu_items_other)
 	
-	print("GenShapes addon intialized.")
+	print("Goshapes addon intialized.")
 	
 	
 func set_menu_items(menu_items: Array) -> void:
@@ -135,7 +135,7 @@ func _menu_item_selected(index: int) -> void:
 		mi[1].call(mi[2])
 	
 		
-func add_blank() -> GenShape:
+func add_blank() -> Goshape:
 	var parent = proxy.selected_block as Node3D
 	if parent == null:
 		var selected_nodes = selection_handler.get_selected_nodes()
@@ -143,12 +143,12 @@ func add_blank() -> GenShape:
 			parent = selected_nodes.front() as Node3D
 	if parent == null:
 		parent = get_editor_interface().get_edited_scene_root()
-	if parent is GenShape:
+	if parent is Goshape:
 		parent = parent.get_parent_node_3d()
 	var result = Path3D.new()
 	create_i += 1
 	result.name = StringName("Shape%d" % create_i)
-	result.set_script(preload("GenShape.gd"))
+	result.set_script(preload("Goshape.gd"))
 	parent.add_child(result)
 	result.set_owner(parent)
 	if proxy.last_selected != null and parent == proxy.last_selected.get_parent():
@@ -159,18 +159,20 @@ func add_blank() -> GenShape:
 	
 func add_block() -> void:
 	var shape = add_blank()
+	shape.name = StringName("BlockShape%d" % shape.get_parent().get_child_count())
 	shape.set_shaper(BlockShaper.new())
 	
 	
 func add_scatter() -> void:
 	var shape = add_blank()
+	shape.name = StringName("ScatterShape%d" % shape.get_parent().get_child_count())
 	shape.set_shaper(ScatterShaper.new())
 			
 			
 func modify_selected(method: String = "", arg = null) -> void:
 	var selected_nodes = selection_handler.get_selected_nodes()
 	for node in selected_nodes:
-		if node is GenShape:
+		if node is Goshape:
 			var was_editing = node.is_editing
 			if was_editing:
 				node._edit_end()
@@ -199,10 +201,10 @@ func _on_selection_changed() -> void:
 	else:
 		var selected_node = selected_nodes[0]
 		var selected_parent = selected_node
-		var block: GenShape = null
+		var block: Goshape = null
 		while selected_parent != editor_root:
-			if selected_parent is GenShape:
-				block = selected_parent as GenShape
+			if selected_parent is Goshape:
+				block = selected_parent as Goshape
 				break
 			else:
 				selected_parent = selected_parent.get_parent()
@@ -211,7 +213,7 @@ func _on_selection_changed() -> void:
 			
 	var block_selected = false
 	for node in selected_nodes:
-		if node is GenShape:
+		if node is Goshape:
 			block_selected = true
 	
 	if block_selected:
@@ -225,14 +227,14 @@ func _on_tree_exiting() -> void:
 	proxy.set_selected(null)
 
 
-func select_block(block: GenShape) -> void:
+func select_block(block: Goshape) -> void:
 	if block != proxy.selected_block:
 		if proxy.selected_block != null:
 			proxy.selected_block._edit_end()
 		proxy.set_selected(null)
 		reselecting = false
 		
-	if block and block is GenShape and block != proxy.selected_block:
+	if block and block is Goshape and block != proxy.selected_block:
 		proxy.set_selected(block)
 		connect_block.call_deferred()
 		
@@ -241,13 +243,13 @@ func select_all_blocks(parent: Node = null) -> void:
 	if parent == null:
 		parent = get_tree().root
 		selection_handler.clear()
-	if parent is GenShape:
+	if parent is Goshape:
 		selection_handler.add_node(parent)
 	for i in range(parent.get_child_count()):
 		select_all_blocks(parent.get_child(i))
 		
 		
-func copy_block_params(block: GenShape) -> void:
+func copy_block_params(block: Goshape) -> void:
 	proxy.last_shaper = block.shaper
 	proxy.last_path_options = block.path_options
 		
@@ -269,7 +271,6 @@ func ground_objects() -> void:
 		
 		
 func connect_block() -> void:
-	print("selected shape %s" % proxy.selected_block.name)
 	proxy.selected_block._edit_begin(proxy)
 	var selected_nodes = selection_handler.get_selected_nodes()
 	if selected_nodes.size() != 1 || selected_nodes[0] != proxy.selected_block:

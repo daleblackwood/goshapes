@@ -1,6 +1,6 @@
 @tool
 extends Path3D
-class_name GenShape
+class_name Goshape
 
 
 @export var inverted = false:
@@ -223,7 +223,6 @@ func build() -> void:
 func _build(runner: JobRunner) -> void:
 	if not shaper:
 		return
-	print("Build %s" % name)
 	for child in get_children():
 		child.free()
 	run_build_jobs(runner)
@@ -249,6 +248,8 @@ func get_path_data(interpolate: int) -> PathData:
 	if path_options.rounding > 0:
 		path_data = PathUtils.round_path(path_data, path_options.rounding, interpolate)
 	path_data.curve = curve.duplicate()
+	if path_options.ground_placement_mask:
+		path_data.placement_mask = path_options.ground_placement_mask
 	
 	for i in range(path_data.point_count):
 		var p = path_data.get_point(i)
@@ -257,6 +258,8 @@ func get_path_data(interpolate: int) -> PathData:
 			var ray = PhysicsRayQueryParameters3D.new()
 			ray.from = global_transform * Vector3(p.x, 1000, p.z)
 			ray.to = global_transform * Vector3(p.x, -1000, p.z)
+			if path_options.ground_placement_mask:
+				ray.collision_mask = path_options.ground_placement_mask
 			var hit = space.intersect_ray(ray)
 			if hit.has("position"):
 				p = global_transform.inverse() * hit.position

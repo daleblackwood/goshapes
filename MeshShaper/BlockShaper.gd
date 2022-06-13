@@ -43,41 +43,51 @@ func _init() -> void:
 
 
 func set_cap_type(value: CapStyles.Type):
-	cap_type = value
-	set_cap_style(CapStyles.create(cap_type))
+	if cap_type != value:
+		cap_type = value
+		set_cap_style(CapStyles.create(cap_type))
 
 
 func set_cap_style(value: Resource):
-	cap_style = value
-	watcher_cap.watch(cap_style)
-	mark_dirty()
+	if cap_style != value:
+		ResourceUtils.copy_props(cap_style, value)
+		cap_style = value
+		watcher_cap.watch(cap_style)
+		mark_dirty()
 	
 	
 func set_wall_type(value: WallStyles.Type):
-	wall_type = value
-	set_wall_style(WallStyles.create(wall_type))
+	if wall_type != value:
+		wall_type = value
+		set_wall_style(WallStyles.create(wall_type))
 	
 	
 func set_wall_style(value: Resource):
-	wall_style = value
-	watcher_wall.watch(wall_style)
-	mark_dirty()
+	if wall_style != value:
+		ResourceUtils.copy_props(wall_style, value)
+		wall_style = value
+		watcher_wall.watch(wall_style)
+		mark_dirty()
 	
 	
 func set_base_depth(value: float):
-	base_depth = value
-	mark_dirty()
+	if base_depth != value:
+		base_depth = value
+		mark_dirty()
 	
 	
 func set_base_type(value: CapStyles.Type):
-	base_type = value
-	set_base_style(CapStyles.create(base_type))
+	if base_type != value:
+		base_type = value
+		set_base_style(CapStyles.create(base_type))
 
 
 func set_base_style(value: Resource):
-	base_style = value
-	watcher_base.watch(base_style)
-	mark_dirty()
+	if base_style != value:
+		ResourceUtils.copy_props(base_style, value)
+		base_style = value
+		watcher_base.watch(base_style)
+		mark_dirty()
 
 	
 func mark_dirty():
@@ -103,7 +113,6 @@ class BlockBuilder extends ShapeBuilder:
 		style = _style
 		
 	func build(_host: Node3D, _path: PathData) -> void:
-		print("BlockBuilder.build ", self, " host: ", _host)
 		host = _host
 		path = _path
 		if style.cap_style != null:

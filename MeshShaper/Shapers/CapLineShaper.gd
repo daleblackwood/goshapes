@@ -11,7 +11,7 @@ class CapLineBuilder extends CapBuilder:
 	
 	var style: CapLineShaper
 	func _init(_style: CapLineShaper):
-		super._init(style)
+		super._init(_style)
 		style = _style
 	
 	
@@ -55,11 +55,11 @@ class CapLineBuilder extends CapBuilder:
 		return [meshset]
 		
 		
-	func split_quad(quad: MeshSet) -> Array[MeshSet]:
+	func split_quad(quad: MeshSet) -> Array:
 		return split_quad_four(quad)
 		
 		
-	func split_quad_four(quad: MeshSet) -> Array[MeshSet]:
+	func split_quad_four(quad: MeshSet) -> Array:
 		var sets: Array[MeshSet] = []
 		var a = quad.clone()
 		lerp_set(a, quad, 1, 0, 0.5)

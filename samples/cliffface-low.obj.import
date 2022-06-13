@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cprh1f8pbew4q"
-path="res://.godot/imported/cliffface-low.obj-ddda93c8c1ad0bbbb29691809da6c931.mesh"
+path="res://.godot/imported/cliffface-low.obj-5976be58d7af6dc97e69026b75d33ddc.mesh"
 
 [deps]
 
-files=["res://.godot/imported/cliffface-low.obj-ddda93c8c1ad0bbbb29691809da6c931.mesh"]
+files=["res://.godot/imported/cliffface-low.obj-5976be58d7af6dc97e69026b75d33ddc.mesh"]
 
-source_file="res://addons/gdblocks/samples/cliffface-low.obj"
-dest_files=["res://.godot/imported/cliffface-low.obj-ddda93c8c1ad0bbbb29691809da6c931.mesh", "res://.godot/imported/cliffface-low.obj-ddda93c8c1ad0bbbb29691809da6c931.mesh"]
+source_file="res://addons/goshapes/samples/cliffface-low.obj"
+dest_files=["res://.godot/imported/cliffface-low.obj-5976be58d7af6dc97e69026b75d33ddc.mesh", "res://.godot/imported/cliffface-low.obj-5976be58d7af6dc97e69026b75d33ddc.mesh"]
 
 [params]
 
