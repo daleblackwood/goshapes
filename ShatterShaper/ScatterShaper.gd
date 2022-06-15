@@ -126,7 +126,7 @@ class ShatterBuilder extends ShapeBuilder:
 			polygon.set(i, Vector2(path.points[i].x, path.points[i].z))
 		var x = min_x
 		var instances = 0
-		var object_name = ResourceUtils.find_name(object)
+		var object_name = ResourceUtils.get_type(object)
 		var collision_layer = style.collision_layer
 		var placement_mask = path.placement_mask
 		while x < max_x:

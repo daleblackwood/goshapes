@@ -43,51 +43,44 @@ func _init() -> void:
 
 
 func set_cap_type(value: CapStyles.Type):
-	if cap_type != value:
-		cap_type = value
-		set_cap_style(CapStyles.create(cap_type))
+	cap_type = value
+	set_cap_style(CapStyles.create(cap_type))
 
 
 func set_cap_style(value: Resource):
-	if cap_style != value:
-		ResourceUtils.copy_props(cap_style, value)
-		cap_style = value
-		watcher_cap.watch(cap_style)
-		mark_dirty()
+	#ResourceUtils.copy_props(cap_style, value)
+	cap_style = value
+	watcher_cap.watch(cap_style)
+	mark_dirty()
 	
 	
 func set_wall_type(value: WallStyles.Type):
-	if wall_type != value:
-		wall_type = value
-		set_wall_style(WallStyles.create(wall_type))
+	wall_type = value
+	set_wall_style(WallStyles.create(wall_type))
 	
 	
 func set_wall_style(value: Resource):
-	if wall_style != value:
-		ResourceUtils.copy_props(wall_style, value)
-		wall_style = value
-		watcher_wall.watch(wall_style)
-		mark_dirty()
+	#ResourceUtils.copy_props(wall_style, value)
+	wall_style = value
+	watcher_wall.watch(wall_style)
+	mark_dirty()
 	
 	
 func set_base_depth(value: float):
-	if base_depth != value:
-		base_depth = value
-		mark_dirty()
+	base_depth = value
+	mark_dirty()
 	
 	
 func set_base_type(value: CapStyles.Type):
-	if base_type != value:
-		base_type = value
-		set_base_style(CapStyles.create(base_type))
+	base_type = value
+	set_base_style(CapStyles.create(base_type))
 
 
 func set_base_style(value: Resource):
-	if base_style != value:
-		ResourceUtils.copy_props(base_style, value)
-		base_style = value
-		watcher_base.watch(base_style)
-		mark_dirty()
+	#ResourceUtils.copy_props(base_style, value)
+	base_style = value
+	watcher_base.watch(base_style)
+	mark_dirty()
 
 	
 func mark_dirty():

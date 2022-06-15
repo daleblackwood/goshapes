@@ -101,16 +101,21 @@ var menu_items_other = menu_items_all + [
 	["Place Objects on Ground", self, "ground_objects"]
 ]
 
+var shaper_inspector: ShaperInspector
+
 func _enter_tree() -> void:
 	add_custom_type("Goshape", "Path", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
+	
+	shaper_inspector = ShaperInspector.new(get_editor_interface())
+	add_inspector_plugin(shaper_inspector)
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
 	
 	block_menu_button = MenuButton.new()
 	block_menu_button.set_text("Goshapes")
-	block_menu_button.get_popup().connect("id_pressed", _menu_item_selected)
+	block_menu_button.get_popup().id_pressed.connect(_menu_item_selected)
 	toolbar.add_child(block_menu_button)
 	set_menu_items(menu_items_other)
 	
@@ -280,5 +285,6 @@ func connect_block() -> void:
 		
 
 func _exit_tree() -> void:
-	selection_handler.selection_changed.disconnect("selection_changed", _on_selection_changed)
+	selection_handler.selection_changed.disconnect(_on_selection_changed)
+	remove_inspector_plugin(shaper_inspector)
 	print("GDBlocks disconnected ")

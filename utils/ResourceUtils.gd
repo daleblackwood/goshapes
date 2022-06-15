@@ -61,15 +61,21 @@ static func parse_dict_value(value):
 	return value
 
 
-static func find_name(resource: Resource) -> String:
+static func get_type(resource: Resource) -> String:
 	if resource.resource_name != null and resource.resource_name.length() > 0:
 		return resource.resource_name
+	var name = get_local_path(resource)
+	return name
+	
+	
+static func get_local_path(resource: Resource) -> String:
 	var name = resource.resource_path
+	if name == null or name.length() < 1:
+		return ""
 	var dotI = name.rfindn(".")
 	if dotI > 0:
 		name = name.substr(0, dotI)
 	name = name.substr(name.rfindn("/") + 1)
-	name = name.replace("Shaper", "")
 	return name
 	
 	

@@ -8,7 +8,7 @@ func get_builder() -> ShapeBuilder:
 	
 	
 func get_name() -> String:
-	return ResourceUtils.find_name(get_script())
+	return ResourceUtils.get_type(get_script())
 	
 	
 func build(host: Node3D, path: PathData) -> void:

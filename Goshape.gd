@@ -19,14 +19,13 @@ class_name Goshape
 	set = set_path_options
 	
 	
-@export_file("*.tres") var shaper_file: String:
+@export_file("*.shaper.tres") var shaper_file: String:
 	set = set_shaper_file,
 	get = get_shaper_file
-	
-	
+
 @export var shaper: Resource:
 	set = set_shaper
-
+	
 	
 @export var cascade_twists = false:
 	set(value):
@@ -47,7 +46,6 @@ var is_dirty = false
 var is_dragging = false
 var edit_proxy = null
 var cap_data: PathData = null
-var mouse_down = false
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 
@@ -184,21 +182,12 @@ func _update():
 		return
 	if not is_dirty:
 		return
-	if mouse_down:
-		_update.call_deferred()
-		return
 	if is_dragging:
 		_update.call_deferred()
 		return
 	
 	build()
 	is_dirty = false
-	
-	
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.button_index == 0:
-			mouse_down = event.is_pressed()
 	
 	
 func build() -> void:
