@@ -3,6 +3,14 @@
 
 Goshapes makes it easy to rapidly generate levels in Godot 4. I'm still in the midst of compiling documentation but there is now a handy demo scene.
 
+Geometry can be made to conform to a path:
+![goshapes1](https://user-images.githubusercontent.com/386025/174088620-768776d1-d5d4-4103-a8cd-0bb0286f670f.gif)
+
+Paths can also be used for procedural object placement:
+![goshapes2](https://user-images.githubusercontent.com/386025/174088773-30d98cad-5912-402b-a485-0c824f798408.gif)
+
+[Screenshots](https://imgur.com/a/R0b3cXD)
+
 ### Installation
 To install, clone this repository into the addons folder of your Godot 4 project, so that its path in your project is `res://addons/goshapes`.
 
