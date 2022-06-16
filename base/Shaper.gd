@@ -17,6 +17,8 @@ func get_name() -> String:
 	
 	
 func build(host: Node3D, path: PathData) -> void:
+	if not Engine.is_editor_hint():
+		return
 	var builder = get_builder()
 	if builder != null:
 		builder.build(host, path)

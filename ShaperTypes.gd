@@ -1,8 +1,5 @@
 @tool
 class_name ShaperTypes
-
-static func get_types() -> Array:
-	return get_base_types()
 	
 	
 static func get_base_types() -> Array:

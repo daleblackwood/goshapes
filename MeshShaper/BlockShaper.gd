@@ -49,11 +49,11 @@ var is_dirty = false
 
 func _init() -> void:
 	if cap_shaper == null:
-		cap_shaper = ShaperTypes.get_cap_types()[0].new()
+		cap_shaper = CapFlatShaper.new()
 	if wall_shaper == null:
-		wall_shaper = ShaperTypes.get_wall_types()[0].new()
+		wall_shaper = WallBevelShaper.new()
 	if bottom_shaper == null:
-		bottom_shaper = ShaperTypes.get_bottom_types()[0].new()
+		bottom_shaper = BottomShaper.new()
 		bottom_shaper.enabled = false
 	watcher_cap.watch(cap_shaper)
 	watcher_wall.watch(wall_shaper)
