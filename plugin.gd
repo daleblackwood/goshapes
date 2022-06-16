@@ -2,7 +2,8 @@
 extends EditorPlugin
 
 const GDBPATH = "res://addons/gdblocks"
-var selection_handler = get_editor_interface().get_selection()
+var editor = get_editor_interface()
+var selection_handler = editor.get_selection()
 
 var reselecting = false
 var toolbar: HBoxContainer
@@ -38,6 +39,9 @@ class EditorProxy:
 	var attributes_copied := BlockAttributes.new()
 	var selected_block: Goshape = null
 	var last_selected: Goshape = null
+	var mouse_down = false
+	var mouse_pos = Vector2.ZERO
+	var scene_mouse_pos = Vector3.ZERO
 	
 	func set_selected(block: Goshape) -> void:
 		if block == selected_block:
@@ -107,7 +111,7 @@ func _enter_tree() -> void:
 	add_custom_type("Goshape", "Path3D", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
 	
-	shaper_inspector = ShaperInspector.new(get_editor_interface())
+	shaper_inspector = ShaperInspector.new(editor)
 	add_inspector_plugin(shaper_inspector)
 	
 	toolbar = HBoxContainer.new()
@@ -147,7 +151,7 @@ func add_blank() -> Goshape:
 		if selected_nodes.size() > 0:
 			parent = selected_nodes.front() as Node3D
 	if parent == null:
-		parent = get_editor_interface().get_edited_scene_root()
+		parent = editor.get_edited_scene_root()
 	if parent is Goshape:
 		parent = parent.get_parent_node_3d()
 	var result = Path3D.new()
@@ -195,7 +199,7 @@ func _on_selection_changed() -> void:
 	if reselecting:
 		return
 		
-	var editor_root = get_editor_interface().get_edited_scene_root()
+	var editor_root = editor.get_edited_scene_root()
 	if not editor_root:
 		select_block(null)
 		return
@@ -282,6 +286,13 @@ func connect_block() -> void:
 		selection_handler.clear()
 		selection_handler.add_node(proxy.selected_block)
 	reselecting = false
+	
+	
+func _input(event):
+	if event is InputEventMouseButton:
+		proxy.mouse_down = event.pressed
+	if event is InputEventMouse:
+		proxy.mouse_pos = event.position
 		
 
 func _exit_tree() -> void:

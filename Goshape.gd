@@ -2,6 +2,9 @@
 extends Path3D
 class_name Goshape
 
+const AXIS_X = 1
+const AXIS_Y = 2
+const AXIS_Z = 4
 
 @export var inverted = false:
 	set(value):
@@ -40,11 +43,12 @@ var is_line: bool: get = get_is_line
 var is_editing: bool: get = _get_is_editing
 
 var is_dirty = false
-var is_dragging = false
 var edit_proxy = null
 var cap_data: PathData = null
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
+var axis_match_index = -1
+var axis_match_points := PackedInt32Array()
 
 
 func _ready() -> void:
@@ -84,7 +88,9 @@ func _edit_begin(edit_proxy) -> void:
 	if not _is_resource(curve, Curve3D) or curve.get_point_count() < 2:
 		print("init curve")
 		_init_curve()
-	curve_changed.connect(mark_dirty)
+	if not curve is GoCurve3D:
+		curve.set_script(GoCurve3D.new().get_script())
+	curve_changed.connect(on_curve_changed)
 	watcher_shaper.watch(shaper)
 	watcher_pathmod.watch(path_options)
 	
@@ -125,7 +131,7 @@ func _edit_end() -> void:
 	self.edit_proxy = null
 	watcher_shaper.unwatch()
 	watcher_pathmod.unwatch()
-	curve_changed.disconnect(mark_dirty)
+	curve_changed.disconnect(on_curve_changed)
 	
 	
 func set_shaper(value: Resource) -> void:
@@ -147,12 +153,65 @@ func recenter_points():
 	PathUtils.move_curve(curve, -center)
 	transform.origin += center
 	mark_dirty()
+	
+	
+func on_curve_changed():
+	if not _get_is_editing():
+		return
+	if is_dirty:
+		return
+	is_dirty = true
+	
+	curve.updating = true
+	
+	if axis_matched_editing:
+		var edited_point = curve.edited_point
+		var edited_pos = curve.get_point_position(edited_point)
+		if edited_point != axis_match_index:
+			axis_match_index = edited_point
+			axis_match_points = PackedInt32Array()
+			# find matching axis points
+			for i in range(curve.point_count):
+				if i == edited_point:
+					continue
+				var p = curve.get_point_position(i)
+				var axis_match = 0
+				if abs(p.x - edited_pos.x) < 1.0:
+					axis_match |= AXIS_X
+				if abs(p.y - edited_pos.y) < 1.0:
+					axis_match |= AXIS_Y
+				if abs(p.z - edited_pos.z) < 1.0:
+					axis_match |= AXIS_Z
+				if axis_match != 0:
+					axis_match_points.append(i)
+					axis_match_points.append(axis_match)
+		# apply matching axis points
+		for i in range(0, axis_match_points.size(), 2):
+			var index = axis_match_points[i]
+			var axis_match = axis_match_points[i + 1]
+			var p = curve.get_point_position(index)
+			if (axis_match & AXIS_X) != 0:
+				p.x = edited_pos.x
+			if (axis_match & AXIS_Y) != 0:
+				p.y = edited_pos.y
+			if (axis_match & AXIS_Z) != 0:
+				p.z = edited_pos.z
+			curve.set_point_position(index, p)
+			
+	if path_options.flatten:
+		PathUtils.flatten_curve(curve)
+	if not path_options.flatten:
+		PathUtils.twist_curve(curve)
+		
+	curve.updating = false
+	mark_dirty()
 
 	
 func mark_dirty():
-	if _get_is_editing():
-		is_dirty = true
-		call_deferred("_update")
+	if not _get_is_editing():
+		return
+	is_dirty = true
+	call_deferred("_update")
 	
 	
 func get_is_line():
@@ -168,21 +227,16 @@ func _update():
 		return
 	if not is_dirty:
 		return
-	if is_dragging:
-		_update.call_deferred()
-		return
+		
+	if not edit_proxy.mouse_down:
+		axis_match_index = -1
+		axis.axis_match_points = PackedInt32Array()
 	
 	build()
 	is_dirty = false
 	
 	
 func build() -> void:
-	if path_options.flatten:
-		PathUtils.flatten_curve(curve)
-		
-	if not path_options.flatten:
-		PathUtils.twist_curve(curve)
-	
 	if not shaper:
 		print("no shaper")
 		return
