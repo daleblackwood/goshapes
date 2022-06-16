@@ -2,8 +2,8 @@
 
 [ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/GrassMat.material" id="1_0yut8"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_c6rt8"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_hvx43"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_r3cdr"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapLineShaper.gd" id="3_vl611"]
 [ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/CliffMat.tres" id="4_75j48"]
 [ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/cliffface-low.obj" id="4_ei2fn"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="5_dx61k"]
@@ -13,8 +13,8 @@ script = ExtResource( "1_c6rt8" )
 enabled = false
 base_depth = 1.0
 
-[sub_resource type="Resource" id="Resource_j0m6s"]
-script = ExtResource( "2_hvx43" )
+[sub_resource type="Resource" id="Resource_7ngoo"]
+script = ExtResource( "3_vl611" )
 enabled = true
 build_collider = true
 collision_layer = 1
@@ -34,7 +34,7 @@ material = ExtResource( "4_75j48" )
 [resource]
 script = ExtResource( "3_r3cdr" )
 enabled = true
-cap_shaper = SubResource( "Resource_j0m6s" )
+cap_shaper = SubResource( "Resource_7ngoo" )
 wall_shaper = SubResource( "Resource_tgkqe" )
 bottom_shaper = SubResource( "Resource_0y7mq" )
 bottom_depth = 0.0

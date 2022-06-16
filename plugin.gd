@@ -48,7 +48,7 @@ class EditorProxy:
 		if block != null:
 			last_selected = block
 	
-	func create_block_shaper() -> Resource:
+	func create_shaper() -> Resource:
 		if attributes_last.shaper is Shaper:
 			return _get_resource(attributes_last.shaper)
 		return BlockShaper.new()
@@ -75,7 +75,7 @@ class EditorProxy:
 		selected_block._build(runner)
 		
 	func _get_resource(resource: Resource) -> Resource:
-		if resource.resource_local_to_scene:
+		if ResourceUtils.is_local(resource):
 			return resource.duplicate()
 		return resource
 		
@@ -104,7 +104,7 @@ var menu_items_other = menu_items_all + [
 var shaper_inspector: ShaperInspector
 
 func _enter_tree() -> void:
-	add_custom_type("Goshape", "Path", preload("Goshape.gd"), null)
+	add_custom_type("Goshape", "Path3D", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
 	
 	shaper_inspector = ShaperInspector.new(get_editor_interface())

@@ -14,10 +14,17 @@ var is_root = false
 
 func _init(_controller: ShaperInspectorController):
 	controller = _controller
+	flat = false
 	get_popup().id_pressed.connect(on_type_select)
 	
 	
 func _enter_tree():
+	var style_box = StyleBoxFlat.new()
+	minimum_size.y = 28
+	style_box.content_margin_top = -1
+	style_box.content_margin_left = 8
+	style_box.bg_color = Color.DARK_SLATE_BLUE
+	add_theme_stylebox_override("normal", style_box)
 	update_prop()
 	
 

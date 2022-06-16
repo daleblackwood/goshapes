@@ -127,21 +127,10 @@ func _edit_end() -> void:
 	watcher_pathmod.unwatch()
 	curve_changed.disconnect(mark_dirty)
 	
-
-func set_shaper_file(path: String) -> void:
-	if path == null or path.length() < 1:
-		return
-	var res = load(path)
-	set_shaper(res)
-	
-	
-func get_shaper_file() -> String:
-	if shaper == null or shaper.resource_local_to_scene:
-		return ""
-	return shaper.resource_path
-	
 	
 func set_shaper(value: Resource) -> void:
+	if ResourceUtils.is_local(value):
+		value.resource_name = ShaperTypes.get_type_name(value)
 	shaper = value
 	watcher_shaper.watch(shaper)
 	mark_dirty()

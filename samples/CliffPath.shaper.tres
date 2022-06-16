@@ -1,0 +1,42 @@
+[gd_resource type="Resource" load_steps=11 format=3 uid="uid://bkeon2mg2bp2g"]
+
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_oiar2"]
+[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/GrassMat.material" id="2_hyj1r"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="3_p2ikh"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="4_eee4c"]
+[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/CliffMat.tres" id="5_43scp"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/cliffface-low.obj" id="6_abd83"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="7_brrkw"]
+
+[sub_resource type="Resource" id="Resource_0y7mq"]
+script = ExtResource( "1_oiar2" )
+enabled = false
+base_depth = 1.0
+
+[sub_resource type="Resource" id="Resource_j0m6s"]
+script = ExtResource( "3_p2ikh" )
+enabled = true
+build_collider = true
+collision_layer = 1
+conform_to_wall = false
+material = ExtResource( "2_hyj1r" )
+
+[sub_resource type="Resource" id="Resource_tgkqe"]
+script = ExtResource( "7_brrkw" )
+enabled = true
+build_collider = true
+collision_layer = 1
+mesh = ExtResource( "6_abd83" )
+scale = 1.1
+closed = true
+material = ExtResource( "5_43scp" )
+
+[resource]
+script = ExtResource( "4_eee4c" )
+enabled = true
+cap_shaper = SubResource( "Resource_j0m6s" )
+wall_shaper = SubResource( "Resource_tgkqe" )
+bottom_shaper = SubResource( "Resource_0y7mq" )
+bottom_depth = 0.0
+collider_type = 2
+collider_ridge = 0.0

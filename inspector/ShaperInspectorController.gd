@@ -68,5 +68,7 @@ func switch_type(type: Object) -> void:
 	
 func set_shaper(new_shaper: Shaper) -> void:
 	if new_shaper != null:
+		if ResourceUtils.is_local(new_shaper):
+			new_shaper.resource_name = ShaperTypes.get_type_name(new_shaper)
 		host.set(propname, new_shaper)
 	
