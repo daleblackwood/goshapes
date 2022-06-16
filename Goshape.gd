@@ -230,7 +230,7 @@ func _update():
 		
 	if not edit_proxy.mouse_down:
 		axis_match_index = -1
-		axis.axis_match_points = PackedInt32Array()
+		axis_match_points = PackedInt32Array()
 	
 	build()
 	is_dirty = false

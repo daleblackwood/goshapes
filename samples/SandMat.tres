@@ -1,9 +1,9 @@
 [gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://b770vfl4vul8p"]
 
-[sub_resource type="Gradient" id="Gradient_wenk0"]
+[sub_resource type="Gradient" id="Gradient_u0uqd"]
 colors = PackedColorArray(0.52549, 0.478431, 0.239216, 1, 1, 1, 1, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0j18p"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_c1tgr"]
 noise_type = 3
 seed = 2
 frequency = 0.006
@@ -11,21 +11,21 @@ fractal_lacunarity = 9.0
 fractal_gain = 1.719
 fractal_weighted_strength = 0.3
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_qo58x"]
+[sub_resource type="NoiseTexture" id="NoiseTexture_o44l4"]
 generate_mipmaps = false
 seamless = true
 seamless_blend_skirt = 0.158
-color_ramp = SubResource( "Gradient_wenk0" )
-noise = SubResource( "FastNoiseLite_0j18p" )
+color_ramp = SubResource( "Gradient_u0uqd" )
+noise = SubResource( "FastNoiseLite_c1tgr" )
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_3ppen"]
+[sub_resource type="NoiseTexture" id="NoiseTexture_nvyy3"]
 generate_mipmaps = false
 seamless = true
-noise = SubResource( "FastNoiseLite_0j18p" )
+noise = SubResource( "FastNoiseLite_c1tgr" )
 
 [resource]
 albedo_color = Color(1, 0.980392, 0.894118, 1)
-albedo_texture = SubResource( "NoiseTexture_qo58x" )
-normal_texture = SubResource( "NoiseTexture_3ppen" )
+albedo_texture = SubResource( "NoiseTexture_o44l4" )
+normal_texture = SubResource( "NoiseTexture_nvyy3" )
 uv1_scale = Vector3(0.1, 0.1, 0.1)
 uv1_triplanar = true

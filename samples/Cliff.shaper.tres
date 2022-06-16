@@ -27,7 +27,7 @@ enabled = true
 build_collider = true
 collision_layer = 1
 mesh = ExtResource( "4_ei2fn" )
-scale = 1.1
+scale = 0.8
 closed = true
 material = ExtResource( "4_75j48" )
 
