@@ -72,10 +72,19 @@ static func get_local_path(resource: Resource) -> String:
 	var name = resource.resource_path
 	if name == null or name.length() < 1:
 		return ""
+	if name.find("::") > 0:
+		return ""
+	name = name.substr(name.rfindn("/") + 1)
+	return name
+	
+	
+static func get_local_name(resource: Resource) -> String:
+	var name = get_local_path(resource)
+	if name.length() < 1:
+		return ""
 	var dotI = name.rfindn(".")
 	if dotI > 0:
 		name = name.substr(0, dotI)
-	name = name.substr(name.rfindn("/") + 1)
 	return name
 	
 	

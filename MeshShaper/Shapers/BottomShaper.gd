@@ -16,11 +16,14 @@ class_name BottomShaper
 			emit_changed()
 			
 			
-var cap_shaper: CapShaper
+var cap_shaper: CapShaper = null
 
 
 func get_builder() -> ShapeBuilder:
-	return BottomShaperBuilder.new(self, cap_shaper)
+	var using_cap_shaper = cap_shaper
+	if using_cap_shaper == null:
+		using_cap_shaper = ShaperTypes.get_cap_types()[0].new()
+	return BottomShaperBuilder.new(self, using_cap_shaper)
 			
 			
 class BottomShaperBuilder extends ShapeBuilder:

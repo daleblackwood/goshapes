@@ -1,33 +1,33 @@
 [gd_resource type="Resource" load_steps=7 format=3 uid="uid://bq2x671quik10"]
 
-[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/SandMat.tres" id="1_wl060"]
+[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/SandMat.tres" id="1_vjdda"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dk4cp"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="4_g3xk8"]
 
-[sub_resource type="Resource" id="Resource_0odag"]
+[sub_resource type="Resource" id="Resource_r5e02"]
 script = ExtResource( "2_dk4cp" )
+enabled = true
 build_collider = true
 collision_layer = 1
 conform_to_wall = false
-material = ExtResource( "1_wl060" )
+material = ExtResource( "1_vjdda" )
 
-[sub_resource type="Resource" id="Resource_toquf"]
+[sub_resource type="Resource" id="Resource_3pdvy"]
 script = ExtResource( "4_g3xk8" )
+enabled = true
 build_collider = true
 collision_layer = 1
-height = 4.0
+height = 11.0
 bevel = 0.0
-taper = 9.8
-material = ExtResource( "1_wl060" )
+taper = 42.2
+material = ExtResource( "1_vjdda" )
 
 [resource]
 script = ExtResource( "3_f6xbb" )
-cap_type = 1
-cap_style = SubResource( "Resource_0odag" )
-wall_type = 1
-wall_style = SubResource( "Resource_toquf" )
-base_depth = 0.0
-base_type = 0
+enabled = true
+cap_shaper = SubResource( "Resource_r5e02" )
+wall_shaper = SubResource( "Resource_3pdvy" )
+bottom_depth = 0.0
 collider_type = 4
 collider_ridge = 0.0

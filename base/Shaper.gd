@@ -2,6 +2,11 @@
 extends Resource
 class_name Shaper
 
+@export var enabled: bool = true:
+	set(value):
+		enabled = value
+		emit_changed()
+
 
 func get_builder() -> ShapeBuilder:
 	return null

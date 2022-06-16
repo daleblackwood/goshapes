@@ -13,15 +13,14 @@ class_name Goshape
 	set(value):
 		if value:
 			recenter_points()
+			
+	
+@export var axis_matched_editing = false
 	
 	
 @export var path_options: Resource:
 	set = set_path_options
 	
-	
-@export_file("*.shaper.tres") var shaper_file: String:
-	set = set_shaper_file,
-	get = get_shaper_file
 
 @export var shaper: Resource:
 	set = set_shaper
@@ -36,8 +35,6 @@ class_name Goshape
 @export var path_twists : Array[int]:
 	set = set_path_twists
 	
-	
-@export var edit_axis_matching = false
 
 var is_line: bool: get = get_is_line
 var is_editing: bool: get = _get_is_editing
