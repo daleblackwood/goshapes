@@ -1,7 +1,7 @@
 extends Control
 class_name ShaperInspectorController
 	
-var inspector: Object
+var editor: EditorInterface
 var host: Object
 var propname: String
 var shaper: Shaper:
@@ -9,8 +9,8 @@ var shaper: Shaper:
 		return null if host == null else host.get(propname)
 
 
-func _init(_inspector: Object, _host: Object, _propname: String):
-	inspector = _inspector
+func _init(_editor: EditorInterface, _host: Object, _propname: String):
+	editor = _editor
 	host = _host
 	propname = _propname
 	_update_picker.call_deferred()
@@ -33,7 +33,7 @@ func _update_picker() -> void:
 	
 func load_shaper() -> void:
 	print("load")
-	inspector.file_dialog(
+	file_dialog(
 		"Select a shaper...", 
 		FileDialog.FILE_MODE_OPEN_FILE, 
 		func(x):
@@ -43,7 +43,7 @@ func load_shaper() -> void:
 	
 func save_shaper() -> void:
 	print("save")
-	inspector.file_dialog(
+	file_dialog(
 		"Save shaper to file...", 
 		FileDialog.FILE_MODE_SAVE_FILE, 
 		func(x):
@@ -71,4 +71,33 @@ func set_shaper(new_shaper: Shaper) -> void:
 		if ResourceUtils.is_local(new_shaper):
 			new_shaper.resource_name = ShaperTypes.get_type_name(new_shaper)
 		host.set(propname, new_shaper)
+		
+		
+func get_editor_icon(icon_name: String) -> Texture2D:
+	var icon = editor.get_base_control().get_theme_icon(icon_name, "EditorIcons")
+	return icon
+
 	
+func file_dialog(title: String, file_mode: int, callback: Callable) -> void:
+	var file_picker = FileDialog.new()
+	file_picker.add_filter("*.shaper.tres")
+	file_picker.file_mode = file_mode
+	file_picker.title = title
+	file_picker.mode_overrides_title = false
+	file_picker.access = FileDialog.ACCESS_RESOURCES
+	var current_path = ""
+	if editor.has_meta("last_resource_folder"):
+		current_path = editor.get_meta("last_resource_folder")
+	file_picker.current_path = current_path
+	file_picker.file_selected.connect(func (file: String):
+		print("Selected file ", file)
+		if file == null:
+			return
+		var folder_i = file.rfind("/")
+		if folder_i > 0:
+			editor.set_meta("last_resource_folder", file.substr(0, folder_i + 1))	
+		callback.call(file)
+	)
+	editor.get_base_control().add_child(file_picker)
+	file_picker.popup_centered(Vector2i(750, 500))
+

@@ -39,15 +39,15 @@ class_name PathOptions
 			emit_changed()
 			
 			
-@export_flags_3d_physics var ground_placement_mask = 0:
-	set(value):
-		if ground_placement_mask != value:
-			ground_placement_mask = value
-			emit_changed()
-			
-			
 @export var offset_y = 0.0:
 	set(value):
 		if offset_y != value:
 			offset_y = value
+			emit_changed()
+			
+			
+@export_flags_3d_physics var ground_placement_mask = 0:
+	set(value):
+		if ground_placement_mask != value:
+			ground_placement_mask = value
 			emit_changed()

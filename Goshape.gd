@@ -6,6 +6,7 @@ const AXIS_X = 1
 const AXIS_Y = 2
 const AXIS_Z = 4
 
+
 @export var inverted = false:
 	set(value):
 		inverted = value

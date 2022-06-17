@@ -41,9 +41,11 @@ func update_prop() -> void:
 		is_local = true
 		
 	var type_name = ShaperTypes.get_type_name(shaper.get_script())
-	text = type_name + ": " + shaper_path
-	get_popup().clear()
+	type_name = type_name.replace("Shaper", "")
+	text = " " + type_name + ": " + shaper_path
+	icon = controller.get_editor_icon("GuiOptionArrow")
 	
+	get_popup().clear()
 	for i in range(shaper_types.size()):
 		get_popup().add_item("To " + ShaperTypes.get_type_name(shaper_types[i]), i)
 	if is_root:
