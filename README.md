@@ -32,6 +32,7 @@ Goshapes works mainly in the inspector. You can add a new Goshape through the ad
 
 #### Inspector
 ![image](https://user-images.githubusercontent.com/386025/174332654-e77556d3-c884-4353-83f6-8269afde5c8a.png)
+
 The inspector will always have shape native properties and path options. Path options can be copied between shapes, while shape native properties are individual.
 
 For a Goshape, all posibilities and configurations can be achieved using **the inspector**.
@@ -51,16 +52,19 @@ Alongside that, there's the Path Options which can be copied between shapes.
 
 #### Choosing Shapers
 ![image](https://user-images.githubusercontent.com/386025/174336140-0f291c1e-d41a-4062-a36d-d88fd0dacc62.png)
+
 Shapers can be picked from the top of the shaper inspector (Shaper must be expanded.)
 
 #### Blockshapers
 ![image](https://user-images.githubusercontent.com/386025/174334424-8b0242c7-8508-4429-8924-a81d4a2ad140.png)
+
 Blockshapes are the main Shaper type for rendering geometry, they combine up to three shapers to make geometry: the **CapShaper**, the **WallShaper** and the **BottomShaper**. For the most part, this is automatic.
 
 ##### Caps
 There are three cap shaper types: **Flat**, **Plane** and **Line**. Flat and Plane are great for building most shapes (with Plane containing more detail) and Line is useful when using the line PathOption (see above). These three methods alter the triangulation technique used for the caps.
 
 ![image](https://user-images.githubusercontent.com/386025/174335390-e10761f4-2ae9-4006-a33f-e115f9df2794.png)
+
 All Cap shapers take a material and render its UVs 1:1 in world space.
 
 ##### Walls
