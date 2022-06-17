@@ -17,7 +17,7 @@ Goshapes wraps your custom meshes to a path you specify in the editor:
 
 You can also use paths to procedurally place instances:
 ![goshapes2](https://user-images.githubusercontent.com/386025/174088773-30d98cad-5912-402b-a485-0c824f798408.gif)
-^ Notice that the trees above both snap to ground and ignore the footpath. This is provided through layer masks.
+^ Notice that the trees above both snap to ground and ignore the footpath. This can be toggled by layer masks.
 
 [Screenshots](https://imgur.com/a/R0b3cXD)
 
