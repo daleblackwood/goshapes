@@ -73,7 +73,7 @@ func run_group(group, host, callback: Callable) -> int:
 	return group.id
 	
 	
-func get_id() -> void:
+func get_id() -> int:
 	run_count += 1
 	return run_count
 				

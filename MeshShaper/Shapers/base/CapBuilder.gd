@@ -37,7 +37,7 @@ func sort_on_x(a: Vector3, b: Vector3) -> bool:
 func mesh_to_cap_points(mesh: Mesh, path: PathData, scale: float) -> PackedVector3Array:
 	var result = PackedVector3Array()
 	var top_points = mesh_to_top_points(mesh)
-	var meshset = MeshUtils.MeshSet.new()
+	var meshset = MeshSet.new()
 	var vert_count = top_points.size()
 	meshset.set_vert_count(vert_count)
 	for i in range(vert_count):
