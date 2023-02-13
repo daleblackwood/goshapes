@@ -48,7 +48,7 @@ static func remove(owner: Node, name: String) -> void:
 		owner.remove_child(node)
 		
 		
-static func get_edited_scene_root() -> Node:
-	if not Engine.is_editor_hint():
-		return null
-	return EditorScript.new().get_editor_interface().get_edited_scene_root()
+#static func get_edited_scene_root() -> Node:
+#	if not Engine.is_editor_hint():
+#		return null
+#	return EditorScript.new().get_editor_interface().get_edited_scene_root()

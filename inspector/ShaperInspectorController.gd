@@ -47,7 +47,7 @@ func save_shaper() -> void:
 		"Save shaper to file...", 
 		FileDialog.FILE_MODE_SAVE_FILE, 
 		func(x):
-			ResourceSaver.save(x, shaper)
+			ResourceSaver.save(shaper, x)
 			set_shaper(shaper)
 	)
 	
