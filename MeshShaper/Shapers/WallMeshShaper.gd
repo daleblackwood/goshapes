@@ -39,7 +39,7 @@ class WallMeshBuilder extends WallBuilder:
 		super._init(_style)
 		style = _style
 
-	func build_sets(path: PathData) -> Array:
+	func build_sets(path: PathData) -> Array[MeshSet]:
 		var ref_mesh = style.mesh as Mesh
 		if not ref_mesh:
 			return []

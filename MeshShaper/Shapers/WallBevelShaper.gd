@@ -38,7 +38,7 @@ class WallBevelBuilder extends WallBuilder:
 		super._init(_style)
 		style = _style
 	
-	func build_sets(path: PathData) -> Array:
+	func build_sets(path: PathData) -> Array[MeshSet]:
 		var height = style.height
 		var taper = style.taper
 		var bevel = style.bevel
@@ -50,6 +50,5 @@ class WallBevelBuilder extends WallBuilder:
 			bevel
 		)
 		meshset.material = material
-		
 		return [meshset]
 

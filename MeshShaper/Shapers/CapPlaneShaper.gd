@@ -21,7 +21,7 @@ class CapPlaneBuilder extends CapBuilder:
 		super._init(_style)
 		style = _style
 		
-	func build_sets(path: PathData) -> Array:
+	func build_sets(path: PathData) -> Array[MeshSet]:
 		var gs := 1.0
 		if style != null and style.grid_size > 0.0:
 			gs = style.grid_size

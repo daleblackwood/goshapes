@@ -34,7 +34,7 @@ class BottomShaperBuilder extends ShapeBuilder:
 		style = _style
 		cap_shaper = _cap_shaper
 	
-	func build_sets(path: PathData) -> Array:
+	func build_sets(path: PathData) -> Array[MeshSet]:
 		var base_path = PathUtils.move_path_down(path, style.base_depth)
 		var base_shaper = cap_shaper.duplicate()
 		if style.material != null:

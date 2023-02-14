@@ -23,7 +23,7 @@ func build_meshes(host: Node3D, path: PathData, dest_mesh: Mesh = null) -> void:
 		apply_collider(host, mesh)
 	
 
-func build_sets(path: PathData) -> Array:
+func build_sets(path: PathData) -> Array[MeshSet]:
 	printerr("Not implemented")
 	return []
 	

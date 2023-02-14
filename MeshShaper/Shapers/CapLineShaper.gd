@@ -15,7 +15,7 @@ class CapLineBuilder extends CapBuilder:
 		style = _style
 	
 	
-	func build_sets(path: PathData) -> Array:
+	func build_sets(path: PathData) -> Array[MeshSet]:
 		var material = style.material
 		var points = get_cap_points(style, path)
 		var point_count = points.size()

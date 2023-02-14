@@ -23,7 +23,7 @@ static func make_cap(points: PackedVector3Array) -> MeshSet:
 	
 
 static func make_walls(path: PathData, height: float, taper: float = 0.0, bevel: float = 0.0) -> MeshSet:
-	var sets = []
+	var sets: Array[MeshSet] = []
 	var top_path = path;
 	if bevel > 0.0:
 		var bevel_path = PathUtils.taper_path(top_path, bevel)
@@ -39,7 +39,7 @@ static func make_walls(path: PathData, height: float, taper: float = 0.0, bevel:
 	
 	
 static func make_walls_tapered(path: PathData, height: float, taper: float = 0.0) -> MeshSet:
-	var sets = []
+	var sets: Array[MeshSet] = []
 	var bottom_path = PathUtils.taper_path(path, taper)
 	bottom_path = PathUtils.move_path(bottom_path, Vector3.DOWN * height)
 	build_extruded_sets(path.points, bottom_path.points, sets)
@@ -76,7 +76,7 @@ static func make_walls_tapered(path: PathData, height: float, taper: float = 0.0
 #	return set
 	
 	
-static func build_tapered_sets(points: PackedVector3Array, bevelled_points: PackedVector3Array, sets: Array = []) -> Array:
+static func build_tapered_sets(points: PackedVector3Array, bevelled_points: PackedVector3Array, sets: Array[MeshSet] = []) -> Array[MeshSet]:
 	var point_count = points.size()
 	
 	for i in range(point_count):
@@ -91,7 +91,7 @@ static func build_tapered_sets(points: PackedVector3Array, bevelled_points: Pack
 	return sets
 	
 	
-static func build_extruded_sets(points: PackedVector3Array, extruded_points: PackedVector3Array, sets: Array = []) -> Array:
+static func build_extruded_sets(points: PackedVector3Array, extruded_points: PackedVector3Array, sets: Array[MeshSet] = []) -> Array[MeshSet]:
 	var point_count = points.size()
 	
 	var length = 0.0
@@ -197,7 +197,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 		points.append(points[0])
 		point_count += 1
 	# calculate directions for segments
-	var lengths = []
+	var lengths: Array[float] = []
 	lengths.resize(point_count)
 	var path_length = 0.0
 	for i in range(point_count):
@@ -259,7 +259,7 @@ static func mesh_clone_to_length(meshset: MeshSet, path_length: float) -> MeshSe
 	var seg_length = path_length / seg_count
 	var x_multi = seg_length / mesh_length
 	# tile verts along x, build sets
-	var sets = []
+	var sets: Array[MeshSet] = []
 	for i in range(seg_count):
 		var set = meshset.clone()
 		var vert_count = set.verts.size()
@@ -280,19 +280,19 @@ static func get_segment_count_for_path(path_length: float, segment_length: float
 	return int(round(path_length / segment_length))
 	
 
-static func weld_sets(sets: Array, threshhold: float = 0.01) -> MeshSet:
+static func weld_sets(sets: Array[MeshSet], threshhold: float = 0.01) -> MeshSet:
 	var merged = combine_sets(sets)
 	
 	var theshholdsq = threshhold * threshhold
 	
 	var tri_count = merged.tris.size()
-	var trimap = []
+	var trimap: Array[int] = []
 	trimap.resize(tri_count)
 	
 	var vert_i = 0
-	var verts = []
-	var uvs = []
-	var normals = []
+	var verts: Array[Vector3] = []
+	var uvs: Array[Vector2] = []
+	var normals: Array[Vector3] = []
 	
 	var merged_vert_count = merged.verts.size()
 	for i in range(merged_vert_count):
@@ -336,7 +336,7 @@ static func offset_mesh(meshset: MeshSet, offset: Vector3) -> MeshSet:
 	return result
 			
 			
-static func combine_sets(sets: Array) -> MeshSet:
+static func combine_sets(sets: Array[MeshSet]) -> MeshSet:
 	var tri_count = 0
 	var vert_count = 0
 	for set in sets:
@@ -401,9 +401,9 @@ static func taper_mesh(meshset: MeshSet, path: PathData, taper: float) -> MeshSe
 	return result
 	
 	
-static func mesh_to_sets(mesh: Mesh) -> Array:
+static func mesh_to_sets(mesh: Mesh) -> Array[MeshSet]:
 	var surface_count = mesh.get_surface_count()
-	var result = []
+	var result: Array[MeshSet] = []
 	result.resize(surface_count)
 	for i in range(surface_count):
 		var meshset = MeshSet.new()
@@ -416,12 +416,9 @@ static func mesh_to_sets(mesh: Mesh) -> Array:
 	return result
 	
 	
-static func build_meshes(meshset_or_array, mesh: ArrayMesh = null) -> ArrayMesh:
-	if meshset_or_array is Array:
-		for meshset in meshset_or_array:
-			mesh = build_mesh(meshset, mesh)
-	else:
-		mesh = build_mesh(meshset_or_array, mesh)
+static func build_meshes(meshsets: Array[MeshSet], mesh: ArrayMesh = null) -> ArrayMesh:
+	for meshset in meshsets:
+		mesh = build_mesh(meshset, mesh)
 	return mesh
 	
 	

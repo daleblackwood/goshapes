@@ -11,21 +11,21 @@ fractal_lacunarity = 9.0
 fractal_gain = 1.719
 fractal_weighted_strength = 0.3
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_o44l4"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture_o44l4"]
 generate_mipmaps = false
 seamless = true
 seamless_blend_skirt = 0.158
-color_ramp = SubResource( "Gradient_u0uqd" )
-noise = SubResource( "FastNoiseLite_c1tgr" )
+color_ramp = SubResource("Gradient_u0uqd")
+noise = SubResource("FastNoiseLite_c1tgr")
 
-[sub_resource type="NoiseTexture" id="NoiseTexture_nvyy3"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture_nvyy3"]
 generate_mipmaps = false
 seamless = true
-noise = SubResource( "FastNoiseLite_c1tgr" )
+noise = SubResource("FastNoiseLite_c1tgr")
 
 [resource]
 albedo_color = Color(1, 0.980392, 0.894118, 1)
-albedo_texture = SubResource( "NoiseTexture_o44l4" )
-normal_texture = SubResource( "NoiseTexture_nvyy3" )
+albedo_texture = SubResource("NoiseTexture_o44l4")
+normal_texture = SubResource("NoiseTexture_nvyy3")
 uv1_scale = Vector3(0.1, 0.1, 0.1)
 uv1_triplanar = true
