@@ -1,5 +1,5 @@
 # Goshapes for Godot 4
-![goshapes1](https://raw.githubusercontent.com/daleblackwood/goshapes/main/logo.png)
+![goshapes1](https://raw.githubusercontent.com/daleblackwood/goshapes/main/addons/goshapes/logo.png)
 
 ## Intuitive path-based level creation for Godot 4
 
