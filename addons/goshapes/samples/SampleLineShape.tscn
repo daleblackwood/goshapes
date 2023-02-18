@@ -185,7 +185,6 @@ ground_placement_mask = 0
 
 [sub_resource type="Resource" id="Resource_ex5rf"]
 script = ExtResource("12_4qbsa")
-object = ExtResource("12_b8nom")
 density = 0.485
 spread = 8.0
 seed = 0

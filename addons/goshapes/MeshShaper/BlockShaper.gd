@@ -6,7 +6,7 @@ extends Shaper
 var watcher_cap := ResourceWatcher.new(mark_dirty)
 
 ## The Shaper used for the building the cap
-@export var cap_shaper: Resource:
+@export var cap_shaper: CapShaper:
 	set(value):
 		cap_shaper = value
 		watcher_cap.watch(cap_shaper)
@@ -16,7 +16,7 @@ var watcher_cap := ResourceWatcher.new(mark_dirty)
 var watcher_wall := ResourceWatcher.new(mark_dirty)
 
 ## The Shaper used for the building the walls
-@export var wall_shaper: Resource:
+@export var wall_shaper: WallShaper:
 	set(value):
 		wall_shaper = value
 		watcher_wall.watch(wall_shaper)
@@ -26,7 +26,7 @@ var watcher_wall := ResourceWatcher.new(mark_dirty)
 var watcher_bottom := ResourceWatcher.new(mark_dirty)
 
 ## The Shaper used for the building the base
-@export var bottom_shaper: Resource:
+@export var bottom_shaper: BottomShaper:
 	set(value):
 		bottom_shaper = value
 		watcher_bottom.watch(bottom_shaper)

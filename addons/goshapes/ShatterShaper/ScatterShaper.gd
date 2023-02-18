@@ -6,11 +6,14 @@ extends Shaper
 # An upper limit for instance counts for protection
 const INSTANCE_CAP = 2000
 
+var watcher_scene_source := ResourceWatcher.new(emit_changed)
+
 ## The object to scatter about
-@export var object: PackedScene = null:
+@export var scene_source: SceneSource = null:
 	set(value):
-		if object != value:
-			object = value
+		if scene_source != value:
+			scene_source = value
+			watcher_scene_source.watch(scene_source)
 			emit_changed()
 			
 
@@ -99,6 +102,8 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			
 func _init():
 	super._init()
+	if not scene_source:
+		scene_source = ScatterItem.new()
 	watcher_noise.watch(noise)
 			
 
@@ -114,6 +119,9 @@ class ShatterBuilder extends ShapeBuilder:
 		
 		
 	func build(host: Node3D, path: PathData) -> void:
+		if not style.scene_source or not style.scene_source.has_resource():
+			printerr("No scene(s) attached to ScatterShaper.")
+			return
 		var rng = RandomNumberGenerator.new()
 		rng.seed = style.seed
 		var curve = path.curve
@@ -128,7 +136,6 @@ class ShatterBuilder extends ShapeBuilder:
 			max_z = maxf(max_z, p.z)
 		var inc = style.spread
 		var density = style.density
-		var object = style.object
 		var place_on_ground = style.place_on_ground
 		var random_angle = style.random_angle
 		var scale_variance = style.scale_variance
@@ -141,7 +148,6 @@ class ShatterBuilder extends ShapeBuilder:
 			polygon.set(i, Vector2(path.points[i].x, path.points[i].z))
 		var x = min_x
 		var instances = 0
-		var object_name = ResourceUtils.get_type(object)
 		var collision_layer = style.collision_layer
 		var placement_mask = path.placement_mask
 		while x < max_x:
@@ -152,6 +158,7 @@ class ShatterBuilder extends ShapeBuilder:
 				if instances > INSTANCE_CAP:
 					printerr("Exceeded %d scatter instance cap" % INSTANCE_CAP)
 					return
+				var r_inst = rng.randi()
 				var r_density = rng.randf()
 				var r_x = rng.randf()
 				var r_z = rng.randf()
@@ -181,6 +188,8 @@ class ShatterBuilder extends ShapeBuilder:
 						continue
 				else:
 					pos.y = curve.get_closest_point(pos).y
+				var object = style.scene_source.get_resource()
+				var object_name = ResourceUtils.get_type(object)
 				var inst = object.instantiate()
 				instances += 1
 				inst.name = "%s%d" % [object_name, instances]
