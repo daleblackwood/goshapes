@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://de8asbx0dukri"]
+
+[sub_resource type="GDScript" id="GDScript_m0e4i"]
+script/source = "extends Camera3D
+
+@export var target: Node3D = null
+
+var ground_y = 0.0
+var turn = 0.0
+
+func _process(delta: float) -> void:
+	if target == null:
+		return
+	
+	var target_pos = target.global_transform.origin
+	target_pos.y += 2.0
+	
+	if not target.is_on_floor() and target_pos.y > ground_y:
+		target_pos.y = ground_y
+	else:
+		ground_y = lerp(ground_y, target_pos.y, 0.1)
+		target_pos.y = ground_y
+	
+	var diff = global_transform.origin - target_pos
+	diff.y = 0.0
+	var offset = diff
+	var length = offset.length()
+	var too_far_away = length > 10.0
+	if length > 0.0:
+		offset = offset.normalized() * 3.0
+	
+	offset.y = 1.5
+	
+	var to_pos = target_pos + offset
+	if to_pos.y < 0.0:
+		to_pos.y = 0.0
+	if not too_far_away:
+		to_pos = global_transform.origin.lerp(to_pos, 0.1)
+	
+	if Input.is_key_pressed(KEY_COMMA):
+		turn = -1.0
+	elif Input.is_key_pressed(KEY_PERIOD):
+		turn = 1.0
+	if abs(turn) > 0.01:
+		var turn_offset = to_pos - target_pos
+		turn_offset = turn_offset.rotated(Vector3.UP, delta * turn * delta * -200.0)
+		to_pos = target_pos + turn_offset
+		turn *= 0.8
+		
+	global_transform.origin = to_pos
+	
+	look_at(target_pos)
+		
+"
+
+[node name="Camera3D" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, -2.96426)
+script = SubResource("GDScript_m0e4i")

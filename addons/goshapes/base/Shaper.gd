@@ -2,6 +2,9 @@
 extends Resource
 class_name Shaper
 
+## The base type that binds a builder to the Goshape
+
+## Enables or disables the building of this Shaper
 @export var enabled: bool = true:
 	set(value):
 		enabled = value

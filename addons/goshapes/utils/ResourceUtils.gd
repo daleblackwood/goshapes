@@ -1,5 +1,7 @@
 @tool
 class_name ResourceUtils		
+
+## Utilities that manipulate Goshapes resources
 		
 static func is_local(resource: Resource) -> bool:
 	if not resource:
@@ -69,7 +71,7 @@ static func get_type(resource: Resource) -> String:
 	
 	
 static func get_local_path(resource: Resource) -> String:
-	var name = resource.resource_path
+	var name = null if not resource else resource.resource_path
 	if name == null or name.length() < 1:
 		return ""
 	if name.find("::") > 0:
@@ -101,4 +103,15 @@ static func copy_props(src: Resource, dest: Resource) -> void:
 		for dest_prop in dest_props:
 			if src_prop.name == dest_prop.name and src_prop.type == dest_prop.type:
 				dest.set(src_prop.name, src.get(src_prop.name))
+				
+		
+static func inc_name_number(name: String) -> String:
+	var append_index := name.length()
+	while name[append_index - 1] >= '0' and name[append_index - 1] <= '9':
+		append_index -= 1
+	var prefix = name.substr(0, append_index)
+	var suffix = int(name.substr(append_index))
+	print(prefix, " ", suffix)
+	suffix += 1
+	return prefix + str(suffix)
 	

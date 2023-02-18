@@ -2,15 +2,20 @@
 extends Shaper
 class_name ScatterShaper
 
-const INSTANCE_CAP = 1000
+## Scatters objects throughout the shape
 
+# An upper limit for instance counts for protection
+const INSTANCE_CAP = 2000
+
+## The object to scatter about
 @export var object: PackedScene = null:
 	set(value):
 		if object != value:
 			object = value
 			emit_changed()
 			
-			
+
+## How densely to populate the area with the objects
 @export_range(0.0, 1.0) var density: float = 3.0:
 	set(value):
 		if density != value:
@@ -18,13 +23,15 @@ const INSTANCE_CAP = 1000
 			emit_changed()
 			
 			
+## How far to spread the objects apart
 @export_range(0.5, 10.0, 0.25) var spread: float = 3.0:
 	set(value):
 		if spread != value:
 			spread = value
 			emit_changed()
 			
-			
+		
+## A seed to feed the randomiser	
 @export var seed: int = 0:
 	set(value):
 		if seed != value:
@@ -32,21 +39,25 @@ const INSTANCE_CAP = 1000
 			emit_changed()
 			
 			
+## Causes objects to be placed on underlying ground
 @export var place_on_ground: bool = true:
 	set(value):
 		if place_on_ground != value:
 			place_on_ground = value
 			emit_changed()
 			
-			
+
+## Rotates the objects randomly around up		
 @export var random_angle: bool = true:
 	set(value):
 		if random_angle != value:
 			random_angle = value
 			emit_changed()
 			
-			
+	
 var watcher_noise := ResourceWatcher.new(emit_changed)
+		
+## Allows a noise texture to be used instead of random seed
 @export var noise: Noise:
 	set(value):
 		if noise != value:
@@ -54,7 +65,8 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			watcher_noise.watch(noise)
 			emit_changed()
 			
-			
+
+## Random differences in scale up to this theshhold	
 @export_range(0.0, 10.0) var scale_variance: float = 0.0:
 	set(value):
 		if scale_variance != value:
@@ -62,19 +74,23 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			emit_changed()
 			
 			
+## Scales all generated objects
 @export_range(0.1, 5.0) var scale_multiplier: float = 1.0:
 	set(value):
 		if scale_multiplier != value:
 			scale_multiplier = value
 			emit_changed()
 			
-			
+		
+## Higher values place objects more evenly	
 @export_range(0.0, 1.0) var evenness: float = 0.0:
 	set(value):
 		if evenness != value:
 			evenness = value
 			emit_changed()
-			
+
+
+## Physics layers to ignore when placing objects			
 @export_flags_3d_physics var collision_layer: int = 0:
 	set(value):
 		if collision_layer != value:

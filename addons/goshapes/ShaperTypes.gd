@@ -1,6 +1,7 @@
 @tool
 class_name ShaperTypes
-	
+
+## Utilities and types that control, set and retreive Shapers
 	
 static func get_base_types() -> Array:
 	return [

@@ -2,13 +2,16 @@
 extends Shaper
 class_name BottomShaper
 
+## A Shaper that draws the bottom (or base) of a path's geometry
 
+## The depth the base should be drawn at
 @export_range(0.0, 100.0, 0.2) var base_depth: float = 1.0:
 	set(value):
 		if base_depth != value:
 			base_depth = value
 			emit_changed()
-			
+
+## The material applied to the base geometry
 @export var material: Material:
 	set(value):
 		if material != value:

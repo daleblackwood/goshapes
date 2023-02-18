@@ -1,7 +1,8 @@
 @tool
 extends CapShaper
 class_name CapFlatShaper
-			
+
+## A Shaper that draws the cap (or top) of a path's geometry		
 			
 func get_builder() -> ShapeBuilder:
 	return CapFlatBuilder.new(self)

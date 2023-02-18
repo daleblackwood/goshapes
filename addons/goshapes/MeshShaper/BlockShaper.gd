@@ -2,6 +2,9 @@
 extends Shaper
 class_name BlockShaper
 
+## Builds a cap and walls and a floor on the Goshape
+
+## The Shaper used for the building the cap
 var watcher_cap := ResourceWatcher.new(mark_dirty)
 @export var cap_shaper: Resource:
 	set(value):
@@ -10,6 +13,7 @@ var watcher_cap := ResourceWatcher.new(mark_dirty)
 		mark_dirty()
 		
 
+## The Shaper used for the building the walls
 var watcher_wall := ResourceWatcher.new(mark_dirty)
 @export var wall_shaper: Resource:
 	set(value):
@@ -18,6 +22,7 @@ var watcher_wall := ResourceWatcher.new(mark_dirty)
 		mark_dirty()
 		
 
+## The Shaper used for the building the base
 var watcher_bottom := ResourceWatcher.new(mark_dirty)
 @export var bottom_shaper: Resource:
 	set(value):
@@ -26,12 +31,14 @@ var watcher_bottom := ResourceWatcher.new(mark_dirty)
 		mark_dirty()
 		
 
+## Controls the depth of the shape
 @export_range(0.0, 20.0, 0.5) var bottom_depth = 0.0:
 	set(value):
 		bottom_depth = value
 		mark_dirty()
 		
 
+## Changes which colliders are generated for the shape
 enum ColliderType { None, CapOnly, Simple, Ridged, Accurate }
 @export var collider_type: ColliderType = ColliderType.Simple:
 	set(value):
@@ -39,6 +46,7 @@ enum ColliderType { None, CapOnly, Simple, Ridged, Accurate }
 		emit_changed()
 
 
+## Extrudes a small ridge along the cap used for containing actors
 @export_range(0.0, 10.0, 1.0) var collider_ridge: float = 0.0:
 	set(value):
 		collider_ridge = value

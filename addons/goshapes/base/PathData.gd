@@ -1,6 +1,8 @@
 @tool
 class_name PathData
 
+## The object used to manipulate path points
+
 var points := PackedVector3Array(): set = set_points
 var ups := PackedVector3Array(): set = set_ups
 var point_count: int: get = get_point_count

@@ -4,17 +4,18 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bminxc530cpcp"
-path="res://.godot/imported/Rock.glb-e0044583547776554f9003b079be63c4.scn"
+path="res://.godot/imported/Rock.glb-0ace5721f5ff5d2915871cc39988dddc.scn"
 
 [deps]
 
-source_file="res://addons/goshapes/samples/Rock.glb"
-dest_files=["res://.godot/imported/Rock.glb-e0044583547776554f9003b079be63c4.scn"]
+source_file="res://addons/goshapes/samples/sample_assets/Rock.glb"
+dest_files=["res://.godot/imported/Rock.glb-0ace5721f5ff5d2915871cc39988dddc.scn"]
 
 [params]
 
 nodes/root_type="Node3D"
 nodes/root_name="Scene Root"
+nodes/apply_root_scale=true
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
 meshes/generate_lods=true
@@ -24,5 +25,8 @@ meshes/lightmap_texel_size=0.2
 skins/use_named_skins=true
 animation/import=true
 animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
 import_script/path=""
 _subresources={}
+gltf/embedded_image_handling=1

@@ -1,6 +1,8 @@
 @tool
 class_name SceneUtils
 
+## Convenience utilities that manipulate scenes resources
+
 static func get_or_create(parent: Node, name: String, type: Object) -> Node:
 	if not parent:
 		return null
@@ -46,6 +48,7 @@ static func remove(owner: Node, name: String) -> void:
 	var node = owner.find_child(name, false)
 	if node:
 		owner.remove_child(node)
+		
 		
 		
 #static func get_edited_scene_root() -> Node:

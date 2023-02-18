@@ -2,6 +2,8 @@
 extends MeshBuilder
 class_name CapBuilder
 
+## The base class for all cap builders
+
 func _init(_style: MeshShaper):
 	super._init(_style)
 

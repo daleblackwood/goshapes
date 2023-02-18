@@ -52,4 +52,5 @@ ui_down={
 
 [rendering]
 
+renderer/rendering_method="mobile"
 vulkan/rendering/back_end=1

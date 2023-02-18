@@ -1,6 +1,8 @@
 @tool
 class_name ShapeBuilder
 	
+## The base type that builds geometry on top of Goshapes
+	
 var host: Node3D
 var path: PathData
 

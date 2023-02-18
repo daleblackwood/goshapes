@@ -1,6 +1,8 @@
 @tool
 extends ShapeBuilder
 class_name MeshBuilder
+
+## The base type for all geometry shape builders
 	
 var meshsets: Array[MeshSet]
 var mesh: ArrayMesh

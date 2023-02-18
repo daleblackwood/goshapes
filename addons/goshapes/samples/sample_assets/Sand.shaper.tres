@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="BlockShaper" load_steps=9 format=3 uid="uid://bq2x671quik10"]
+[gd_resource type="Resource" script_class="BlockShaper" load_steps=9 format=3 uid="uid://crmkyitge0fwa"]
 
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_8p5wp"]
-[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/SandMat.tres" id="1_vjdda"]
+[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/sample_assets/SandMat.tres" id="1_vjdda"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dk4cp"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="4_g3xk8"]

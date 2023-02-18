@@ -1,6 +1,9 @@
 @tool
 class_name MeshSet
-	
+
+## A data class that stores mesh information
+
+
 var verts = PackedVector3Array()
 var uvs = PackedVector2Array()
 var normals = PackedVector3Array()

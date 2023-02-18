@@ -16,9 +16,15 @@ class BlockAttributes:
 	var shaper: Resource
 	var path_options: Resource
 	
+	func get_copy(r: Resource) -> Resource:
+		if ResourceUtils.is_local(r):
+			return r.duplicate(true)
+		else:
+			return r
+	
 	func copy(block: Goshape) -> void:
-		shaper = block.shaper
-		path_options = block.path_options
+		shaper = get_copy(block.shaper)
+		path_options = get_copy(block.path_options)
 		
 	func apply(block: Goshape) -> void:
 		block.shaper = shaper
@@ -99,7 +105,8 @@ var menu_items_block = [
 	["Paste Path Mods", proxy, "paste_path_options"],
 	["Reset Shaper", proxy, "reset_shaper"],
 	["Remove Control Points", self, "modify_selected", "remove_control_points"],
-	["Recenter Shape", self, "modify_selected", "recenter"]
+	["Recenter Shape", self, "modify_selected", "recenter"],
+	["Add New Similar", self, "add_block_similar"]
 ] + menu_items_all
 var menu_items_other = menu_items_all + [
 	["Place Objects on Ground", self, "ground_objects"]
@@ -170,6 +177,15 @@ func add_block() -> void:
 	var shape = add_blank()
 	shape.name = StringName("BlockShape%d" % shape.get_parent().get_child_count())
 	shape.set_shaper(BlockShaper.new())
+	
+	
+func add_block_similar() -> void:
+	proxy.copy_attributes()
+	var name = ResourceUtils.inc_name_number(proxy.last_selected.name)
+	var shape = add_blank()
+	shape.name = StringName(name)
+	proxy.set_selected(shape)
+	proxy.paste_attributes()
 	
 	
 func add_scatter() -> void:

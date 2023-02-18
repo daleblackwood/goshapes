@@ -2,40 +2,48 @@
 extends Path3D
 class_name Goshape
 
+## Goshape is the main node that generates shapes from paths using Shapers
+
 const AXIS_X = 1
 const AXIS_Y = 2
 const AXIS_Z = 4
 
-
+## Invert the direction of the path
 @export var inverted = false:
 	set(value):
 		inverted = value
 		mark_dirty()
 	
-	
+
+## A toggle that moves the origin of the path to the center
 @export var recenter = false:
 	set(value):
 		if value:
 			recenter_points()
 			
-	
+
+## An editing option that causes aligned points to move together
 @export var axis_matched_editing = false
 	
-	
+
+## The PathOptions Resource that contains the options for this shape
 @export var path_options: Resource:
 	set = set_path_options
 	
 
+## The Shaper Resource that configures how to build this Goshape
 @export var shaper: Resource:
 	set = set_shaper
 	
 	
+## Cause path twists to build along the path (useful for loop-de-loops) 
 @export var cascade_twists = false:
 	set(value):
 		cascade_twists = value
 		mark_dirty()
 		
 
+## An array of twists to apply to each point in the path
 @export var path_twists : Array[int]:
 	set = set_path_twists
 	
@@ -50,6 +58,7 @@ var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
+var has_made_local = false
 
 
 func _ready() -> void:
@@ -91,6 +100,16 @@ func _edit_begin(edit_proxy) -> void:
 		_init_curve()
 	if not curve is GoCurve3D:
 		curve.set_script(GoCurve3D.new().get_script())
+	
+	if not has_made_local:
+		has_made_local = true
+		if ResourceUtils.is_local(curve):
+			curve = curve.duplicate(true)
+		if ResourceUtils.is_local(shaper):
+			shaper = shaper.duplicate(true)
+		if ResourceUtils.is_local(path_options):
+			path_options = path_options.duplicate(true)
+		
 	curve_changed.connect(on_curve_changed)
 	watcher_shaper.watch(shaper)
 	watcher_pathmod.watch(path_options)
@@ -136,7 +155,7 @@ func _edit_end() -> void:
 	
 	
 func set_shaper(value: Resource) -> void:
-	if ResourceUtils.is_local(value):
+	if value and ResourceUtils.is_local(value):
 		value.resource_name = ShaperTypes.get_type_name(value)
 	shaper = value
 	watcher_shaper.watch(shaper)

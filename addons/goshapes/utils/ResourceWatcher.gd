@@ -1,5 +1,7 @@
 class_name ResourceWatcher
 
+## Utilities that allow for monitoring changes on Goshapes resources
+
 var resource: Resource
 var callback: Callable
 

@@ -2,6 +2,9 @@
 extends MeshShaper
 class_name CapShaper
 
+## A base Shaper that all CapShapers extend from
+
+## Causes the shape to more closely conform to the wall geometry (experimental)
 @export var conform_to_wall: bool = false:
 	set(value):
 		if conform_to_wall != value:
@@ -9,6 +12,7 @@ class_name CapShaper
 			emit_changed()
 
 
+## The material to draw on the cap mesh
 @export var material: Material:
 	set(value):
 		if material != value:

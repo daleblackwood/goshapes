@@ -1,6 +1,9 @@
 @tool
 class_name PathUtils
 
+## Utilities that manipulate path data
+
+const ROOT_2 = 1.41421356237
 
 static func flatten_curve(curve: Curve3D) -> void:
 	var point_count = curve.get_point_count()
@@ -92,17 +95,25 @@ static func path_to_outline(path: PathData, width: float) -> PathData:
 	path_points.resize(point_total)
 	var path_ups = PackedVector3Array()
 	path_ups.resize(point_total)
+	var dir_a = Vector3.FORWARD
+	var dir_b = Vector3.FORWARD
 	for i in range(point_count):
-		var dir = Vector3.FORWARD
 		if i > 0:
-			var dif = path.points[i] - path.points[i - 1]
-			dir = dif.normalized()
-		else:
-			dir = (path.points[i + 1] - path.points[i]).normalized()
-		
+			dir_a = path.points[i] - path.points[i - 1]
+			dir_a = dir_a.normalized()
+		if i < point_count - 1:
+			dir_b = (path.points[i + 1] - path.points[i]).normalized()
+			dir_b = dir_b.normalized()
+		if i == 0:
+			dir_a = dir_b
+		if i == point_count - 1:
+			dir_b = dir_a
+		var dir = ((dir_a + dir_b)).normalized()
 		var up = path.get_up(i)
 		var p = path.points[i]
 		var out = dir.cross(up)
+		#out *= max(1.0, ROOT_2 - dir_b.dot(dir_a))
+		out *= lerp(ROOT_2, 1.0, dir_b.dot(dir_a))
 		var a = p + out * width * 0.5
 		var b = p - out * width * 0.5
 		path_points[i] = a

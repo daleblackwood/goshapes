@@ -1,0 +1,113 @@
+[gd_scene load_steps=7 format=3 uid="uid://wilkunqqgl4"]
+
+[sub_resource type="GDScript" id="GDScript_4ole0"]
+script/source = "extends CharacterBody3D
+
+@export var speed := 7.0
+@export var jump_power := 11.0
+
+const GRAVITY = 25.0
+
+var look_dir = Vector3.FORWARD
+var time_in_air = 0.0
+var spawn_pos = Vector3.ZERO
+
+func _ready():
+	spawn_pos = global_transform.origin
+	
+
+func _physics_process(delta):
+	if is_on_floor():
+		time_in_air = 0.0
+	else:
+		velocity.y -= GRAVITY * delta
+		time_in_air += delta
+		if global_transform.origin.y < -20.0:
+			global_transform.origin = spawn_pos
+		if velocity.y > 0.0 and not Input.is_action_pressed(\"ui_accept\"):
+			velocity.y *= 1.0 - dease(delta, 0.8)
+			
+
+	if Input.is_action_just_pressed(\"ui_accept\") and time_in_air < 0.1:
+		velocity.y = jump_power
+
+	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var right = Vector3.RIGHT
+	var forward = Vector3.FORWARD
+	var cam = get_viewport().get_camera_3d()
+	if cam:
+		var cam_basis = cam.global_transform.basis
+		right = cam_basis.x
+		forward = right.cross(Vector3.UP)
+	var direction = right * input_dir.x + forward * input_dir.y
+	var velocity_to = velocity
+	if direction.length_squared() > 0.2:
+		velocity_to.x = direction.x * speed
+		velocity_to.z = direction.z * speed
+		look_dir = direction.normalized()
+	else:
+		velocity_to.x = move_toward(velocity_to.x, 0, speed)
+		velocity_to.z = move_toward(velocity_to.z, 0, speed)
+		
+	velocity = velocity.lerp(velocity_to, dease(delta, 0.3))
+
+	move_and_slide()
+	transform.basis = transform.basis.slerp(Basis.looking_at(-look_dir), dease(delta, 0.2))
+
+
+func dease(dt: float, sharpness: float) -> float:
+	return clamp(1.0 - pow(1.0 - sharpness, dt * 60.0), 0.0, 1.0)
+"
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_l0ajn"]
+radius = 0.25
+height = 0.7
+radial_segments = 16
+rings = 6
+
+[sub_resource type="SphereMesh" id="SphereMesh_jovet"]
+radius = 0.3
+height = 0.6
+radial_segments = 24
+rings = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p788p"]
+albedo_color = Color(1, 0.00392157, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_353yh"]
+material = SubResource("StandardMaterial3D_p788p")
+top_radius = 0.2
+bottom_radius = 0.25
+height = 0.2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_a5ecq"]
+radius = 0.3
+height = 1.2
+
+[node name="Player" type="CharacterBody3D"]
+collision_mask = 7
+script = SubResource("GDScript_4ole0")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.579928, 0)
+mesh = SubResource("CapsuleMesh_l0ajn")
+skeleton = NodePath("")
+
+[node name="Head" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.57364, 0.121487)
+mesh = SubResource("SphereMesh_jovet")
+skeleton = NodePath("")
+
+[node name="Hat" type="MeshInstance3D" parent="Body/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.237459, 0)
+mesh = SubResource("CylinderMesh_353yh")
+skeleton = NodePath("")
+
+[node name="HatBrim" type="MeshInstance3D" parent="Body/Head/Hat"]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1.2, 0, -0.0472, 0.0860804)
+mesh = SubResource("CylinderMesh_353yh")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.545957, 0)
+shape = SubResource("CapsuleShape3D_a5ecq")

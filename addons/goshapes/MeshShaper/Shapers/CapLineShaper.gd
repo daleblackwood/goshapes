@@ -1,7 +1,8 @@
 @tool
 extends CapShaper
 class_name CapLineShaper
-			
+
+## A Shaper that draws the cap for a line for winding paths
 
 func get_builder() -> ShapeBuilder:
 	return CapLineBuilder.new(self)
@@ -19,11 +20,12 @@ class CapLineBuilder extends CapBuilder:
 		var material = style.material
 		var points = get_cap_points(style, path)
 		var point_count = points.size()
+		var sets: Array[MeshSet] = []
 		if point_count < 2:
-			return []
+			return sets
 			
 		var width = (points[point_count - 1] - points[0]).length()
-		var sets = []
+
 		var length = 0.0
 		var line_points = point_count / 2
 		for i in range(1, line_points):
@@ -46,7 +48,6 @@ class CapLineBuilder extends CapBuilder:
 			var quads = split_quad(quad)
 			for set in quads:
 				sets.append(set)
-			#sets.append(quad)
 			length += l
 			
 		var meshset = MeshUtils.weld_sets(sets)
