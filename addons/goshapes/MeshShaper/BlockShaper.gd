@@ -1,11 +1,11 @@
 @tool
-extends Shaper
 class_name BlockShaper
-
+extends Shaper
 ## Builds a cap and walls and a floor on the Goshape
 
-## The Shaper used for the building the cap
 var watcher_cap := ResourceWatcher.new(mark_dirty)
+
+## The Shaper used for the building the cap
 @export var cap_shaper: Resource:
 	set(value):
 		cap_shaper = value
@@ -13,8 +13,9 @@ var watcher_cap := ResourceWatcher.new(mark_dirty)
 		mark_dirty()
 		
 
-## The Shaper used for the building the walls
 var watcher_wall := ResourceWatcher.new(mark_dirty)
+
+## The Shaper used for the building the walls
 @export var wall_shaper: Resource:
 	set(value):
 		wall_shaper = value
@@ -22,8 +23,9 @@ var watcher_wall := ResourceWatcher.new(mark_dirty)
 		mark_dirty()
 		
 
-## The Shaper used for the building the base
 var watcher_bottom := ResourceWatcher.new(mark_dirty)
+
+## The Shaper used for the building the base
 @export var bottom_shaper: Resource:
 	set(value):
 		bottom_shaper = value
@@ -38,8 +40,9 @@ var watcher_bottom := ResourceWatcher.new(mark_dirty)
 		mark_dirty()
 		
 
-## Changes which colliders are generated for the shape
 enum ColliderType { None, CapOnly, Simple, Ridged, Accurate }
+
+## Changes which colliders are generated for the shape
 @export var collider_type: ColliderType = ColliderType.Simple:
 	set(value):
 		collider_type = value

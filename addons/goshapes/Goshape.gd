@@ -1,7 +1,6 @@
 @tool
-extends Path3D
 class_name Goshape
-
+extends Path3D
 ## Goshape is the main node that generates shapes from paths using Shapers
 
 const AXIS_X = 1

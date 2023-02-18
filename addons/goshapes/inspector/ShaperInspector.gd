@@ -1,6 +1,6 @@
 @tool
-extends EditorInspectorPlugin
 class_name ShaperInspector
+extends EditorInspectorPlugin
 
 var editor: EditorInterface
 var change_button: MenuButton

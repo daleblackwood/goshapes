@@ -1,9 +1,8 @@
 @tool
 class_name MeshUtils
-		
 ## Utilities that manipulate mesh data
-		
-# statics	
+
+
 static func make_cap(points: PackedVector3Array) -> MeshSet:
 	var point_count = points.size()
 	

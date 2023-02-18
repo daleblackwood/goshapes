@@ -1,7 +1,6 @@
 @tool
-extends Resource
 class_name PathOptions
-
+extends Resource
 ## A Resource that controls the Goshape paths shape
 
 ## Causes the path to remain flat

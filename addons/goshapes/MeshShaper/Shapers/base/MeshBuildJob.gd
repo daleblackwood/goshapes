@@ -1,6 +1,6 @@
 @tool
-extends Job
 class_name MeshBuildJob
+extends Job
 	
 func _init(builder: MeshBuilder, path: PathData, dest_mesh: Mesh = null):
 	super.set_input({

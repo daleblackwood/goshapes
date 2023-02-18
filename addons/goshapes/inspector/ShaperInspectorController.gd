@@ -1,5 +1,6 @@
-extends Control
+@tool
 class_name ShaperInspectorController
+extends Control
 	
 var editor: EditorInterface
 var host: Object

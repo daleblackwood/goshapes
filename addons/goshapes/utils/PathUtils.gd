@@ -1,6 +1,5 @@
 @tool
 class_name PathUtils
-
 ## Utilities that manipulate path data
 
 const ROOT_2 = 1.41421356237

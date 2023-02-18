@@ -1,7 +1,6 @@
 @tool
-extends CapShaper
 class_name CapLineShaper
-
+extends CapShaper
 ## A Shaper that draws the cap for a line for winding paths
 
 func get_builder() -> ShapeBuilder:

@@ -1,6 +1,6 @@
 @tool
-extends MenuButton
 class_name ShaperInspectorHeader
+extends MenuButton
 
 const ID_UNIQUE = 200
 const ID_LOAD = 201

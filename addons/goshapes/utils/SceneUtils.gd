@@ -1,6 +1,5 @@
 @tool
 class_name SceneUtils
-
 ## Convenience utilities that manipulate scenes resources
 
 static func get_or_create(parent: Node, name: String, type: Object) -> Node:

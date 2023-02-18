@@ -1,6 +1,5 @@
 @tool
 class_name MeshSet
-
 ## A data class that stores mesh information
 
 

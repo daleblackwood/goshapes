@@ -1,7 +1,6 @@
 @tool
-extends MeshBuilder
 class_name WallBuilder
-
+extends MeshBuilder
 ## The base class for all wall builders
 
 func _init(_style: MeshShaper):

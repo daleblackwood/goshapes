@@ -1,7 +1,6 @@
 @tool
-extends MeshShaper
 class_name CapShaper
-
+extends MeshShaper
 ## A base Shaper that all CapShapers extend from
 
 ## Causes the shape to more closely conform to the wall geometry (experimental)

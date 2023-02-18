@@ -1,7 +1,6 @@
 @tool
-extends Shaper
 class_name BottomShaper
-
+extends Shaper
 ## A Shaper that draws the bottom (or base) of a path's geometry
 
 ## The depth the base should be drawn at

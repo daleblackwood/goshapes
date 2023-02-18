@@ -1,7 +1,6 @@
 @tool
-extends WallShaper
 class_name WallBevelShaper
-
+extends WallShaper
 ## A Shaper that draws a simple wall around the path
 		
 ## The height to make the wall

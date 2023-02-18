@@ -1,7 +1,6 @@
 @tool
-extends Shaper
 class_name ScatterShaper
-
+extends Shaper
 ## Scatters objects throughout the shape
 
 # An upper limit for instance counts for protection

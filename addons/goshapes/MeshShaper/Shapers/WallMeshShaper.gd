@@ -1,7 +1,6 @@
 @tool
-extends WallShaper
 class_name WallMeshShaper
-
+extends WallShaper
 ## A Shaper that wraps repeating mesh geometry around the path
 
 ## The mesh to repeat around the path (repeats along the x-axis)

@@ -1,7 +1,6 @@
 @tool
-extends Shaper
 class_name MeshShaper
-
+extends Shaper
 ## The base shaper for all shapers
 
 ## Toggles whether or not to build a collider

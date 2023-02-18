@@ -1,7 +1,6 @@
 @tool
-extends CapShaper
 class_name CapPlaneShaper
-
+extends CapShaper
 ## A Shaper that draws a complex planed cap useful for sloping surfaces
 
 ## The size of the subdivision grid on the cap

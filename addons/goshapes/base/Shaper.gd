@@ -1,7 +1,6 @@
 @tool
-extends Resource
 class_name Shaper
-
+extends Resource
 ## The base type that binds a builder to the Goshape
 
 ## Enables or disables the building of this Shaper

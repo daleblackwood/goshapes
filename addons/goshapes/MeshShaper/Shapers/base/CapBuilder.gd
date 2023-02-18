@@ -1,7 +1,6 @@
 @tool
-extends MeshBuilder
 class_name CapBuilder
-
+extends MeshBuilder
 ## The base class for all cap builders
 
 func _init(_style: MeshShaper):

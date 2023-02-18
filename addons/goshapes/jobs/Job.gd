@@ -1,6 +1,6 @@
 @tool
-extends Node
 class_name Job
+extends Node
 
 
 enum State { INIT, RUNNING, DONE }

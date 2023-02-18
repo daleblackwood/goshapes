@@ -1,6 +1,6 @@
 @tool
-extends Job
 class_name BuildJob
+extends Job
 	
 
 func _init(builder: ShapeBuilder, path: PathData) -> void:

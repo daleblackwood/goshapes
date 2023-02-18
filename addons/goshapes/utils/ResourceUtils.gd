@@ -1,6 +1,5 @@
 @tool
 class_name ResourceUtils		
-
 ## Utilities that manipulate Goshapes resources
 		
 static func is_local(resource: Resource) -> bool:
