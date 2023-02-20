@@ -57,7 +57,6 @@ var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
-var has_made_local = false
 
 
 func _ready() -> void:
@@ -100,18 +99,25 @@ func _edit_begin(edit_proxy) -> void:
 	if not curve is GoCurve3D:
 		curve.set_script(GoCurve3D.new().get_script())
 	
-	if not has_made_local:
-		has_made_local = true
-		if ResourceUtils.is_local(curve):
-			curve = curve.duplicate(true)
-		if ResourceUtils.is_local(shaper):
-			shaper = shaper.duplicate(true)
-		if ResourceUtils.is_local(path_options):
-			path_options = path_options.duplicate(true)
+	curve = capture_resource(curve)
+	shaper = capture_resource(shaper)
+	path_options = capture_resource(path_options)
 		
 	curve_changed.connect(on_curve_changed)
 	watcher_shaper.watch(shaper)
 	watcher_pathmod.watch(path_options)
+	
+	
+func capture_resource(resource: Resource) -> Resource:
+	var resource_type = ResourceUtils.get_type(resource)
+	var is_local = ResourceUtils.is_local(resource)
+	var owner_name = name if is_local else ResourceUtils.get_local_path(resource)
+	var resource_name = owner_name + ":" + resource_type
+	if resource.resource_name != resource_name:
+		resource.resource_name = resource_name
+		if is_local:
+			return resource.duplicate(true)
+	return resource
 	
 	
 func _is_resource(resource: Resource, type) -> bool:

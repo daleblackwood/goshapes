@@ -12,6 +12,7 @@ var shaper_types: Array
 var is_local = false
 var is_root = false
 
+
 func _init(_controller: ShaperInspectorController):
 	controller = _controller
 	flat = false
@@ -37,12 +38,12 @@ func update_prop() -> void:
 	var shaper_path = ResourceUtils.get_local_path(shaper)
 	if shaper_path.length() < 1:
 		if is_root:
-			shaper_path = "(local)"
+			shaper_path = ""
 		is_local = true
 
 	var type_name = ShaperTypes.get_type_name(shaper.get_script())
-	type_name = type_name.replace("Shaper", "")
-	text = " " + type_name + ": " + shaper_path
+	var src_desc = "(subresource)" if is_local and not is_root else "(local resource)" if is_local else "FILE: " + shaper_path
+	text = " " + type_name + ": " + src_desc
 	icon = controller.get_editor_icon("GuiOptionArrow")
 
 	get_popup().clear()
