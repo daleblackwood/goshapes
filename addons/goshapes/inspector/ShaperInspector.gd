@@ -21,7 +21,7 @@ func _can_handle(object):
 	if object is Shaper:
 		return true
 	return false
-	
+
 
 func _parse_begin(object):
 	if object is Shaper:
@@ -33,7 +33,7 @@ func _parse_begin(object):
 		
 		
 func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wide):
-	if (object is Goshape or object is Shaper) and hint_string == "Resource":
+	if (object is Goshape or object is Shaper) and hint_string.find("Shaper") >= 0:
 		var value = object.get(name)
 		if value is Shaper:
 			var ctrl = ShaperInspectorController.new(editor, object, name)

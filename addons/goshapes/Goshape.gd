@@ -26,12 +26,12 @@ const AXIS_Z = 4
 	
 
 ## The PathOptions Resource that contains the options for this shape
-@export var path_options: Resource:
+@export var path_options: PathOptions:
 	set = set_path_options
 	
 
 ## The Shaper Resource that configures how to build this Goshape
-@export var shaper: Resource:
+@export var shaper: Shaper:
 	set = set_shaper
 	
 	
@@ -153,7 +153,7 @@ func _edit_end() -> void:
 	curve_changed.disconnect(on_curve_changed)
 	
 	
-func set_shaper(value: Resource) -> void:
+func set_shaper(value: Shaper) -> void:
 	if value and ResourceUtils.is_local(value):
 		value.resource_name = ShaperTypes.get_type_name(value)
 	shaper = value
@@ -161,7 +161,7 @@ func set_shaper(value: Resource) -> void:
 	mark_dirty()
 	
 	
-func set_path_options(value: Resource) -> void:
+func set_path_options(value: PathOptions) -> void:
 	path_options = value
 	watcher_pathmod.watch(path_options)
 	mark_dirty()

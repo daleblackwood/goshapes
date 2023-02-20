@@ -31,7 +31,7 @@ static func get_bottom_types() -> Array:
 	
 	
 static func get_sibling_types(shaper: Shaper) -> Array:
-	if is_base_type(shaper):
+	if not shaper or is_base_type(shaper):
 		return get_base_types()
 	if is_cap_type(shaper):
 		return get_cap_types()
@@ -43,7 +43,7 @@ static func get_sibling_types(shaper: Shaper) -> Array:
 	
 	
 static func get_type_name(shaper: Resource) -> String:
-	return ResourceUtils.get_local_name(shaper)
+	return ResourceUtils.get_type(shaper)
 	
 	
 static func get_types_string(shapers: Array) -> String:

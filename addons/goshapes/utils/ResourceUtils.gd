@@ -63,9 +63,11 @@ static func parse_dict_value(value):
 
 
 static func get_type(resource: Resource) -> String:
-	if resource.resource_name != null and resource.resource_name.length() > 0:
-		return resource.resource_name
-	var name = get_local_path(resource)
+	var script = resource if resource is Script else resource.get_script()
+	var name = get_local_path(script)
+	var last_dot = name.rfind(".")
+	if last_dot > 0:
+		name = name.substr(0, last_dot)
 	return name
 	
 	

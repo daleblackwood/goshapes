@@ -1,4 +1,3 @@
-@tool
 class_name WallBuilder
 extends MeshBuilder
 ## The base class for all wall builders
