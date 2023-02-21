@@ -5,7 +5,8 @@ class_name ShaperTypes
 static func get_base_types() -> Array:
 	return [
 		BlockShaper,
-		ScatterShaper
+		ScatterShaper,
+		MultiShaper
 	]
 	
 	
