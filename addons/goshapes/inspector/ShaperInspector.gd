@@ -2,13 +2,13 @@
 class_name ShaperInspector
 extends EditorInspectorPlugin
 
-var editor: EditorInterface
+var editor_util: EditorUtil
 var change_button: MenuButton
 var controllers: Array[ShaperInspectorController] = []
 
 
-func _init(_editor: EditorInterface):
-	editor = _editor
+func _init(_editor_util: EditorUtil):
+	editor_util = _editor_util
 
 
 func _can_handle(object):
@@ -36,7 +36,7 @@ func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wi
 	if (object is Goshape or object is Shaper) and hint_string.find("Shaper") >= 0:
 		var value = object.get(name)
 		if value is Shaper:
-			var ctrl = ShaperInspectorController.new(editor, object, name)
+			var ctrl = ShaperInspectorController.new(editor_util, object, name)
 			add_custom_control(ctrl)
 			controllers.append(ctrl)
 	return false

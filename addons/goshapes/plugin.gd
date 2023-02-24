@@ -3,12 +3,15 @@ extends EditorPlugin
 
 const GDBPATH = "res://addons/gdblocks"
 var editor = get_editor_interface()
+var editor_util: EditorUtil
 var selection_handler = editor.get_selection()
 
 var reselecting = false
 var toolbar: HBoxContainer
 var block_menu_button: MenuButton
 var block_menu_items = []
+var tools_default: Array[MenuButton] = []
+var tools_block: Array[MenuButton] = []
 var create_i: int = 0
 
 class BlockAttributes:
@@ -69,6 +72,9 @@ class EditorProxy:
 		return PathOptions.new()
 		
 	func copy_attributes() -> void:
+		if not last_selected:
+			return
+		print("Copy attributes from %s" % last_selected.name)
 		attributes_copied.copy(last_selected)
 		
 	func paste_attributes() -> void:
@@ -105,40 +111,58 @@ var menu_items_block = [
 	["Paste Path Mods", proxy, "paste_path_options"],
 	["Reset Shaper", proxy, "reset_shaper"],
 	["Remove Control Points", self, "modify_selected", "remove_control_points"],
-	["Recenter Shape", self, "modify_selected", "recenter"],
+	["Recenter Shape", self, "modify_selected", "recenter_points"],
 	["Add New Similar", self, "add_block_similar"]
 ] + menu_items_all
-var menu_items_other = menu_items_all + [
+var menu_items_default = menu_items_all + [
 	["Place Objects on Ground", self, "ground_objects"]
 ]
 
 var shaper_inspector: ShaperInspector
 
 func _enter_tree() -> void:
+	editor_util = EditorUtil.new(editor)
+	
 	add_custom_type("Goshape", "Path3D", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
 	
-	shaper_inspector = ShaperInspector.new(editor)
+	shaper_inspector = ShaperInspector.new(editor_util)
 	add_inspector_plugin(shaper_inspector)
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
 	
 	block_menu_button = MenuButton.new()
-	block_menu_button.set_text("Goshapes")
+	block_menu_button.set_text("Goshape")
 	block_menu_button.get_popup().id_pressed.connect(_menu_item_selected)
 	toolbar.add_child(block_menu_button)
-	set_menu_items(menu_items_other)
+	
+	tools_default = []
+	tools_block = [
+		editor_util.toolbar_button("Add Shape", "New", add_block_similar),
+		editor_util.toolbar_button("Copy Attributes", "ActionCopy", proxy.copy_attributes),
+		editor_util.toolbar_button("Paste Attributes", "ActionPaste", proxy.paste_attributes),
+	]
+	
+	set_menu_items(menu_items_default, tools_default)
 	
 	print("Goshapes addon intialized.")
 	
 	
-func set_menu_items(menu_items: Array) -> void:
+func set_menu_items(menu_items: Array, tools: Array[MenuButton] = []) -> void:
 	var popup = block_menu_button.get_popup()
 	popup.clear()
 	block_menu_items = menu_items
 	for i in range(menu_items.size()):
 		popup.add_item(menu_items[i][0], i)
+	if toolbar.get_child_count() > 1:
+		for i in range(1, toolbar.get_child_count() - 1, 1):
+			var child = toolbar.get_child(i)
+			if not child in tools:
+				toolbar.remove_child(child)
+	for item in tools:
+		if item.get_parent() != toolbar:
+			toolbar.add_child(item)
 	
 	
 func _menu_item_selected(index: int) -> void:
@@ -242,13 +266,13 @@ func _on_selection_changed() -> void:
 			block_selected = true
 	
 	if block_selected:
-		set_menu_items(menu_items_block)
+		set_menu_items(menu_items_block, tools_block)
 	else:
-		set_menu_items(menu_items_other)
+		set_menu_items(menu_items_default, tools_default)
 				
 				
 func _on_tree_exiting() -> void:
-	print("tree exiting")
+	print("Goshapes disabled")
 	proxy.set_selected(null)
 
 
