@@ -117,7 +117,7 @@ func _edit_begin(edit_proxy) -> void:
 func _is_resource(resource: Resource, type) -> bool:
 	if resource == null:
 		return false
-	if not resource is type:
+	if not is_instance_of(resource, type):
 		return false
 	return true
 	
