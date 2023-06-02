@@ -58,27 +58,27 @@ static func get_types_string(shapers: Array) -> String:
 
 static func is_base_type(shaper: Shaper) -> bool:
 	for type in get_base_types():
-		if shaper is type:
+		if is_instance_of(shaper, type):
 			return true
 	return false
 	
 		
 static func is_cap_type(shaper: Shaper) -> bool:
 	for type in get_cap_types():
-		if shaper is type:
+		if is_instance_of(shaper, type):
 			return true
 	return false
 	
 	
 static func is_wall_type(shaper: Shaper) -> bool:
 	for type in get_wall_types():
-		if shaper is type:
+		if is_instance_of(shaper, type):
 			return true
 	return false
 
 
 static func is_bottom_type(shaper: Shaper) -> bool:
 	for type in get_bottom_types():
-		if shaper is type:
+		if is_instance_of(shaper, type):
 			return true
 	return false

@@ -123,7 +123,7 @@ func capture_resource(resource: Resource) -> Resource:
 func _is_resource(resource: Resource, type) -> bool:
 	if resource == null:
 		return false
-	if not resource is type:
+	if not is_instance_of(resource, type):
 		return false
 	return true
 	
