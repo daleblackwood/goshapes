@@ -82,19 +82,15 @@ func _get_is_editing() -> bool:
 func _edit_begin(edit_proxy) -> void:
 	if _get_is_editing():
 		return
-	print("editing %s" % name)
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
 	if not _is_resource(shaper, Shaper):
-		print("init shaper")
 		_init_shaper()
 	if not _is_resource(path_options, PathOptions):
-		print("init path mod")
 		_init_path_options()
 		if not path_options.resource_local_to_scene:
 			set_path_options(ResourceUtils.local_duplicate(path_options))
 	if not _is_resource(curve, Curve3D) or curve.get_point_count() < 2:
-		print("init curve")
 		_init_curve()
 	if not curve is GoCurve3D:
 		curve.set_script(GoCurve3D.new().get_script())

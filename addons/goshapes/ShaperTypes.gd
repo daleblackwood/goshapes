@@ -14,7 +14,8 @@ static func get_cap_types() -> Array:
 	return [
 		CapFlatShaper,
 		CapLineShaper,
-		CapPlaneShaper
+		CapPlaneShaper,
+		CapMoundShaper
 	]
 	
 	

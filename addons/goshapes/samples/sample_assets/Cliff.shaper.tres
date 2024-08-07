@@ -33,6 +33,7 @@ enabled = true
 
 [resource]
 resource_local_to_scene = true
+resource_name = "Cliff.shaper.tres:BlockShaper"
 script = ExtResource("3_r3cdr")
 cap_shaper = SubResource("Resource_ugvou")
 wall_shaper = SubResource("Resource_tgkqe")

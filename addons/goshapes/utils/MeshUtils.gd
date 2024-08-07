@@ -93,6 +93,7 @@ static func build_tapered_sets(points: PackedVector3Array, bevelled_points: Pack
 	
 static func build_extruded_sets(points: PackedVector3Array, extruded_points: PackedVector3Array, sets: Array[MeshSet] = []) -> Array[MeshSet]:
 	var point_count = points.size()
+	var extruded_count = extruded_points.size()
 	
 	var length = 0.0
 	for i in range(point_count):
@@ -103,8 +104,8 @@ static func build_extruded_sets(points: PackedVector3Array, extruded_points: Pac
 		var length_add = tdif.length()
 		var u_size = Vector2(length, length + length_add)
 		length += length_add
-		var bl = extruded_points[i]
-		var br = extruded_points[(i + 1) % point_count]
+		var bl = extruded_points[i % extruded_count]
+		var br = extruded_points[(i + 1) % extruded_count]
 		sets.append(make_quad(tl, tr, bl, br, u_size))
 		
 	return sets

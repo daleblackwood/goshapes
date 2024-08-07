@@ -6,6 +6,7 @@ var editor = get_editor_interface()
 var editor_util: EditorUtil
 var selection_handler = editor.get_selection()
 
+var parent_selecting = true
 var reselecting = false
 var toolbar: HBoxContainer
 var block_menu_button: MenuButton
@@ -256,6 +257,8 @@ func _on_selection_changed() -> void:
 				block = selected_parent as Goshape
 				break
 			else:
+				if not parent_selecting:
+					break
 				selected_parent = selected_parent.get_parent()
 		if block and proxy.selected_block != selected_node:
 			select_block(block)
