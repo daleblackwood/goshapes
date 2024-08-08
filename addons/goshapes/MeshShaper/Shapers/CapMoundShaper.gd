@@ -15,6 +15,13 @@ extends CapShaper
 		if iterations != value:
 			iterations = value
 			emit_changed()
+
+enum MoundType { HILL, PEAK, STEPS, STRAIGHT }
+@export var mound_type: MoundType = MoundType.HILL:
+	set(value):
+		if mound_type != value:
+			mound_type = value
+			emit_changed()
 			
 			
 func get_builder() -> ShapeBuilder:
@@ -29,38 +36,33 @@ class CapMoundBuilder extends CapBuilder:
 		style = _style
 		
 	func build_sets(path: PathData) -> Array[MeshSet]:
-		return build_sets_2(path)
-
-	func build_sets_1(path: PathData) -> Array[MeshSet]:
 		var sets: Array[MeshSet] = []
-		var top_path = path;
 		var center = PathUtils.get_path_center(path)
 		center.y += style.height
-		var center_points = PackedVector3Array()
-		for i in range(top_path.point_count):
-			center_points.append(center)
-		sets = MeshUtils.build_extruded_sets(center_points, top_path.points, sets)
+		var iterations = clamp(style.iterations, 1, 16)
+		for j in range(iterations):
+			var path_a = PackedVector3Array();
+			var path_b = PackedVector3Array()
+			for i in range(path.point_count):
+				var pa = lerp_mound_p(center, path.get_point(i), j, iterations, style.mound_type)
+				var pb = lerp_mound_p(center, path.get_point(i), j + 1, iterations, style.mound_type)
+				path_a.append(pa)
+				path_b.append(pb)
+			sets = MeshUtils.build_extruded_sets(path_a, path_b, sets)
 		for set in sets:
 			set.material = style.material
 		return sets
 		
-	func build_sets_2(path: PathData) -> Array[MeshSet]:
-		var sets: Array[MeshSet] = []
-		var center = PathUtils.get_path_center(path)
-		var paths: Array[PathData] = []
-		var iterations = 1 if not style else style.iterations
-		for i in range(iterations + 1):
-			var subpath = path.duplicate()
-			var pc = 1.0 - (float(i) / float(iterations))
-			for j in range(subpath.point_count):
-				var p = subpath.get_point(j).lerp(center, pc)
-				p.y = pc * style.height
-				subpath.set_point(j, p)
-			paths.append(subpath)
-		for i in range(1, paths.size(), 1):
-			var pa = paths[i - 1]
-			var pb = paths[i]
-			sets = MeshUtils.build_extruded_sets(pb.points, pa.points, sets)
-		for set in sets:
-			set.material = style.material
-		return sets
+	func lerp_mound_p(a: Vector3, b: Vector3, iteration: int, iterations: int, mound_type: MoundType) -> Vector3:
+		var step = 1.0 / iterations * iteration
+		var p = lerp(a, b, step)
+		match mound_type:
+			MoundType.HILL:
+				p.y = lerp(a.y, b.y, step * step)
+			MoundType.STEPS:
+				if iteration < iterations - 1:
+					step = 1.0 / iterations * floor(iteration / 2) * 2
+				p.y = lerp(a.y, b.y, step)
+			MoundType.PEAK:
+				p.y = lerp(a.y, b.y, sin(PI * step * 0.5))
+		return p
