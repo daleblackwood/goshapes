@@ -16,7 +16,7 @@ extends CapShaper
 			iterations = value
 			emit_changed()
 
-enum MoundType { HILL, PEAK, STEPS, STRAIGHT }
+enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 @export var mound_type: MoundType = MoundType.HILL:
 	set(value):
 		if mound_type != value:
@@ -59,10 +59,24 @@ class CapMoundBuilder extends CapBuilder:
 		match mound_type:
 			MoundType.HILL:
 				p.y = lerp(a.y, b.y, step * step)
+			MoundType.STEEP:
+				p.y = lerp(a.y, b.y, step * step * step)
 			MoundType.STEPS:
 				if iteration < iterations - 1:
 					step = 1.0 / iterations * floor(iteration / 2) * 2
 				p.y = lerp(a.y, b.y, step)
 			MoundType.PEAK:
 				p.y = lerp(a.y, b.y, sin(PI * step * 0.5))
+			MoundType.ROUGH:
+				var t = sin(PI * step)
+				p.y = lerp(a.y, b.y, lerp(step, get_randomish(b.x + b.y, b.z + b.y), t * t * t))
 		return p
+		
+	func get_randomish(x: float, y: float) -> float:
+		var ix = int(x * 1000.0)
+		var iy = int(y * 1000.0)
+		var seed = ix * 0x1f1f1f1f + iy * 0x3f3f3f3f
+		seed = (seed ^ (seed >> 15)) * 0x45d9f3b
+		seed = (seed ^ (seed >> 15)) * 0x45d9f3b
+		seed = (seed ^ (seed >> 15))
+		return float(seed & 0x7FFFFFFF) / 0x7FFFFFFF
