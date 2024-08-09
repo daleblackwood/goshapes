@@ -4,7 +4,7 @@ extends CapShaper
 ## A Shaper that draws the cap (or top) of a path's geometry	
 
 ## The height of the mound
-@export_range(0.1, 10.0, 0.1) var height: float = 1.0:
+@export_range(0.1, 50.0, 0.1) var height: float = 1.0:
 	set(value):
 		if height != value:
 			height = value
@@ -44,8 +44,8 @@ enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 			
 func get_builder() -> ShapeBuilder:
 	return CapMoundBuilder.new(self)
-			
-			
+	
+	
 class CapMoundBuilder extends CapBuilder:
 	
 	var style: CapMoundShaper
@@ -68,8 +68,10 @@ class CapMoundBuilder extends CapBuilder:
 				path_a.append(pa)
 				path_b.append(pb)
 			sets = MeshUtils.build_extruded_sets(path_a, path_b, sets)
-		for set in sets:
-			set.material = style.material
+		var welded = MeshUtils.combine_sets(sets)
+		welded.material = style.material
+		welded.recalculate_normals()
+		sets = [welded]
 		return sets
 		
 	func lerp_mound_p(mid: Vector3, b: Vector3, iteration: int, iterations: int, mound_type: MoundType, height_img: Image, height_freq: float, height_multi: float) -> Vector3:

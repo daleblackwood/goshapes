@@ -1,32 +1,32 @@
 [gd_resource type="Resource" script_class="BlockShaper" load_steps=11 format=3 uid="uid://c0o0tl05hjh8"]
 
-[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/sample_assets/GrassMat.material" id="1_0yut8"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_c6rt8"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapLineShaper.gd" id="3_bdj7t"]
+[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/sample_assets/GrassMat.material" id="2_8tt8d"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_v0evy"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_r3cdr"]
-[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/sample_assets/CliffMat.tres" id="4_75j48"]
-[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/sample_assets/cliffface-low.obj" id="4_ei2fn"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="5_dx61k"]
+[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/sample_assets/CliffMat.tres" id="5_823g7"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/sample_assets/cliffface-low.obj" id="6_o7iju"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="7_xermq"]
 
 [sub_resource type="Resource" id="Resource_0y7mq"]
 script = ExtResource("1_c6rt8")
 base_depth = 1.0
 enabled = false
 
-[sub_resource type="Resource" id="Resource_ugvou"]
-script = ExtResource("3_bdj7t")
+[sub_resource type="Resource" id="Resource_5yeb8"]
+script = ExtResource("2_v0evy")
 conform_to_wall = false
-material = ExtResource("1_0yut8")
+material = ExtResource("2_8tt8d")
 build_collider = true
 collision_layer = 1
 enabled = true
 
-[sub_resource type="Resource" id="Resource_tgkqe"]
-script = ExtResource("5_dx61k")
-mesh = ExtResource("4_ei2fn")
-scale = 0.8
+[sub_resource type="Resource" id="Resource_dj1ma"]
+script = ExtResource("7_xermq")
+mesh = ExtResource("6_o7iju")
+scale = 1.0
 closed = true
-material = ExtResource("4_75j48")
+material = ExtResource("5_823g7")
 build_collider = true
 collision_layer = 1
 enabled = true
@@ -35,8 +35,8 @@ enabled = true
 resource_local_to_scene = true
 resource_name = "Cliff.shaper.tres:BlockShaper"
 script = ExtResource("3_r3cdr")
-cap_shaper = SubResource("Resource_ugvou")
-wall_shaper = SubResource("Resource_tgkqe")
+cap_shaper = SubResource("Resource_5yeb8")
+wall_shaper = SubResource("Resource_dj1ma")
 bottom_shaper = SubResource("Resource_0y7mq")
 bottom_depth = 0.0
 collider_type = 2

@@ -6,7 +6,7 @@ var editor = get_editor_interface()
 var editor_util: EditorUtil
 var selection_handler = editor.get_selection()
 
-var parent_selecting = true
+var block_select = true
 var reselecting = false
 var toolbar: HBoxContainer
 var block_menu_button: MenuButton
@@ -99,25 +99,33 @@ class EditorProxy:
 	
 var proxy: EditorProxy = EditorProxy.new()
 
-var menu_items_all = [
-	["Add New BlockShape", self, "add_block"],
-	["Add New ScatterShape", self, "add_scatter"],
-	["Select All Blocks", self, "select_all_blocks"],
-]
-var menu_items_block = [
-	["Redraw Selected", self, "modify_selected"],
-	["Copy Attributes", proxy, "copy_attributes"],
-	["Paste Attributes", proxy, "paste_attributes"],
-	["Paste Shaper", proxy, "paste_shaper"],
-	["Paste Path Mods", proxy, "paste_path_options"],
-	["Reset Shaper", proxy, "reset_shaper"],
-	["Remove Control Points", self, "modify_selected", "remove_control_points"],
-	["Recenter Shape", self, "modify_selected", "recenter_points"],
-	["Add New Similar", self, "add_block_similar"]
-] + menu_items_all
-var menu_items_default = menu_items_all + [
-	["Place Objects on Ground", self, "ground_objects"]
-]
+enum MenuSet { NORMAL, BLOCK, DEFAULT }
+
+func get_menuset(menuset: MenuSet):
+	var result = [
+		["Add New BlockShape", self, "add_block"],
+		["Add New ScatterShape", self, "add_scatter"],
+		["Select All Blocks", self, "select_all_blocks"],
+		["Turn %s Block Select" % ("OFF" if block_select else "ON"), self, "toggle_block_select"]
+	]
+	if menuset == MenuSet.BLOCK:
+		result = [
+			["Redraw Selected", self, "modify_selected"],
+			["Copy Attributes", proxy, "copy_attributes"],
+			["Paste Attributes", proxy, "paste_attributes"],
+			["Paste Shaper", proxy, "paste_shaper"],
+			["Paste Path Mods", proxy, "paste_path_options"],
+			["Reset Shaper", proxy, "reset_shaper"],
+			["Remove Control Points", self, "modify_selected", "remove_control_points"],
+			["Recenter Shape", self, "modify_selected", "recenter_points"],
+			["Add New Similar", self, "add_block_similar"]
+		] + result
+	elif menuset == MenuSet.DEFAULT:
+		result += [
+			["Place Objects on Ground", self, "ground_objects"]
+		]
+	return result
+	
 
 var shaper_inspector: ShaperInspector
 
@@ -145,7 +153,7 @@ func _enter_tree() -> void:
 		editor_util.toolbar_button("Paste Attributes", "ActionPaste", proxy.paste_attributes),
 	]
 	
-	set_menu_items(menu_items_default, tools_default)
+	set_menu_items(get_menuset(MenuSet.DEFAULT), tools_default)
 	
 	print("Goshapes addon intialized.")
 	
@@ -174,6 +182,10 @@ func _menu_item_selected(index: int) -> void:
 		mi[1].call(mi[2], mi[3])
 	else:
 		mi[1].call(mi[2])
+	
+	
+func toggle_block_select() -> void:
+	block_select = not block_select
 	
 		
 func add_blank() -> Goshape:
@@ -257,7 +269,7 @@ func _on_selection_changed() -> void:
 				block = selected_parent as Goshape
 				break
 			else:
-				if not parent_selecting:
+				if not block_select:
 					break
 				selected_parent = selected_parent.get_parent()
 		if block and proxy.selected_block != selected_node:
@@ -269,9 +281,9 @@ func _on_selection_changed() -> void:
 			block_selected = true
 	
 	if block_selected:
-		set_menu_items(menu_items_block, tools_block)
+		set_menu_items(get_menuset(MenuSet.BLOCK), tools_block)
 	else:
-		set_menu_items(menu_items_default, tools_default)
+		set_menu_items(get_menuset(MenuSet.DEFAULT), tools_default)
 				
 				
 func _on_tree_exiting() -> void:
