@@ -23,6 +23,24 @@ enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 			mound_type = value
 			emit_changed()
 			
+@export var height_map: Texture2D = null:
+	set(value):
+		if height_map != value:
+			height_map = value
+			emit_changed()
+			
+@export_range(0.01, 10.0) var height_map_frequency: float = 1.0:
+	set(value):
+		if height_map_frequency != value:
+			height_map_frequency = value
+			emit_changed()
+			
+@export_range(0.01, 10.0) var height_map_multiplier: float = 1.0:
+	set(value):
+		if height_map_multiplier != value:
+			height_map_multiplier = value
+			emit_changed()
+			
 			
 func get_builder() -> ShapeBuilder:
 	return CapMoundBuilder.new(self)
@@ -37,15 +55,16 @@ class CapMoundBuilder extends CapBuilder:
 		
 	func build_sets(path: PathData) -> Array[MeshSet]:
 		var sets: Array[MeshSet] = []
-		var center = PathUtils.get_path_center(path)
-		center.y += style.height
+		var mid = PathUtils.get_path_center(path)
+		mid.y += style.height
 		var iterations = clamp(style.iterations, 1, 16)
+		var height_img = null if not style.height_map else style.height_map.get_image()
 		for j in range(iterations):
 			var path_a = PackedVector3Array();
 			var path_b = PackedVector3Array()
 			for i in range(path.point_count):
-				var pa = lerp_mound_p(center, path.get_point(i), j, iterations, style.mound_type)
-				var pb = lerp_mound_p(center, path.get_point(i), j + 1, iterations, style.mound_type)
+				var pa = lerp_mound_p(mid, path.get_point(i), j, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
+				var pb = lerp_mound_p(mid, path.get_point(i), j + 1, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
 				path_a.append(pa)
 				path_b.append(pb)
 			sets = MeshUtils.build_extruded_sets(path_a, path_b, sets)
@@ -53,23 +72,31 @@ class CapMoundBuilder extends CapBuilder:
 			set.material = style.material
 		return sets
 		
-	func lerp_mound_p(a: Vector3, b: Vector3, iteration: int, iterations: int, mound_type: MoundType) -> Vector3:
+	func lerp_mound_p(mid: Vector3, b: Vector3, iteration: int, iterations: int, mound_type: MoundType, height_img: Image, height_freq: float, height_multi: float) -> Vector3:
 		var step = 1.0 / iterations * iteration
-		var p = lerp(a, b, step)
+		var p = lerp(mid, b, step)
 		match mound_type:
 			MoundType.HILL:
-				p.y = lerp(a.y, b.y, step * step)
+				p.y = lerp(mid.y, b.y, step * step)
 			MoundType.STEEP:
-				p.y = lerp(a.y, b.y, step * step * step)
+				p.y = lerp(mid.y, b.y, step * step * step)
 			MoundType.STEPS:
 				if iteration < iterations - 1:
 					step = 1.0 / iterations * floor(iteration / 2) * 2
-				p.y = lerp(a.y, b.y, step)
+				p.y = lerp(mid.y, b.y, step)
 			MoundType.PEAK:
-				p.y = lerp(a.y, b.y, sin(PI * step * 0.5))
+				p.y = lerp(mid.y, b.y, sin(PI * step * 0.5))
 			MoundType.ROUGH:
 				var t = sin(PI * step)
-				p.y = lerp(a.y, b.y, lerp(step, get_randomish(b.x + b.y, b.z + b.y), t * t * t))
+				p.y = lerp(mid.y, b.y, lerp(step, get_randomish(b.x + b.y, b.z + b.y), t * t * t))
+		if height_img and iteration < iterations - 1:
+			var pscale = height_img.get_size()
+			var pix = height_img.get_size()
+			pix.x = image_ord(p.x * height_freq, pix.x)
+			pix.y = image_ord(p.z * height_freq, pix.y)
+			var height_color = height_img.get_pixelv(pix)
+			var height_value = height_color.r
+			p.y += (height_value * 2.0 - 1.0) * (mid.y - b.y) * height_multi
 		return p
 		
 	func get_randomish(x: float, y: float) -> float:
@@ -80,3 +107,9 @@ class CapMoundBuilder extends CapBuilder:
 		seed = (seed ^ (seed >> 15)) * 0x45d9f3b
 		seed = (seed ^ (seed >> 15))
 		return float(seed & 0x7FFFFFFF) / 0x7FFFFFFF
+		
+	static func image_ord(n: float, dim: int) -> int:
+		var r = fmod(n, dim)
+		if r < 0:
+			r += dim
+		return r
