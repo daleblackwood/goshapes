@@ -31,6 +31,13 @@ extends Resource
 		emit_changed()
 
 
+## Either rounds the edges of the path, or not
+@export var round_edges: bool = true:
+	set(value):
+		round_edges = value
+		emit_changed()
+
+
 ## Increases the resolution of path curve data
 @export_range(1, 4, 1) var interpolate := 1:
 	set(value):
