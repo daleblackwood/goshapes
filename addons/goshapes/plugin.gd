@@ -106,6 +106,8 @@ func get_menuset(menuset: MenuSet):
 		["Add New BlockShape", self, "add_block"],
 		["Add New ScatterShape", self, "add_scatter"],
 		["Select All Blocks", self, "select_all_blocks"],
+		["Turn ON All Placeholder Meshes", self, "turn_on_placeholder_meshes"],
+		["Turn OFF All Placeholder Meshes", self, "turn_off_placeholder_meshes"],
 		["Turn %s Block Select" % ("OFF" if block_select else "ON"), self, "toggle_block_select"]
 	]
 	if menuset == MenuSet.BLOCK:
@@ -312,6 +314,35 @@ func select_all_blocks(parent: Node = null) -> void:
 	for i in range(parent.get_child_count()):
 		select_all_blocks(parent.get_child(i))
 		
+func turn_on_placeholder_meshes() -> void:
+	toggle_placeholder_meshes(true)
+	
+func turn_off_placeholder_meshes() -> void:
+	toggle_placeholder_meshes(false)
+	
+func toggle_placeholder_meshes(turn_on: bool, parent: Node = null) -> void:
+	if parent == null:
+		parent = get_tree().root
+	if parent is Goshape:
+		var goshape : Goshape = parent 
+		var wall_mesh_shaper: WallMeshShaper
+
+		if goshape.shaper is BlockShaper:
+			var block_shaper : BlockShaper = goshape.shaper
+			if block_shaper.wall_shaper is WallMeshShaper:
+				wall_mesh_shaper = block_shaper.wall_shaper as WallMeshShaper
+		elif goshape.shaper is WallMeshShaper:
+			wall_mesh_shaper = goshape.shaper as WallMeshShaper
+		
+		if wall_mesh_shaper and wall_mesh_shaper.placeholder_mesh:
+			if wall_mesh_shaper.use_placeholder != turn_on:
+				wall_mesh_shaper.use_placeholder = turn_on
+				goshape._build(proxy.runner)
+				#var builder := wall_mesh_shaper.get_builder()
+				#builder.build(goshape, goshape.get_path_data(goshape.path_options.interpolate))
+				
+	for i in range(parent.get_child_count()):
+		toggle_placeholder_meshes(turn_on, parent.get_child(i))
 		
 func copy_block_params(block: Goshape) -> void:
 	proxy.last_shaper = block.shaper
