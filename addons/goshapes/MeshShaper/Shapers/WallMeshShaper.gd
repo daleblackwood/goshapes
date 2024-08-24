@@ -10,6 +10,20 @@ extends WallShaper
 			mesh = value
 			emit_changed()
 	
+## An optional placeholder mesh to use while editing
+@export var placeholder_mesh: Mesh: 
+	set(value):
+		if placeholder_mesh != value:
+			placeholder_mesh = value
+			emit_changed()
+	
+## Whether to use the placeholder mesh or the actual mesh
+@export var use_placeholder: bool = false: 
+	set(value):
+		if use_placeholder != value:
+			use_placeholder = value
+			emit_changed()
+	
 ## The scale to apply to each mesh segment	
 @export_range(0.1, 10.0, 0.1) var scale = 1.0:
 	set(value):
@@ -45,7 +59,7 @@ class WallMeshBuilder extends WallBuilder:
 		style = _style
 
 	func build_sets(path: PathData) -> Array[MeshSet]:
-		var ref_mesh = style.mesh as Mesh
+		var ref_mesh = (style.placeholder_mesh if style.use_placeholder else style.mesh) as Mesh
 		if not ref_mesh:
 			return []
 			
