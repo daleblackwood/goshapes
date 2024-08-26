@@ -4,7 +4,7 @@ extends CapShaper
 ## A Shaper that draws the cap (or top) of a path's geometry	
 
 ## The height of the mound
-@export_range(0.1, 50.0, 0.1) var height: float = 1.0:
+@export_range(-50, 50.0, 0.1) var height: float = 1.0:
 	set(value):
 		if height != value:
 			height = value
