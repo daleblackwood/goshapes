@@ -312,6 +312,7 @@ func select_all_blocks(parent: Node = null) -> void:
 	for i in range(parent.get_child_count()):
 		select_all_blocks(parent.get_child(i))
 		
+		
 func copy_block_params(block: Goshape) -> void:
 	proxy.last_shaper = block.shaper
 	proxy.last_path_options = block.path_options
