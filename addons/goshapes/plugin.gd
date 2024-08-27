@@ -120,7 +120,7 @@ func get_menuset(menuset: MenuSet):
 			["Recenter Shape", self, "modify_selected", "recenter_points"],
 			["Add New Similar", self, "add_block_similar"]
 		] + result
-	elif menuset == MenuSet.DEFAULT:
+	if menuset != MenuSet.DEFAULT:
 		result += [
 			["Place Objects on Ground", self, "ground_objects"]
 		]
@@ -312,7 +312,7 @@ func select_all_blocks(parent: Node = null) -> void:
 	for i in range(parent.get_child_count()):
 		select_all_blocks(parent.get_child(i))
 		
-		
+
 func copy_block_params(block: Goshape) -> void:
 	proxy.last_shaper = block.shaper
 	proxy.last_path_options = block.path_options
