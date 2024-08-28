@@ -231,7 +231,7 @@ func add_scatter() -> void:
 	shape.set_shaper(ScatterShaper.new())
 
 # returns a sort order for the shape, used to determine the order of modifications
-func get_shape_get_sort_order(shape: Goshape) -> int:
+func get_shape_sort_order(shape: Goshape) -> int:
 	if shape.shaper is BottomShaper:
 		return 1
 	if shape.shaper is BlockShaper:
@@ -250,8 +250,8 @@ func get_shape_get_sort_order(shape: Goshape) -> int:
 # sorts a list of Goshapes by their type
 # used when modifications needs to be applied in a specific order 
 func sort_on_type(a: Goshape, b: Goshape) -> bool:
-	var a_order := get_shape_get_sort_order(a)
-	var b_order := get_shape_get_sort_order(b)
+	var a_order := get_shape_sort_order(a)
+	var b_order := get_shape_sort_order(b)
 	return a_order < b_order
 
 func modify_selected(method: String = "", arg = null) -> void:
