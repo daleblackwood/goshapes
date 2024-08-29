@@ -13,7 +13,7 @@ var host
 var callback: Callable
 var id = -1
 var group
-var is_async = false
+var is_async = true
 
 
 func run(host, callback: Callable) -> void:

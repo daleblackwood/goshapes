@@ -59,20 +59,18 @@ class CapMoundBuilder extends CapBuilder:
 		mid.y += style.height
 		var iterations = clamp(style.iterations, 1, 16)
 		var height_img = null if not style.height_map else style.height_map.get_image()
-		for j in range(iterations):
-			var path_a = PackedVector3Array();
-			var path_b = PackedVector3Array()
-			for i in range(path.point_count):
-				var pa = lerp_mound_p(mid, path.get_point(i), j, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
-				var pb = lerp_mound_p(mid, path.get_point(i), j + 1, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
-				path_a.append(pa)
-				path_b.append(pb)
-			sets = MeshUtils.build_extruded_sets(path_a, path_b, sets)
-		var welded = MeshUtils.combine_sets(sets)
-		welded.material = style.material
-		welded.recalculate_normals()
-		sets = [welded]
-		return sets
+		var point_count = path.point_count
+		var paths: Array[PathData] = []
+		for j in range(iterations + 1):
+			var points = PackedVector3Array();
+			points.resize(point_count)
+			for i in range(point_count):
+				var p = lerp_mound_p(mid, path.get_point(i), j, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
+				points.set(i, p)
+			paths.append(PathData.new(points))
+		var ms = MeshUtils.fill_concentric_paths(paths, false)
+		ms.material = style.material
+		return [ms]
 		
 	func lerp_mound_p(mid: Vector3, b: Vector3, iteration: int, iterations: int, mound_type: MoundType, height_img: Image, height_freq: float, height_multi: float) -> Vector3:
 		var step = 1.0 / iterations * iteration

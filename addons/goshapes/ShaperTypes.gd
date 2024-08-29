@@ -22,7 +22,8 @@ static func get_cap_types() -> Array:
 static func get_wall_types() -> Array:
 	return [
 		WallBevelShaper,
-		WallMeshShaper
+		WallMeshShaper,
+		WallCurveShaper
 	]
 	
 	

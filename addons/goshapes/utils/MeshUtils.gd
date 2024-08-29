@@ -22,93 +22,82 @@ static func make_cap(points: PackedVector3Array) -> MeshSet:
 	return set
 	
 
-static func make_walls(path: PathData, height: float, taper: float = 0.0, bevel: float = 0.0) -> MeshSet:
-	var sets: Array[MeshSet] = []
-	var top_path = path;
-	if bevel > 0.0:
-		var bevel_path = PathUtils.taper_path(top_path, bevel)
-		bevel_path = PathUtils.move_path_down(bevel_path, bevel)
-		build_extruded_sets(top_path.points, bevel_path.points, sets)
-		top_path = bevel_path
-	var bottom_path = PathUtils.move_path_down(top_path, height - bevel)
-	if taper != 0.0:
-		bottom_path = PathUtils.taper_path(bottom_path, taper)
-	build_extruded_sets(top_path.points, bottom_path.points, sets)
-	var set = weld_sets(sets)
-	return set
+static func fill_concentric_paths(paths: Array[PathData], forward_uvs: bool = true) -> MeshSet:
+	var ms = MeshSet.new()
 	
+	var segment_count = paths.size()
+	var reference = paths[0] if forward_uvs else paths[segment_count - 1]
+	var point_count = reference.point_count
+	var distances = reference.get_distances(2.0)
+	var uv_scale = 1.0
 	
-static func make_walls_tapered(path: PathData, height: float, taper: float = 0.0) -> MeshSet:
-	var sets: Array[MeshSet] = []
-	var bottom_path = PathUtils.taper_path(path, taper)
-	bottom_path = PathUtils.move_path(bottom_path, Vector3.DOWN * height)
-	build_extruded_sets(path.points, bottom_path.points, sets)
-	var set = combine_sets(sets)
-	return set
+	var quad_count = point_count * segment_count
+	var vert_count = quad_count * 4
+	var index_count = quad_count * 6
+	ms.set_counts(vert_count, index_count)
 	
-
-# slow bevel function for later user
-#static func make_walls_bevelled(path: PathData, height: float, taper: float = 0.0, bevel: float = 0.0, bevel_stages: int = 0) -> MeshSet:
-#	var point_count = path.points.size()
-#	var up_count = path.ups.size()
-#
-#	var sets = []
-#	var bevel_dir = 1.0 if height >= 0.0 else -1.0
-#
-#	var top_path = path
-#	if bevel_stages > 0 and bevel > 0.0:
-#		var current_bevel = 0.0
-#		var bevel_ratio = 1.0 / float(bevel_stages)
-#		var bevel_inc = bevel_ratio * bevel
-#		for i in range(bevel_stages):
-#			var pc = cos((i + 1) * PI) * 0.5 + 0.5
-#			current_bevel = pc * bevel - current_bevel
-#			var bottom_points = PathUtils.bevel_path(top_points, current_bevel)
-#			bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * bevel_inc)
-#			build_tapered_sets(top_points, bottom_points, sets)
-#			top_points = bottom_points
-#
-#	var bottom_points = PathUtils.bevel_path(top_points, taper)
-#	bottom_points = PathUtils.move_path(bottom_points, Vector3.DOWN * (height - taper))
-#	build_tapered_sets(top_points, bottom_points, sets)
-#
-#	var set = combine_sets(sets)
-#	return set
+	var normals = PackedVector3Array()
+	normals.resize(quad_count)
 	
+	# generate quads
+	var dist = 0.0
+	for i in range(1, segment_count):
+		var top_path = paths[i - 1]
+		var bottom_path = paths[i]
+		var dl = (top_path.points[0] - bottom_path.points[0]).length() * uv_scale
+		var top_dist = dist
+		dist += dl
+		for j in range(0, point_count):
+			var quad_i = (i * point_count + j)
+			var jn = (j + 1) % point_count
+			var tl = top_path.get_point(j)
+			var tr = top_path.get_point(jn)
+			var bl = bottom_path.get_point(j)
+			var br = bottom_path.get_point(jn)
+			
+			var vi = quad_i * 4
+			ms.verts.set(vi    , tl)
+			ms.verts.set(vi + 1, tr)
+			ms.verts.set(vi + 2, bl)
+			ms.verts.set(vi + 3, br)
+			
+			var da = distances[j]
+			var db = distances[jn]
+			ms.uvs.set(vi    , Vector2(da, top_dist))
+			ms.uvs.set(vi + 1, Vector2(db, top_dist))
+			ms.uvs.set(vi + 2, Vector2(da, dist))
+			ms.uvs.set(vi + 3, Vector2(db, dist))
+			
+			var ti = quad_i * 6
+			ms.tris.set(ti    , vi)
+			ms.tris.set(ti + 1, vi + 1)
+			ms.tris.set(ti + 2, vi + 3)
+			ms.tris.set(ti + 3, vi + 2)
+			ms.tris.set(ti + 4, vi + 0)
+			ms.tris.set(ti + 5, vi + 3)
+			
+			var normal = -(tr - tl).cross(bl - tl)
+			if normal.length_squared() > 0.001:
+				normal = normal.normalized()
+			else:
+				normal = Vector3.UP
+			normals.set(quad_i, normal)
 	
-static func build_tapered_sets(points: PackedVector3Array, bevelled_points: PackedVector3Array, sets: Array[MeshSet] = []) -> Array[MeshSet]:
-	var point_count = points.size()
-	
-	for i in range(point_count):
-		var tl = points[i]
-		var tr = points[(i + 1) % point_count]
-		var bl = bevelled_points[i * 2]
-		var br = bevelled_points[(i * 2 + 1) % (point_count * 2)]
-		var brn = bevelled_points[(i * 2 + 2) % (point_count * 2)]
-		sets.append(make_quad(tl, tr, bl, br))
-		sets.append(make_tri(tr, br, brn))
-		
-	return sets
-	
-	
-static func build_extruded_sets(points: PackedVector3Array, extruded_points: PackedVector3Array, sets: Array[MeshSet] = []) -> Array[MeshSet]:
-	var point_count = points.size()
-	var extruded_count = extruded_points.size()
-	
-	var length = 0.0
-	for i in range(point_count):
-		var tl = points[i]
-		var tr = points[(i + 1) % point_count]
-		var tdif = (tr - tl)
-		tdif.y = 0
-		var length_add = tdif.length()
-		var u_size = Vector2(length, length + length_add)
-		length += length_add
-		var bl = extruded_points[i % extruded_count]
-		var br = extruded_points[(i + 1) % extruded_count]
-		sets.append(make_quad(tl, tr, bl, br, u_size))
-		
-	return sets
+	# smooth normals		
+	for seg_i in range(1, segment_count):
+		for point_i in range(0, point_count):
+			var i = seg_i * point_count + point_i
+			var normal = normals[i]
+			var tn = normal if i < point_count else normals[i - point_count]
+			var bn = normal if i >= quad_count - point_count else normals[i + point_count]
+			var ln = normals[seg_i * point_count + (point_i + point_count - 1) % point_count]
+			var rn = normals[seg_i * point_count + (point_i + point_count + 1) % point_count]
+			var vi = i * 4
+			ms.normals.set(vi    , (tn + ln + normal) / 3.0)
+			ms.normals.set(vi + 1, (tn + rn + normal) / 3.0)
+			ms.normals.set(vi + 2, (bn + ln + normal) / 3.0)
+			ms.normals.set(vi + 3, (bn + rn + normal) / 3.0)
+	return ms
 
 	
 static func make_quad(tl: Vector3, tr: Vector3, bl: Vector3, br: Vector3, u_size: Vector2 = Vector2.ZERO) -> MeshSet:
@@ -312,7 +301,11 @@ static func weld_sets(sets: Array[MeshSet], threshhold: float = 0.01) -> MeshSet
 			trimap[i] = vert_i
 			vert_i += 1
 		else:
+			normals[remap] += merged.normals[i]
 			trimap[i] = remap
+			
+	for i in range(normals.size()):
+		normals[i] = normals[i].normalized()
 	
 	var set = MeshSet.new()
 	set.verts = PackedVector3Array(verts)
@@ -325,6 +318,30 @@ static func weld_sets(sets: Array[MeshSet], threshhold: float = 0.01) -> MeshSet
 		set.set_tri(i, trimap[value])
 	
 	return merged
+	
+	
+static func smooth_mesh(meshset: MeshSet) -> MeshSet:
+	var theshholdsq = 0.1
+	var vert_count = meshset.get_vert_count()
+	var normals = PackedVector3Array(meshset.normals);
+	for i in range(vert_count):
+		var ivert = meshset.verts[i]
+		var remap = -1
+		for j in range(0, i):
+			var jvert = meshset.verts[j]
+			var difsq = jvert.distance_squared_to(ivert)
+			if difsq < theshholdsq:
+				remap = j
+				break
+		if remap >= 0:
+			var merged = normals[i] + normals[remap]
+			normals.set(i, merged)
+			normals.set(remap, merged)
+			
+	for i in range(vert_count):
+		normals.set(i, normals[i].normalized())
+	meshset.normals = normals
+	return meshset
 	
 	
 static func offset_mesh(meshset: MeshSet, offset: Vector3) -> MeshSet:

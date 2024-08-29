@@ -2,8 +2,8 @@
 class_name PathData
 ## The object used to manipulate path points
 
-var points := PackedVector3Array(): set = set_points
-var ups := PackedVector3Array(): set = set_ups
+var points := PackedVector3Array()
+var ups := PackedVector3Array()
 var point_count: int: get = get_point_count
 var taper := 0.0
 var curve: Curve3D
@@ -15,14 +15,6 @@ func _init(points = PackedVector3Array(), ups = PackedVector3Array()) -> void:
 	self.ups = ups
 	
 	
-func set_points(value: PackedVector3Array):
-	points = value
-	
-	
-func set_ups(value: PackedVector3Array):
-	ups = value
-	
-	
 func get_point(index: int) -> Vector3:
 	if index < 0:
 		return points[0]
@@ -30,12 +22,6 @@ func get_point(index: int) -> Vector3:
 	if index > imax:
 		return points[imax]
 	return points[index]
-	
-	
-func set_point(index: int, v: Vector3) -> void:
-	if index < 0 or index >= points.size():
-		return
-	points.set(index, v)
 	
 	
 func get_point_count() -> int:
@@ -51,6 +37,28 @@ func get_up(index: int) -> Vector3:
 	if index > imax:
 		return ups[imax]
 	return ups[index]
+	
+	
+func get_distances(scale: float = 1.0, offset: float = 0.0) -> PackedFloat32Array:
+	var length = 0.0
+	var count = points.size()
+	var lengths: Array[float] = []
+	lengths.resize(count)
+	for i in range(1, count):
+		var a = points[i - 1]
+		var b = points[i]
+		var l = (a - b).length()
+		length += l
+		lengths[i] = l
+	var scaled_length = roundf(length * scale)
+	var applied_scale = length / scaled_length;
+	var result = PackedFloat32Array()
+	result.resize(count)
+	var distance = offset
+	for i in range(1, count):
+		distance += lengths[i % count] * applied_scale
+		result[i] = distance
+	return result
 	
 	
 func duplicate():

@@ -48,12 +48,27 @@ class WallBevelBuilder extends WallBuilder:
 		var taper = style.taper
 		var bevel = style.bevel
 		var material = style.material
-		var meshset = MeshUtils.make_walls(
-			path, 
-			height, 
-			taper, 
-			bevel
-		)
+		var meshset = make_walls(path, height, taper, bevel)
 		meshset.material = material
 		return [meshset]
 
+	
+	static func make_walls(path: PathData, height: float, taper: float, bevel: float) -> MeshSet:
+		var meshsets: Array[MeshSet] = []
+		var paths: Array[PathData] = [path]
+		var top_path = path;
+		if bevel > 0.0:
+			var bevel_path = PathUtils.taper_path(top_path, bevel)
+			bevel_path = PathUtils.move_path_down(bevel_path, bevel)
+			paths.append(bevel_path)
+			top_path = bevel_path
+		var bottom_path = PathUtils.move_path_down(top_path, height - bevel)
+		if taper != 0.0:
+			bottom_path = PathUtils.taper_path(bottom_path, taper)
+		paths.append(bottom_path)
+		
+		var combined = MeshUtils.fill_concentric_paths(paths)
+		# set the first-ring normals to up
+		for i in range(path.point_count * 4):
+			combined.normals.set(i, Vector3.UP)
+		return combined

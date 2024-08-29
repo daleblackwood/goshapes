@@ -106,7 +106,7 @@ func get_menuset(menuset: MenuSet):
 		["Add New BlockShape", self, "add_block"],
 		["Add New ScatterShape", self, "add_scatter"],
 		["Select All Blocks", self, "select_all_blocks"],
-		["Turn %s Block Select" % ("OFF" if block_select else "ON"), self, "toggle_block_select"]
+		["%s Block Select" % ("[x]" if block_select else "[-]"), self, "toggle_block_select"]
 	]
 	if menuset == MenuSet.BLOCK:
 		result = [
@@ -186,6 +186,7 @@ func _menu_item_selected(index: int) -> void:
 	
 func toggle_block_select() -> void:
 	block_select = not block_select
+	_on_selection_changed()
 	
 		
 func add_blank() -> Goshape:

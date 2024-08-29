@@ -315,7 +315,7 @@ func get_path_data(interpolate: int) -> PathData:
 				p = global_transform.inverse() * hit.position
 		if path_options.offset_y:
 			p.y += path_options.offset_y
-		path_data.set_point(i, p)
+		path_data.points[i] = p
 	return path_data
 
 
