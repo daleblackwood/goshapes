@@ -33,7 +33,6 @@ func _update_picker() -> void:
 	
 	
 func load_shaper() -> void:
-	print("load")
 	editor_util.file_dialog(
 		"Select a shaper...", 
 		FileDialog.FILE_MODE_OPEN_FILE, 
@@ -43,7 +42,6 @@ func load_shaper() -> void:
 	
 	
 func save_shaper() -> void:
-	print("save")
 	editor_util.file_dialog(
 		"Save shaper to file...", 
 		FileDialog.FILE_MODE_SAVE_FILE, 
@@ -54,13 +52,11 @@ func save_shaper() -> void:
 	
 	
 func make_unique() -> void:
-	print("make_unqiue")
 	var dupe = shaper.duplicate(true)
 	set_shaper(dupe)
 	
 	
 func switch_type(type: Object) -> void:
-	print("switch type ", type)
 	var new_shaper = type.new()
 	if shaper != null:
 		ResourceUtils.copy_props(shaper, new_shaper)

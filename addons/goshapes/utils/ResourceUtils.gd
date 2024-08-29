@@ -112,7 +112,6 @@ static func inc_name_number(name: String) -> String:
 		append_index -= 1
 	var prefix = name.substr(0, append_index)
 	var suffix = int(name.substr(append_index))
-	print(prefix, " ", suffix)
 	suffix += 1
 	return prefix + str(suffix)
 	

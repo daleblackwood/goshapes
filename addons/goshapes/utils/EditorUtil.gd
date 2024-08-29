@@ -30,7 +30,6 @@ func file_dialog(title: String, file_mode: int, callback: Callable) -> void:
 	var current_path = last_resource_folder
 	file_picker.current_path = current_path
 	file_picker.file_selected.connect(func (file: String):
-		print("Selected file ", file)
 		if file == null:
 			return
 		var folder_i = file.rfind("/")
