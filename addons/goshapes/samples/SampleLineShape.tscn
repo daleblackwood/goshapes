@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="7_iq76c"]
 [ext_resource type="PackedScene" uid="uid://de8asbx0dukri" path="res://addons/goshapes/samples/sample_assets/SampleCamera.tscn" id="9_2gnp3"]
 [ext_resource type="PackedScene" uid="uid://wilkunqqgl4" path="res://addons/goshapes/samples/sample_assets/SamplePlayer.tscn" id="10_ktic4"]
-[ext_resource type="Script" path="res://addons/goshapes/ShatterShaper/ScatterShaper.gd" id="12_4qbsa"]
+[ext_resource type="Script" path="res://addons/goshapes/ScatterShaper/ScatterShaper.gd" id="12_4qbsa"]
 [ext_resource type="PackedScene" uid="uid://bminxc530cpcp" path="res://addons/goshapes/samples/sample_assets/Rock.glb" id="12_b8nom"]
 
 [sub_resource type="Curve3D" id="Curve3D_l1jgs"]
