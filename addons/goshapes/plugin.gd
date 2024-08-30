@@ -230,23 +230,52 @@ func add_scatter() -> void:
 	var shape = add_blank()
 	shape.name = StringName("ScatterShape%d" % shape.get_parent().get_child_count())
 	shape.set_shaper(ScatterShaper.new())
-			
-			
+
+# returns a sort order for the shape, used to determine the order of modifications
+func get_shape_sort_order(shape: Goshape) -> int:
+	if shape.shaper is BottomShaper:
+		return 1
+	if shape.shaper is BlockShaper:
+		return 2
+	if shape.shaper is CapShaper and not shape.shaper is CapLineShaper:
+		return 3
+	if shape.shaper is CapLineShaper:
+		return 4
+	if shape.shaper is WallShaper:
+		return 5
+	if shape.shaper is ScatterShaper:
+		return 6
+	# multishapers probably needs to be handles separately 
+	return 99
+
+# sorts a list of Goshapes by their type
+# used when modifications needs to be applied in a specific order 
+func sort_on_type(a: Goshape, b: Goshape) -> bool:
+	var a_order := get_shape_sort_order(a)
+	var b_order := get_shape_sort_order(b)
+	return a_order < b_order
+
 func modify_selected(method: String = "", arg = null) -> void:
 	var selected_nodes = selection_handler.get_selected_nodes()
+	
+	var nodes_to_modify: Array[Goshape] = []
 	for node in selected_nodes:
 		if node is Goshape:
-			var was_editing = node.is_editing
-			if was_editing:
-				node._edit_end()
-			if method != "":
-				if arg != null:
-					node.call(method, arg)
-				else:
-					node.call(method)
-			node._build(proxy.runner)
-			if was_editing:
-				node._edit_begin(proxy)
+			nodes_to_modify.push_back(node as Goshape)
+
+	nodes_to_modify.sort_custom(Callable(self, "sort_on_type"))
+	for node in nodes_to_modify:
+		var was_editing = node.is_editing
+		if was_editing:
+			node._edit_end()
+		if method != "":
+			if arg != null:
+				node.call(method, arg)
+			else:
+				node.call(method)
+		node._build(proxy.runner)
+		if was_editing:
+			node._edit_begin(proxy)
 	
 	
 func _on_selection_changed() -> void:
