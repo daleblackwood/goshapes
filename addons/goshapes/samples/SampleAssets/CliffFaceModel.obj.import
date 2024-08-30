@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cprh1f8pbew4q"
+path="res://.godot/imported/CliffFaceModel.obj-70ed6a2e8413cc5c35f8ccfc7a06ad52.mesh"
+
+[deps]
+
+files=["res://.godot/imported/CliffFaceModel.obj-70ed6a2e8413cc5c35f8ccfc7a06ad52.mesh"]
+
+source_file="res://addons/goshapes/samples/SampleAssets/CliffFaceModel.obj"
+dest_files=["res://.godot/imported/CliffFaceModel.obj-70ed6a2e8413cc5c35f8ccfc7a06ad52.mesh", "res://.godot/imported/CliffFaceModel.obj-70ed6a2e8413cc5c35f8ccfc7a06ad52.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

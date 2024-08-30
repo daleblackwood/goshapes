@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=11 format=3 uid="uid://dt560nkcvvcuw"]
 
-[ext_resource type="Shader" path="res://addons/goshapes/samples/sample_assets/Water.gdshader" id="1_0ybjm"]
+[ext_resource type="Shader" path="res://addons/goshapes/samples/SampleAssets/Water.gdshader" id="1_0ybjm"]
 
 [sub_resource type="Gradient" id="Gradient_037cu"]
 

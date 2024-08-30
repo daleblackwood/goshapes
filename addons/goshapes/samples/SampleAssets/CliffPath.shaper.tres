@@ -1,11 +1,11 @@
 [gd_resource type="Resource" load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_oiar2"]
-[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/sample_assets/GrassMat.material" id="2_hyj1r"]
+[ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/SampleAssets/GrassMat.material" id="2_hyj1r"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="3_p2ikh"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="4_eee4c"]
-[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/sample_assets/CliffMat.tres" id="5_43scp"]
-[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/sample_assets/CliffFaceModel.obj" id="6_abd83"]
+[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="5_43scp"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/SampleAssets/CliffFaceModel.obj" id="6_abd83"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="7_brrkw"]
 
 [sub_resource type="Resource" id="Resource_0y7mq"]

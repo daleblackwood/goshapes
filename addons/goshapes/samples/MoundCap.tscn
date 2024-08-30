@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://addons/goshapes/base/GoCurve3D.gd" id="1_ujv13"]
 [ext_resource type="Script" path="res://addons/goshapes/Goshape.gd" id="2_aqk3t"]
 [ext_resource type="Script" path="res://addons/goshapes/base/PathOptions.gd" id="3_ar8g8"]
-[ext_resource type="Shader" path="res://addons/goshapes/samples/sample_assets/Terrain.gdshader" id="4_v8vxc"]
+[ext_resource type="Shader" path="res://addons/goshapes/samples/SampleAssets/Terrain.gdshader" id="4_v8vxc"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapMoundShaper.gd" id="5_0in1e"]
-[ext_resource type="Material" uid="uid://2jno35b7eo17" path="res://addons/goshapes/samples/sample_assets/Terrain.mat.tres" id="5_6elm1"]
+[ext_resource type="Material" uid="uid://2jno35b7eo17" path="res://addons/goshapes/samples/SampleAssets/Terrain.mat.tres" id="5_6elm1"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="6_70wm7"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="7_tt2mo"]
-[ext_resource type="Material" uid="uid://dt560nkcvvcuw" path="res://addons/goshapes/samples/sample_assets/Water.mat.tres" id="9_6kiro"]
+[ext_resource type="Material" uid="uid://dt560nkcvvcuw" path="res://addons/goshapes/samples/SampleAssets/Water.mat.tres" id="9_6kiro"]
 
 [sub_resource type="Curve3D" id="Curve3D_38k84"]
 resource_name = "MoundBlock-GoCurve3D"

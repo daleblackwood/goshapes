@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=28 format=3 uid="uid://2jno35b7eo17"]
 
-[ext_resource type="Shader" path="res://addons/goshapes/samples/sample_assets/Terrain.gdshader" id="1_0h1nn"]
+[ext_resource type="Shader" path="res://addons/goshapes/samples/SampleAssets/Terrain.gdshader" id="1_0h1nn"]
 
 [sub_resource type="Gradient" id="Gradient_rheho"]
 offsets = PackedFloat32Array(0.419929, 1)
