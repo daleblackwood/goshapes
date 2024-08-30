@@ -49,6 +49,14 @@ var watcher_scene_source := ResourceWatcher.new(emit_changed)
 			emit_changed()
 			
 
+## How much to conform the object to the ground angle		
+@export_range(0.0, 1.0) var ground_angle_conformance: float = 0.0:
+	set(value):
+		if ground_angle_conformance != value:
+			ground_angle_conformance = value
+			emit_changed()
+
+
 ## Rotates the objects randomly around up		
 @export var random_angle: bool = true:
 	set(value):
@@ -115,8 +123,42 @@ class ShatterBuilder extends ShapeBuilder:
 	var style: ScatterShaper
 	func _init(_style: ScatterShaper):
 		style = _style
-		
-		
+
+
+	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:
+		conformance = clamp(conformance, 0.0, 1.0)
+		if conformance == 0.0:
+			return basis
+			
+		var current_y := basis.y.normalized()
+		var  target_y :=  normal.normalized()
+
+		var rotation_axis = current_y.cross(target_y)
+		var   dot_product = current_y.dot(target_y)
+
+		var rotation_angle : float
+
+		# Handle parallel and opposite vectors
+		if rotation_axis.length_squared() < 1e-6:
+				if dot_product > 0.9999:
+						# Vectors are nearly identical; no rotation needed
+						return basis
+				else:
+						# Vectors are opposite; choose an arbitrary perpendicular axis
+						rotation_axis = basis.x.normalized()
+						rotation_angle = PI
+		else:
+				rotation_axis = rotation_axis.normalized()
+				rotation_angle = acos(clamp(dot_product, -1.0, 1.0))
+
+		var     rotation_quat := Quaternion(rotation_axis, rotation_angle)
+		var interpolated_quat := Quaternion().slerp(rotation_quat, conformance)
+
+		var rotated_basis := Basis(interpolated_quat) * basis
+
+		return rotated_basis
+
+
 	func build(host: Node3D, path: PathData) -> void:
 		if not style.scene_source or not style.scene_source.has_resource():
 			printerr("No scene(s) attached to ScatterShaper.")
@@ -136,6 +178,7 @@ class ShatterBuilder extends ShapeBuilder:
 		var inc = style.spread
 		var density = style.density
 		var place_on_ground = style.place_on_ground
+		var ground_angle_conformance := style.ground_angle_conformance
 		var random_angle = style.random_angle
 		var scale_variance = style.scale_variance
 		var scale_multiplier = style.scale_multiplier
@@ -166,6 +209,7 @@ class ShatterBuilder extends ShapeBuilder:
 				var pos = Vector3(x, 0, z)
 				pos.x += (1.0 - evenness) * (inc * r_x - inc * 0.5)
 				pos.z += (1.0 - evenness) * (inc * r_z - inc * 0.5)
+				var normal := Vector3.UP
 				if noise != null:
 					r_density = clampf(1.0 + noise.get_noise_2d(pos.x, pos.y) * 0.5, 0.0, 1.0)
 				if r_density > density:
@@ -180,6 +224,7 @@ class ShatterBuilder extends ShapeBuilder:
 					ray.collision_mask = 0xFF & (~collision_layer)
 					var hit = space.intersect_ray(ray)
 					if hit.has("collider"):
+						normal = hit.normal
 						if placement_mask > 0 and ((1 << placement_mask) & (1 << hit.collider.collision_layer)) == 0:
 							continue
 						pos = host.global_transform.inverse() * hit.position
@@ -199,6 +244,8 @@ class ShatterBuilder extends ShapeBuilder:
 				var angle = PI * 2.0 * r_angle
 				if random_angle:
 					basis = basis.rotated(Vector3.UP, angle)
+				if place_on_ground:
+					basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
 				var scale = scale_multiplier + r_scale * scale_variance * 2.0 - scale_variance
 				basis = basis.scaled(Vector3.ONE * scale)
 				inst.transform.basis = basis
