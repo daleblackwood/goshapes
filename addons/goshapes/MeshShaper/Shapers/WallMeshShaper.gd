@@ -77,4 +77,3 @@ class WallMeshBuilder extends WallBuilder:
 				meshset.material = materials[i % material_count]
 			meshsets[i] = meshset
 		return meshsets
-

@@ -3,63 +3,47 @@ class_name ResourceUtils
 ## Utilities that manipulate Goshapes resources
 		
 static func is_local(resource: Resource) -> bool:
-	if not resource:
-		return true
-	var resource_path = resource.resource_path
-	if resource_path == null or resource_path.find("::") > 0:
-		return true
-	return false
-					
+	return not is_file(resource)	
 	
-static func is_readonly(resource: Resource) -> bool:
-	if not resource:
+	
+static func is_file(resource: Resource) -> bool:
+	if not resource is Resource:
 		return false
-	if resource.resource_path != null and not resource.resource_local_to_scene:
+	var resource_path = resource.resource_path
+	if resource_path and resource_path.begins_with("res:") and resource_path.find("::") < 0:
 		return true
 	return false
 	
-
-static func to_dict(resource: Resource):
-	if not resource:
-		return null
-	var result = {}
-	for prop in resource.get_property_list():
-		var key = prop.name as String
-		if key.begins_with("resource"):
-			continue
-		var value = resource.get(key)
-		if value:
-			result[key] = parse_dict_value(value)
-	return result
 	
-	
-static func local_duplicate(resource: Resource):
+static func make_local(owner: Variant, resource: Resource):
 	if not resource is Resource:
 		return null
-	var result = Resource.new()
+	var owner_name = get_owner_name(owner)
+	var local_name = owner_name + "-" + get_type(resource)
+	if is_file(resource):
+		return resource
+	if resource.resource_name == local_name:
+		return resource
+	var duplicate = resource.duplicate(false)
+	duplicate.resource_name = local_name
+	duplicate.setup_local_to_scene()	
 	var script = resource.get_script() as Script
-	result.set_script(script)
-	result.setup_local_to_scene()
-	for prop in script.get_script_property_list():
-		var key = prop.name as String
-		var value = resource.get(key)
-		if value:
-			result.set(key, value)
-	return result
+	if script:
+		for prop in script.get_script_property_list():
+			var key = prop.name as String
+			var value = resource.get(key)
+			if value and value is Resource:
+				script.set(key, make_local(resource, value))
+	return duplicate
 	
-
-static func parse_dict_value(value):
-	if value:
-		if value is Array:
-			var count = value.size()
-			var arr = []
-			arr.resize(count)
-			for i in range(count):
-				arr[i] = parse_dict_value(value)
-			return arr
-		if value is Resource:
-			return to_dict(value)
-	return value
+	
+static func get_owner_name(owner: Variant) -> String:
+	if owner is Resource:
+		return owner.resource_name
+	if owner is Node:
+		return owner.name
+	printerr("Invalid owner")
+	return "?"
 
 
 static func get_type(resource: Resource) -> String:
@@ -78,34 +62,9 @@ static func get_local_path(resource: Resource) -> String:
 	if name.find("::") > 0:
 		return ""
 	name = name.substr(name.rfindn("/") + 1)
-	return name
+	return name	
 	
 	
-static func get_local_name(resource: Resource) -> String:
-	var name = get_local_path(resource)
-	if name.length() < 1:
-		return ""
-	var dotI = name.rfindn(".")
-	if dotI > 0:
-		name = name.substr(0, dotI)
-	return name
-	
-	
-static func copy_props(src: Resource, dest: Resource) -> void:
-	if src == null or dest == null:
-		return
-	var src_props = src.get_property_list()
-	var dest_props = dest.get_property_list()
-	if src_props.size() < 1 or dest_props.size() < 1:
-		return
-	for src_prop in src_props:
-		if (src_prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE) == 0:
-			continue
-		for dest_prop in dest_props:
-			if src_prop.name == dest_prop.name and src_prop.type == dest_prop.type:
-				dest.set(src_prop.name, src.get(src_prop.name))
-				
-		
 static func inc_name_number(name: String) -> String:
 	var append_index := name.length()
 	while name[append_index - 1] >= '0' and name[append_index - 1] <= '9':
@@ -114,4 +73,3 @@ static func inc_name_number(name: String) -> String:
 	var suffix = int(name.substr(append_index))
 	suffix += 1
 	return prefix + str(suffix)
-	

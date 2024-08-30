@@ -1,0 +1,66 @@
+[gd_resource type="ShaderMaterial" load_steps=11 format=3 uid="uid://dt560nkcvvcuw"]
+
+[ext_resource type="Shader" path="res://addons/goshapes/samples/sample_assets/Water.gdshader" id="1_0ybjm"]
+
+[sub_resource type="Gradient" id="Gradient_037cu"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pm35h"]
+seed = 2
+frequency = 0.0009
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_k6x6o"]
+seamless = true
+seamless_blend_skirt = 0.259
+as_normal_map = true
+color_ramp = SubResource("Gradient_037cu")
+noise = SubResource("FastNoiseLite_pm35h")
+
+[sub_resource type="Gradient" id="Gradient_nwtwg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nw8on"]
+noise_type = 2
+frequency = 0.0032
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qtpoh"]
+seamless = true
+seamless_blend_skirt = 0.47
+as_normal_map = true
+color_ramp = SubResource("Gradient_nwtwg")
+noise = SubResource("FastNoiseLite_nw8on")
+
+[sub_resource type="Gradient" id="Gradient_ledsb"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ph2mj"]
+noise_type = 2
+frequency = 0.003
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_eoix2"]
+seamless = true
+seamless_blend_skirt = 0.163
+color_ramp = SubResource("Gradient_ledsb")
+noise = SubResource("FastNoiseLite_ph2mj")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0ybjm")
+shader_parameter/albedo = Color(0.0648944, 0.426822, 0.574057, 1)
+shader_parameter/albedo2 = Color(0.333196, 0.470955, 0.913376, 1)
+shader_parameter/metallic = 0.093
+shader_parameter/roughness = 0.189
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.045
+shader_parameter/noise_scale = 11.18
+shader_parameter/height_scale = 0.15
+shader_parameter/normal_scale = 0.1
+shader_parameter/color_deep = Color(0.154737, 0.203018, 0.41362, 1)
+shader_parameter/color_shallow = Color(0.184333, 0.512919, 0.621702, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.325
+shader_parameter/near = 1.0
+shader_parameter/far = 100.0
+shader_parameter/edge_color = Color(0.458405, 0.458405, 0.458405, 1)
+shader_parameter/wave = SubResource("NoiseTexture2D_eoix2")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_k6x6o")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_qtpoh")

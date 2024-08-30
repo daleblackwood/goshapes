@@ -57,4 +57,3 @@ class BottomShaperBuilder extends ShapeBuilder:
 			meshset.set_tri(i * 3 + 2, a)
 			
 		return [meshset]
-

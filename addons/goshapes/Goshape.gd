@@ -84,52 +84,22 @@ func _edit_begin(edit_proxy) -> void:
 		return
 	self.edit_proxy = edit_proxy
 	set_display_folded(true)
-	if not _is_resource(shaper, Shaper):
-		_init_shaper()
-	if not _is_resource(path_options, PathOptions):
-		_init_path_options()
-		if not path_options.resource_local_to_scene:
-			set_path_options(ResourceUtils.local_duplicate(path_options))
-	if not _is_resource(curve, Curve3D) or curve.get_point_count() < 2:
+	if not is_instance_of(shaper, Shaper):
+		set_shaper(edit_proxy.create_shaper())
+	if not is_instance_of(path_options, PathOptions):
+		set_path_options(edit_proxy.create_path_options())
+	if not is_instance_of(curve, Curve3D) or curve.get_point_count() < 2:
 		_init_curve()
 	if not curve is GoCurve3D:
 		curve.set_script(GoCurve3D.new().get_script())
 	
-	curve = capture_resource(curve)
-	shaper = capture_resource(shaper)
-	path_options = capture_resource(path_options)
+	curve = ResourceUtils.make_local(self, curve)
+	shaper = ResourceUtils.make_local(self, shaper)
+	path_options = ResourceUtils.make_local(self, path_options)
 		
 	curve_changed.connect(on_curve_changed)
 	watcher_shaper.watch(shaper)
 	watcher_pathmod.watch(path_options)
-	
-	
-func capture_resource(resource: Resource) -> Resource:
-	var resource_type = ResourceUtils.get_type(resource)
-	var is_local = ResourceUtils.is_local(resource)
-	var owner_name = name if is_local else ResourceUtils.get_local_path(resource)
-	var resource_name = owner_name + ":" + resource_type
-	if resource.resource_name != resource_name:
-		resource.resource_name = resource_name
-		if is_local:
-			return resource.duplicate(true)
-	return resource
-	
-	
-func _is_resource(resource: Resource, type) -> bool:
-	if resource == null:
-		return false
-	if not is_instance_of(resource, type):
-		return false
-	return true
-	
-	
-func _init_shaper() -> void:
-	set_shaper(edit_proxy.create_shaper())
-	
-	
-func _init_path_options() -> void:
-	set_path_options(edit_proxy.create_path_options())
 	
 	
 func _init_curve() -> void:
@@ -156,8 +126,6 @@ func _edit_end() -> void:
 	
 	
 func set_shaper(value: Shaper) -> void:
-	if value and ResourceUtils.is_local(value):
-		value.resource_name = ShaperTypes.get_type_name(value)
 	shaper = value
 	watcher_shaper.watch(shaper)
 	mark_dirty()

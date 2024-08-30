@@ -1,0 +1,171 @@
+[gd_resource type="ShaderMaterial" load_steps=28 format=3 uid="uid://2jno35b7eo17"]
+
+[ext_resource type="Shader" path="res://addons/goshapes/samples/sample_assets/Terrain.gdshader" id="1_0h1nn"]
+
+[sub_resource type="Gradient" id="Gradient_rheho"]
+offsets = PackedFloat32Array(0.419929, 1)
+colors = PackedColorArray(0.219925, 0.364871, 0.174561, 1, 0.322933, 0.4, 0.128, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_56a5d"]
+frequency = 0.0179
+fractal_octaves = 3
+fractal_lacunarity = 2.57
+fractal_gain = 0.65
+fractal_weighted_strength = 0.24
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qmuee"]
+seamless = true
+seamless_blend_skirt = 0.254
+color_ramp = SubResource("Gradient_rheho")
+noise = SubResource("FastNoiseLite_56a5d")
+
+[sub_resource type="Gradient" id="Gradient_7l160"]
+offsets = PackedFloat32Array(0.018797, 1)
+colors = PackedColorArray(0.533333, 0.533333, 0.533333, 1, 0.654232, 0.654232, 0.654232, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_pir78"]
+noise_type = 2
+frequency = 0.0021
+fractal_octaves = 7
+fractal_lacunarity = 1.785
+fractal_gain = 0.77
+fractal_weighted_strength = 0.25
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8g107"]
+width = 128
+height = 128
+seamless = true
+seamless_blend_skirt = 0.336
+as_normal_map = true
+bump_strength = 0.7
+color_ramp = SubResource("Gradient_7l160")
+noise = SubResource("FastNoiseLite_pir78")
+
+[sub_resource type="Gradient" id="Gradient_kcjot"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rqttt"]
+gradient = SubResource("Gradient_kcjot")
+
+[sub_resource type="Gradient" id="Gradient_xt7t2"]
+offsets = PackedFloat32Array(0, 0.408397, 1)
+colors = PackedColorArray(0.545508, 0.55, 0.2805, 1, 0.783884, 0.787348, 0.579481, 1, 0.895928, 0.897596, 0.797496, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sn2ks"]
+frequency = 0.0041
+fractal_octaves = 6
+fractal_gain = 1.98
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c4m1v"]
+seamless = true
+seamless_blend_skirt = 0.635
+color_ramp = SubResource("Gradient_xt7t2")
+noise = SubResource("FastNoiseLite_sn2ks")
+
+[sub_resource type="Gradient" id="Gradient_xuemb"]
+offsets = PackedFloat32Array(0, 0.266917, 0.725564, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.146617, 0.146617, 0.146617, 1, 0.873087, 0.873087, 0.873087, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1a3yi"]
+noise_type = 2
+frequency = 0.2407
+fractal_octaves = 8
+fractal_lacunarity = 1.955
+fractal_gain = -0.47
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5uno5"]
+seamless = true
+as_normal_map = true
+bump_strength = 1.4
+color_ramp = SubResource("Gradient_xuemb")
+noise = SubResource("FastNoiseLite_1a3yi")
+
+[sub_resource type="Gradient" id="Gradient_7oag0"]
+offsets = PackedFloat32Array(0, 0.323308, 0.699248, 1)
+colors = PackedColorArray(0.593181, 0.777685, 0.936926, 1, 0.814943, 0.898872, 0.971308, 1, 0.865876, 0.926705, 0.979205, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_em3e1"]
+noise_type = 3
+seed = 145
+frequency = 0.0061
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mwqxn"]
+seamless = true
+seamless_blend_skirt = 0.316
+color_ramp = SubResource("Gradient_7oag0")
+noise = SubResource("FastNoiseLite_em3e1")
+
+[sub_resource type="Gradient" id="Gradient_g44cb"]
+offsets = PackedFloat32Array(0, 0.266917, 0.725564, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.146617, 0.146617, 0.146617, 1, 0.873087, 0.873087, 0.873087, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7cwtj"]
+noise_type = 2
+frequency = 0.007
+fractal_octaves = 8
+fractal_lacunarity = 1.605
+fractal_gain = 0.785
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1nrdq"]
+seamless = true
+as_normal_map = true
+bump_strength = 5.1
+color_ramp = SubResource("Gradient_g44cb")
+noise = SubResource("FastNoiseLite_7cwtj")
+
+[sub_resource type="Gradient" id="Gradient_1mjv7"]
+offsets = PackedFloat32Array(0, 0.537594, 0.793233)
+colors = PackedColorArray(0.35, 0.301875, 0.2345, 1, 0.38, 0.328573, 0.2736, 1, 0.39, 0.34216, 0.3003, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g6yjt"]
+seed = 100
+frequency = 0.0135
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pnnhj"]
+seamless = true
+seamless_blend_skirt = 0.316
+color_ramp = SubResource("Gradient_1mjv7")
+noise = SubResource("FastNoiseLite_g6yjt")
+
+[sub_resource type="Gradient" id="Gradient_galae"]
+offsets = PackedFloat32Array(0, 0.150376, 0.300752, 0.928571, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.201527, 0.201527, 0.201527, 1, 0.581865, 0.581865, 0.581865, 1, 0.873087, 0.873087, 0.873087, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_b3oil"]
+noise_type = 0
+seed = 2
+frequency = 0.0005
+fractal_octaves = 8
+fractal_lacunarity = 2.715
+fractal_gain = -0.6
+fractal_weighted_strength = 0.61
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yk3ie"]
+width = 1024
+height = 1024
+generate_mipmaps = false
+seamless = true
+as_normal_map = true
+bump_strength = 32.0
+color_ramp = SubResource("Gradient_galae")
+noise = SubResource("FastNoiseLite_b3oil")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_0h1nn")
+shader_parameter/fade_threshold = 0.495
+shader_parameter/surface_scale = 3.843
+shader_parameter/wall_scale = 10.0
+shader_parameter/sand_height = 2.08165e-12
+shader_parameter/snow_height = 120.0
+shader_parameter/surface_depth = 1.16
+shader_parameter/wall_depth = 2.0
+shader_parameter/grass_diffuse = SubResource("NoiseTexture2D_qmuee")
+shader_parameter/grass_normal = SubResource("NoiseTexture2D_8g107")
+shader_parameter/snow_diffuse = SubResource("NoiseTexture2D_mwqxn")
+shader_parameter/snow_normal = SubResource("NoiseTexture2D_1nrdq")
+shader_parameter/sand_diffuse = SubResource("NoiseTexture2D_c4m1v")
+shader_parameter/sand_normal = SubResource("NoiseTexture2D_5uno5")
+shader_parameter/wall_diffuse = SubResource("NoiseTexture2D_pnnhj")
+shader_parameter/wall_normal = SubResource("NoiseTexture2D_yk3ie")
+shader_parameter/path_map = SubResource("GradientTexture1D_rqttt")

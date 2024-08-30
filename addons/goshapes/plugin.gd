@@ -39,7 +39,6 @@ class BlockAttributes:
 		
 	func apply_path_options(block: Goshape) -> void:
 		block.path_options = path_options
-		
 	
 
 class EditorProxy:
@@ -127,16 +126,11 @@ func get_menuset(menuset: MenuSet):
 	return result
 	
 
-var shaper_inspector: ShaperInspector
-
 func _enter_tree() -> void:
 	editor_util = EditorUtil.new(editor)
 	
 	add_custom_type("Goshape", "Path3D", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
-	
-	shaper_inspector = ShaperInspector.new(editor_util)
-	add_inspector_plugin(shaper_inspector)
 	
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
@@ -353,5 +347,3 @@ func _input(event):
 
 func _exit_tree() -> void:
 	selection_handler.selection_changed.disconnect(_on_selection_changed)
-	remove_inspector_plugin(shaper_inspector)
-	print("GDBlocks disconnected ")

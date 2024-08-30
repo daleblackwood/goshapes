@@ -1,6 +1,6 @@
 [gd_scene load_steps=93 format=3 uid="uid://g1jk0p6fh12y"]
 
-[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/sample_assets/SandMat.tres" id="1_5a1wl"]
+[ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/sample_assets/SandMat.mat.tres" id="1_5a1wl"]
 [ext_resource type="Script" path="res://addons/goshapes/base/GoCurve3D.gd" id="2_krpqt"]
 [ext_resource type="Script" path="res://addons/goshapes/Goshape.gd" id="3_k2h74"]
 [ext_resource type="Script" path="res://addons/goshapes/base/PathOptions.gd" id="4_p05bb"]

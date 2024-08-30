@@ -63,9 +63,6 @@ func _init() -> void:
 		cap_shaper = CapFlatShaper.new()
 	if wall_shaper == null:
 		wall_shaper = WallBevelShaper.new()
-	if bottom_shaper == null:
-		bottom_shaper = BottomShaper.new()
-		bottom_shaper.enabled = false
 	watcher_cap.watch(cap_shaper)
 	watcher_wall.watch(wall_shaper)
 	watcher_bottom.watch(bottom_shaper)
