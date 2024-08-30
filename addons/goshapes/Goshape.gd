@@ -68,6 +68,7 @@ func _ready() -> void:
 
 func _enter_tree() -> void:
 	set_display_folded(true)
+	set_meta("_edit_group_", true)
 	
 	
 func _exit_tree() -> void:
