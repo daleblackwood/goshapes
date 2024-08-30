@@ -4,21 +4,21 @@ extends WallShaper
 ## A Shaper that draws a simple wall around the path
 		
 ## The height to make the wall
-@export_range(0.0, 100.0, 0.2) var height = 1.0:
+@export_range(0.0, 100.0, 0.1) var height = 1.0:
 	set(value):
 		if height != value:
 			height = value
 			emit_changed()
 
 ## Create a bevel around the wall edge	
-@export_range(0, 10.0, 0.2) var bevel = 0.0:
+@export_range(0, 10.0, 0.1) var bevel = 0.0:
 	set(value):
 		if bevel != value:
 			bevel = value
 			emit_changed()
 
 ## Creates a tapered edge
-@export_range(0.0, 100.0, 0.2) var taper = 0.0:
+@export_range(0.0, 100.0, 0.1) var taper = 0.0:
 	set(value):
 		if taper != value:
 			taper = value

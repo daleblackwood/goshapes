@@ -75,11 +75,11 @@ void fragment() {
 	float sand_blend = clamp((wpos.y - sand_height) * 0.08f, 0.0, 1.0);
 	float snow_blend = clamp((wpos.y - snow_height) * 0.02, 0.0, 1.0);
 	float path_blend = texture(path_map, UV).r;
-	
+
 	float inv_wall_scale = 1.0 / wall_scale;
 	vec3 wall_d = triplanar_texture(wall_diffuse, pnorm, tpos, inv_wall_scale).rgb;
 	vec3 wall_n = triplanar_texture(wall_normal, pnorm, tpos, inv_wall_scale).rgb;
-	
+
 	float inv_surface_scale = 1.0 / surface_scale;
 	vec3 grass_d = texture(grass_diffuse, wpos.xz * inv_surface_scale).rgb;
 	vec3 grass_n = texture(grass_normal, wpos.xz * inv_surface_scale).rgb;
@@ -87,28 +87,28 @@ void fragment() {
 	vec3 snow_n = texture(snow_normal, wpos.xz * inv_surface_scale).rgb;
 	vec3 sand_d = texture(sand_diffuse, wpos.xz * inv_surface_scale).rgb;
 	vec3 sand_n = texture(sand_normal, wpos.xz * inv_surface_scale).rgb;
-	
+
 	// grass + sand
     vec3 out_color = grass_d;
 	vec3 out_norm = grass_n;
-	
+
 	// mix in snow
 	out_color = mix(out_color, snow_d, snow_blend);
 	out_norm = mix(out_norm, snow_n, snow_blend);
-	
+
 	// mix in wall
 	out_color = mix(out_color, wall_d, wall_blend);
 	out_norm = mix(out_norm, wall_n, wall_blend);
-	
+
 	// mix in sand
 	out_color = mix(out_color, sand_d, 1.0 - sand_blend);
 	out_norm = mix(out_norm, sand_n, 1.0 - sand_blend);
-	
+
 	// mix in path
 	out_color = mix(out_color, sand_d, path_blend);
 	out_norm = mix(out_norm, sand_n, path_blend);
 	float out_depth = mix(surface_depth, wall_depth, wall_blend);
-	
+
 	ALBEDO = out_color;
   	NORMAL_MAP = clamp(out_norm * out_depth, 0.0, 1.0);
 	SPECULAR = clamp(wall_blend * 0.5, 0.0, 0.5);

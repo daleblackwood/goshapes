@@ -294,6 +294,7 @@ curve = SubResource("Curve3D_38k84")
 script = ExtResource("2_aqk3t")
 path_options = SubResource("Resource_m18lu")
 shaper = SubResource("Resource_fbwxn")
+metadata/_edit_group_ = true
 
 [node name="Mesh0" type="MeshInstance3D" parent="MoundBlock"]
 mesh = SubResource("ArrayMesh_j6g8m")

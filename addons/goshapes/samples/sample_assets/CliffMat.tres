@@ -1,25 +1,26 @@
 [gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://c2cqyi3fjigxj"]
 
+[sub_resource type="Gradient" id="Gradient_rtf0a"]
+offsets = PackedFloat32Array(0, 0.163855, 0.556626, 0.66506, 0.795181, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.11532, 0.11532, 0.11532, 1, 0.182459, 0.182459, 0.182459, 1, 0.373027, 0.373027, 0.373027, 1, 0.691566, 0.691566, 0.691566, 1, 1, 1, 1, 1)
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ngv7x"]
+frequency = 0.0003
 fractal_octaves = 3
-fractal_lacunarity = 5.0
+fractal_lacunarity = 8.72
 fractal_gain = 1.0
 fractal_weighted_strength = 0.7
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture_u5cbi"]
-seamless = true
-noise = SubResource("FastNoiseLite_ngv7x")
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture_hjvdp"]
 seamless = true
 as_normal_map = true
-bump_strength = 16.9
+bump_strength = 5.3
+color_ramp = SubResource("Gradient_rtf0a")
 noise = SubResource("FastNoiseLite_ngv7x")
 
 [resource]
-albedo_color = Color(0.4, 0.290196, 0.207843, 1)
-albedo_texture = SubResource("NoiseTexture_u5cbi")
+albedo_color = Color(0.368096, 0.301826, 0.255599, 1)
 normal_enabled = true
-normal_scale = -0.22
+normal_scale = 10.19
 normal_texture = SubResource("NoiseTexture_hjvdp")
 uv1_scale = Vector3(2, 1, 1)

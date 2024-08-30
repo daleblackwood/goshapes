@@ -4,6 +4,10 @@
 script/source = "extends Camera3D
 
 @export var target: Node3D = null
+@export var distance := 3.0
+@export var height := 1.5
+@export var angle := 45.0
+@export var fixed_angle = false
 
 var ground_y = 0.0
 var turn = 0.0
@@ -25,16 +29,20 @@ func _process(delta: float) -> void:
 	diff.y = 0.0
 	var offset = diff
 	var length = offset.length()
-	var too_far_away = length > 10.0
+	var too_far_to_lerp = length > distance * 3.0
 	if length > 0.0:
-		offset = offset.normalized() * 3.0
+		var dir = offset.normalized()
+		if fixed_angle:
+			dir.x = sin(deg_to_rad(angle))
+			dir.z = cos(deg_to_rad(angle))
+		offset = dir * distance
 	
-	offset.y = 1.5
+	offset.y = height
 	
 	var to_pos = target_pos + offset
 	if to_pos.y < 0.0:
 		to_pos.y = 0.0
-	if not too_far_away:
+	if not too_far_to_lerp:
 		to_pos = global_transform.origin.lerp(to_pos, 0.1)
 	
 	if Input.is_key_pressed(KEY_COMMA):
