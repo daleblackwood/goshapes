@@ -197,11 +197,11 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 		lengths[i] = section_length
 		path_length += section_length
 	
-	var set = mesh_clone_to_length(meshset, path_length)
+	var result = mesh_clone_to_length(meshset, path_length)
 	# wrap combined verts around path
-	var vert_count = set.verts.size()
+	var vert_count = result.vert_count
 	for i in range(vert_count):
-		var v = set.verts[i]
+		var v = result.verts[i]
 		var ai = 0
 		var len_start = 0.0
 		var len_end = 0.0
@@ -226,44 +226,45 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: PathData, close: bool) -> 
 		var orig_x = v.x - len_start
 		var xt = orig_x * right
 		var pt = pa + orig_x * right - v.y * down + v.z * out
-		set.set_vert(i, pt)
-		var n = set.normals[i]
+		result.set_vert(i, pt)
+		var n = result.normals[i]
 		n = (n.x * right + n.y * up + n.z * out).normalized()
-		set.set_normal(i, n)
-	return set
+		result.set_normal(i, n)
+	return result
 	
 	
-static func mesh_clone_to_length(meshset: MeshSet, path_length: float) -> MeshSet:
+static func mesh_clone_to_length(mesh_in: MeshSet, path_length: float) -> MeshSet:
 	# calculate segment sizes
 	var min_x = INF
 	var max_x = -INF
-	for v in meshset.verts:
+	for v in mesh_in.verts:
 		if v.x < min_x:
 			min_x = v.x
 		if v.x > max_x:
 			max_x = v.x
 	var mesh_length = max_x - min_x
-	var seg_count = get_segment_count_for_path(path_length, mesh_length)
+	var seg_count = int(round(path_length / mesh_length))
 	if seg_count < 1:
 		seg_count = 1
 	var seg_length = path_length / seg_count
 	var x_multi = seg_length / mesh_length
-	# tile verts along x, build sets
-	var sets: Array[MeshSet] = []
+	var result = MeshSet.new()
+	result.set_counts(mesh_in.vert_count * seg_count, mesh_in.tri_count * seg_count)
+	# tile verts along x
 	for i in range(seg_count):
-		var set = meshset.clone()
-		var vert_count = set.verts.size()
+		var first_vert = i * mesh_in.vert_count
 		var start_x = i * seg_length
-		for j in vert_count:
-			var v = set.verts[j]
+		for j in mesh_in.vert_count:
+			var v = mesh_in.verts[j]
 			v.x = start_x + v.x * x_multi
-			set.set_vert(j, v)
-			var uv = set.uvs[j]
+			result.set_vert(first_vert + j, v)
+			var uv = mesh_in.uvs[j]
 			uv.x += float(i)
-			set.set_uv(j, uv)
-		sets.append(set)
-	var set = combine_sets(sets)
-	return set
+			result.set_uv(first_vert + j, uv)
+			result.set_normal(first_vert + j, mesh_in.normals[j])
+		for j in mesh_in.tri_count:
+			result.set_tri(i * mesh_in.tri_count + j, mesh_in.tris[j] + (i * mesh_in.vert_count)) 
+	return result
 	
 	
 static func get_segment_count_for_path(path_length: float, segment_length: float) -> int:
