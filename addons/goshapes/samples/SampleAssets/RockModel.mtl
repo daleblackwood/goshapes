@@ -1,0 +1,12 @@
+# Blender MTL File: 'rock.blend'
+# Material Count: 1
+
+newmtl RockMat
+Ns 25.641854
+Ka 0.784314 0.784314 0.784314
+Kd 0.092722 0.092722 0.092722
+Ks 0.839869 0.839869 0.839869
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3

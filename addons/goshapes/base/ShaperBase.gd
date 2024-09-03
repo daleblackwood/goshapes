@@ -17,14 +17,20 @@ func get_name() -> String:
 func build(host: Node3D, path: PathData) -> void:
 	if not Engine.is_editor_hint():
 		return
+		
+	var start_time = Time.get_ticks_msec()
 	var builder = get_builder()
 	if builder != null:
 		builder.build(host, path)
 	else:
 		printerr("No builder for host %s" % host.name)
+	print("build job took %dms" % (Time.get_ticks_msec() - start_time))
 				
-func get_build_job(path: PathData) -> Job:
+func get_build_jobs(path: PathData) -> Array[Job]:
 	var builder = get_builder()
 	if builder != null:
-		return builder.get_build_job(path)
-	return null
+		return builder.get_build_jobs(path)
+	return []
+	
+func get_builders() -> Array[ShapeBuilder]:
+	return [get_builder()]

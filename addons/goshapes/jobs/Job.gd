@@ -9,17 +9,17 @@ var thread: Thread
 var mutex: Mutex
 var input
 var output
-var host
+var host: Node
 var callback: Callable
 var id = -1
 var group
-var is_async = true
+var is_async = false
+var start_time = 0
 
 
-func run(host, callback: Callable) -> void:
-	self.host = host
-	self.callback = callback
+func run() -> void:
 	state = State.RUNNING
+	start_time = Time.get_ticks_msec()
 	if is_async:
 		run_async()
 	else:
@@ -27,18 +27,19 @@ func run(host, callback: Callable) -> void:
 	
 	
 func run_sync() -> void:
-	output = _run(input)
+	output = _run()
 	done()
 
 
 func run_async() -> void:
 	thread = Thread.new()
 	mutex = Mutex.new()
-	thread.start(_async_begin, input.duplicate())
+	thread.start(_async_begin)
 	
 	
-func _async_begin(input):
-	var result = _run(input.duplicate())
+func _async_begin():
+	print("async begin", input)
+	var result = _run()
 	call_deferred("_async_end")
 	return result
 	
@@ -50,14 +51,8 @@ func _async_end():
 	done()
 
 	
-func _run(input):
+func _run():
 	push_error("can't run base job")
-	
-	
-func set_input(data) -> void:
-	lock(true)
-	self.input = data
-	lock(false)
 	
 	
 func lock(value: bool) -> void:

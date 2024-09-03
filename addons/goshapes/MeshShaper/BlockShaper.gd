@@ -84,6 +84,18 @@ func get_builder() -> ShapeBuilder:
 	return BlockBuilder.new(self)
 	
 
+func get_builders() -> Array[ShapeBuilder]:
+	var result: Array[ShapeBuilder] = []
+	if cap_shaper != null and cap_shaper.enabled:
+		result += cap_shaper.get_builders()
+	if wall_shaper != null and wall_shaper.enabled:
+		result += wall_shaper.get_builders()
+	if bottom_shaper != null and bottom_shaper.enabled:
+		bottom_shaper.cap_shaper = cap_shaper
+		result += bottom_shaper.get_builders()
+	return result
+	
+
 class BlockBuilder extends ShapeBuilder:
 	
 	var style: BlockShaper
@@ -114,3 +126,15 @@ class BlockBuilder extends ShapeBuilder:
 		var collider_shape = SceneUtils.get_or_create(collider_body, "CollisionShape", CollisionShape3D)
 		collider_shape.shape = mesh.create_trimesh_shape()
 		collider_shape.transform = Transform3D()
+		
+		
+	func get_build_jobs(path: PathData) -> Array[Job]:
+		var result: Array[Job] = []
+		if style.cap_shaper != null and style.cap_shaper.enabled:
+			result += style.cap_shaper.get_build_jobs(path)
+		if style.wall_shaper != null and style.wall_shaper.enabled:
+			result += style.wall_shaper.get_build_jobs(path)
+		if style.bottom_shaper != null and style.bottom_shaper.enabled:
+			style.bottom_shaper.cap_shaper = style.cap_shaper
+			result += style.bottom_shaper.get_build_jobs(path)
+		return result

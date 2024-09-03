@@ -6,14 +6,14 @@ extends Shaper
 # An upper limit for instance counts for protection
 const INSTANCE_CAP = 2000
 
-var watcher_scene_source := ResourceWatcher.new(emit_changed)
+var watcher_model_source := ResourceWatcher.new(emit_changed)
 
 ## The object to scatter about
-@export var scene_source: SceneSource = null:
+@export var model_source: ScatterSource = null:
 	set(value):
-		if scene_source != value:
-			scene_source = value
-			watcher_scene_source.watch(scene_source)
+		if model_source != value:
+			model_source = value
+			watcher_model_source.watch(model_source)
 			emit_changed()
 			
 
@@ -77,7 +77,7 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			
 
 ## Random differences in scale up to this theshhold	
-@export_range(0.0, 10.0) var scale_variance: float = 0.0:
+@export_range(0.0, 2.0) var scale_variance: float = 0.0:
 	set(value):
 		if scale_variance != value:
 			scale_variance = value
@@ -109,8 +109,8 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			
 			
 func _init():
-	if not scene_source:
-		scene_source = ScatterItem.new()
+	if not model_source:
+		model_source = ScatterScene.new()
 	watcher_noise.watch(noise)
 			
 
@@ -160,7 +160,7 @@ class ShatterBuilder extends ShapeBuilder:
 
 
 	func build(host: Node3D, path: PathData) -> void:
-		if not style.scene_source or not style.scene_source.has_resource():
+		if not style.model_source or not style.model_source.has_resource():
 			printerr("No scene(s) attached to ScatterShaper.")
 			return
 		var rng = RandomNumberGenerator.new()
@@ -232,11 +232,9 @@ class ShatterBuilder extends ShapeBuilder:
 						continue
 				else:
 					pos.y = curve.get_closest_point(pos).y
-				var object = style.scene_source.get_resource()
-				var object_name = ResourceUtils.get_type(object)
-				var inst = object.instantiate()
+				var inst = style.model_source.instantiate()
 				instances += 1
-				inst.name = "%s%d" % [object_name, instances]
+				inst.name = "%s%d" % [inst.name, instances]
 				inst.transform.origin = pos
 				if collision_layer > 0 and inst is CollisionObject3D:
 					inst.collision_layer = collision_layer

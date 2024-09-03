@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=4 uid="uid://dk6w7qa7wecch"]
+[gd_scene load_steps=54 format=4 uid="uid://dk6w7qa7wecch"]
 
 [ext_resource type="Script" path="res://addons/goshapes/base/GoCurve3D.gd" id="1_ujv13"]
 [ext_resource type="Script" path="res://addons/goshapes/Goshape.gd" id="2_aqk3t"]
@@ -286,6 +286,8 @@ background_energy_multiplier = 0.72
 sky = SubResource("Sky_6sydh")
 tonemap_exposure = 1.96
 
+[sub_resource type="BoxMesh" id="BoxMesh_acu4a"]
+
 [node name="Node3D" type="Node3D"]
 
 [node name="MoundBlock" type="Path3D" parent="."]
@@ -327,3 +329,8 @@ surface_material_override/0 = ExtResource("9_6kiro")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vm0ht")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(494.087, 0, 0, 0, 494.087, 0, 0, 0, 494.087, 0, 273.961, 0)
+mesh = SubResource("BoxMesh_acu4a")
+surface_material_override/0 = ExtResource("5_6elm1")

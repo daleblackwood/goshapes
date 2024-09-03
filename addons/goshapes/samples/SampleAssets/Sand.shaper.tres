@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="BlockShaper" load_steps=10 format=3 uid="uid://crmkyitge0fwa"]
+[gd_resource type="Resource" script_class="BlockShaper" load_steps=9 format=3 uid="uid://crmkyitge0fwa"]
 
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_8p5wp"]
-[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="2_a6xuy"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapMoundShaper.gd" id="2_ddumt"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dh0ri"]
 [ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/SampleAssets/SandMat.mat.tres" id="2_yuv2d"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="4_kbrom"]
@@ -12,15 +11,9 @@ script = ExtResource("1_8p5wp")
 base_depth = 1.0
 enabled = false
 
-[sub_resource type="Resource" id="Resource_iikrf"]
-script = ExtResource("2_ddumt")
-height = 24.4
-iterations = 2
-mound_type = 5
-height_map_frequency = 1.379
-height_map_multiplier = 1.0
+[sub_resource type="Resource" id="Resource_03q4f"]
+script = ExtResource("2_dh0ri")
 conform_to_wall = false
-material = ExtResource("2_a6xuy")
 build_collider = true
 collision_layer = 1
 enabled = true
@@ -38,7 +31,7 @@ enabled = true
 [resource]
 resource_name = "Sand.shaper.tres:BlockShaper"
 script = ExtResource("3_f6xbb")
-cap_shaper = SubResource("Resource_iikrf")
+cap_shaper = SubResource("Resource_03q4f")
 wall_shaper = SubResource("Resource_8nj8m")
 bottom_shaper = SubResource("Resource_5sco3")
 bottom_depth = 0.0

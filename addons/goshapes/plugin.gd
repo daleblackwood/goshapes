@@ -33,17 +33,20 @@ class BlockAttributes:
 	func apply(block: Goshape) -> void:
 		block.shaper = shaper
 		block.path_options = path_options
+		block._edit_update()
 		
 	func apply_shaper(block: Goshape) -> void:
 		block.shaper = shaper
+		block._edit_update()
 		
 	func apply_path_options(block: Goshape) -> void:
 		block.path_options = path_options
+		block._edit_update()
 	
 
 class EditorProxy:
 	
-	var runner = JobRunner.new()
+	var runner := GoBuildRunner.new()
 	var attributes_last := BlockAttributes.new()
 	var attributes_copied := BlockAttributes.new()
 	var selected_block: Goshape = null

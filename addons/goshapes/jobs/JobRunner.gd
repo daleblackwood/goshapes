@@ -84,7 +84,7 @@ func next() -> void:
 		return
 		
 	current_job = queue.pop_front()
-	current_job.run(current_job.host, current_job.callback)
+	current_job.run()
 	job_done.call_deferred(current_job)
 	
 	

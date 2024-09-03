@@ -13,15 +13,25 @@ func _init(_style: MeshShaper) -> void:
 	
 
 func build(host: Node3D, path: PathData) -> void:
+	self.host = host
 	build_meshes(host, path)
 	
+
+func commit_mesh() -> void:
+	apply_mesh(host, mesh)
+	
+	
+func commit_colliders() -> void:
+	if base_style.build_collider:
+		apply_collider(host, mesh)
+		
 	
 func build_meshes(host: Node3D, path: PathData, dest_mesh: Mesh = null) -> void:
 	meshsets = build_sets(path)
 	mesh = MeshUtils.build_meshes(meshsets, dest_mesh)
-	apply_mesh(host, mesh)
-	if base_style.build_collider:
-		apply_collider(host, mesh)
+	#call_deferred("apply_mesh", host, mesh)
+	#if base_style.build_collider:
+	#	apply_collider(host, mesh)
 	
 
 func build_sets(path: PathData) -> Array[MeshSet]:

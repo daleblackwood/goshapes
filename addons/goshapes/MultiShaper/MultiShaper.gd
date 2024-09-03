@@ -44,6 +44,14 @@ func get_builder() -> ShapeBuilder:
 	return MultiShapeBuilder.new(self)
 	
 
+func get_builders() -> Array[ShapeBuilder]:
+	var result = []
+	for shaper in shapers:
+		if shaper != null and shaper.enabled:
+			result += shaper.get_builders()
+	return result
+	
+
 class MultiShapeBuilder extends ShapeBuilder:
 	
 	var style: MultiShaper

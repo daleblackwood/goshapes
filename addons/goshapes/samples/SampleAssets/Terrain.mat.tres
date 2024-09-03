@@ -1,16 +1,19 @@
-[gd_resource type="ShaderMaterial" load_steps=28 format=3 uid="uid://2jno35b7eo17"]
+[gd_resource type="ShaderMaterial" load_steps=27 format=3 uid="uid://2jno35b7eo17"]
 
 [ext_resource type="Shader" path="res://addons/goshapes/samples/SampleAssets/Terrain.gdshader" id="1_0h1nn"]
 
 [sub_resource type="Gradient" id="Gradient_rheho"]
-offsets = PackedFloat32Array(0.419929, 1)
-colors = PackedColorArray(0.219925, 0.364871, 0.174561, 1, 0.322933, 0.4, 0.128, 1)
+offsets = PackedFloat32Array(0.112299, 0.181818, 0.812834, 1)
+colors = PackedColorArray(0.152605, 0.262638, 0.118141, 1, 0.219925, 0.364871, 0.174561, 1, 0.219925, 0.364871, 0.174561, 1, 0.322933, 0.4, 0.128, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_56a5d"]
-frequency = 0.0179
+noise_type = 0
+seed = 1870
+frequency = 0.026
+fractal_type = 3
 fractal_octaves = 3
-fractal_lacunarity = 2.57
-fractal_gain = 0.65
+fractal_lacunarity = -0.46
+fractal_gain = 1.0
 fractal_weighted_strength = 0.24
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qmuee"]
@@ -114,22 +117,8 @@ color_ramp = SubResource("Gradient_g44cb")
 noise = SubResource("FastNoiseLite_7cwtj")
 
 [sub_resource type="Gradient" id="Gradient_1mjv7"]
-offsets = PackedFloat32Array(0, 0.537594, 0.793233)
-colors = PackedColorArray(0.35, 0.301875, 0.2345, 1, 0.38, 0.328573, 0.2736, 1, 0.39, 0.34216, 0.3003, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_g6yjt"]
-seed = 100
-frequency = 0.0135
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pnnhj"]
-seamless = true
-seamless_blend_skirt = 0.316
-color_ramp = SubResource("Gradient_1mjv7")
-noise = SubResource("FastNoiseLite_g6yjt")
-
-[sub_resource type="Gradient" id="Gradient_galae"]
-offsets = PackedFloat32Array(0, 0.150376, 0.300752, 0.928571, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.201527, 0.201527, 0.201527, 1, 0.581865, 0.581865, 0.581865, 1, 0.873087, 0.873087, 0.873087, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0.213904, 0.278075, 0.406417, 0.791444, 0.850267)
+colors = PackedColorArray(0.141123, 0.117129, 0.0834915, 1, 0.38, 0.328573, 0.2736, 1, 0.444359, 0.39827, 0.349004, 1, 0.59799, 0.564644, 0.529, 1, 1, 1, 1, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_b3oil"]
 noise_type = 0
@@ -140,13 +129,25 @@ fractal_lacunarity = 2.715
 fractal_gain = -0.6
 fractal_weighted_strength = 0.61
 
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pnnhj"]
+seamless = true
+seamless_blend_skirt = 0.316
+normalize = false
+color_ramp = SubResource("Gradient_1mjv7")
+noise = SubResource("FastNoiseLite_b3oil")
+
+[sub_resource type="Gradient" id="Gradient_galae"]
+offsets = PackedFloat32Array(0, 0.197452, 0.471338, 0.598726, 0.713376)
+colors = PackedColorArray(0, 0, 0, 1, 0.201527, 0.201527, 0.201527, 1, 0.581865, 0.581865, 0.581865, 1, 0.873087, 0.873087, 0.873087, 1, 1, 1, 1, 1)
+
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yk3ie"]
 width = 1024
 height = 1024
+invert = true
 generate_mipmaps = false
 seamless = true
 as_normal_map = true
-bump_strength = 32.0
+bump_strength = 19.0
 color_ramp = SubResource("Gradient_galae")
 noise = SubResource("FastNoiseLite_b3oil")
 
@@ -155,7 +156,7 @@ render_priority = 0
 shader = ExtResource("1_0h1nn")
 shader_parameter/fade_threshold = 0.495
 shader_parameter/surface_scale = 3.843
-shader_parameter/wall_scale = 10.0
+shader_parameter/wall_scale = 13.333
 shader_parameter/sand_height = 2.08165e-12
 shader_parameter/snow_height = 120.0
 shader_parameter/surface_depth = 1.16

@@ -57,6 +57,7 @@ var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
+var start_time = 0
 
 
 func _ready() -> void:
@@ -84,23 +85,28 @@ func _edit_begin(edit_proxy) -> void:
 	if _get_is_editing():
 		return
 	self.edit_proxy = edit_proxy
+	_edit_update()
+		
+	curve_changed.connect(on_curve_changed)
+	watcher_shaper.watch(shaper)
+	watcher_pathmod.watch(path_options)
+	
+	
+func _edit_update() -> void:
+	if not Engine.is_editor_hint():
+		return
 	set_display_folded(true)
 	if not is_instance_of(shaper, Shaper):
 		set_shaper(edit_proxy.create_shaper())
 	if not is_instance_of(path_options, PathOptions):
 		set_path_options(edit_proxy.create_path_options())
-	if not is_instance_of(curve, Curve3D) or curve.get_point_count() < 2:
-		_init_curve()
 	if not curve is GoCurve3D:
 		curve.set_script(GoCurve3D.new().get_script())
-	
+	if not is_instance_of(curve, Curve3D) or curve.get_point_count() < 2:
+		_init_curve()
 	curve = ResourceUtils.make_local(self, curve)
 	shaper = ResourceUtils.make_local(self, shaper)
 	path_options = ResourceUtils.make_local(self, path_options)
-		
-	curve_changed.connect(on_curve_changed)
-	watcher_shaper.watch(shaper)
-	watcher_pathmod.watch(path_options)
 	
 	
 func _init_curve() -> void:
@@ -235,22 +241,34 @@ func build() -> void:
 	if runner.is_busy:
 		mark_dirty()
 		return
+	#runner.clear_from(self)
 		
-	_build(runner)
-		
-
-func _build(runner: JobRunner) -> void:
 	if not shaper:
 		return
 	for child in get_children():
 		child.free()
+		
 	run_build_jobs(runner)
 	is_dirty = false
 	
 	
-func run_build_jobs(runner: JobRunner) -> void:
-	shaper.build(self, get_path_data(path_options.interpolate))
+func run_build_jobs(runner: GoBuildRunner) -> void:
+	start_time = Time.get_ticks_msec()
+	#shaper.build(self, get_path_data(path_options.interpolate))
+	#var jobs = shaper.get_build_jobs(get_path_data(path_options.interpolate))
+	#print("jobs", jobs)
+	#for job in jobs:
+	#	print("job", job)
+	#	runner.run(job, self, done_job)
+	var path = get_path_data(path_options.interpolate)
+	var builders = shaper.get_builders()
+	print("run builds")
+	runner.enqueue(self, path, builders, done_job)
 	
+	
+func done_job(result):
+	#print("job done", result)
+	pass
 		
 func remove_control_points() -> void:
 	PathUtils.remove_control_points(curve)

@@ -1,17 +1,17 @@
 @tool
 class_name BuildJob
 extends Job
+
+var builder: ShapeBuilder
+var path: PathData
 	
 
-func _init(builder: ShapeBuilder, path: PathData) -> void:
-	super.set_input({
-		"builder": builder,
-		"path": path
-	})
+func _init(builder: ShapeBuilder, path: PathData):
+	self.builder = builder
+	self.path = path
 
 
-func _run(input):
-	var builder = input.builder
-	var build_func = builder.build.bind(builder) as Callable
-	var mesh = build_func.call(host, input.path)
-	return mesh
+func _run():
+	#var build_func = builder.build.bind(builder) as Callable
+	#var mesh = build_func.call(host, input.path)
+	builder.build(host, path)
