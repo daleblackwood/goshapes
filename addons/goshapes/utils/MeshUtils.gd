@@ -153,7 +153,7 @@ static func calc_mesh_height(mesh: Mesh, scale: float = 1.0) -> float:
 	return min_y * -scale
 	
 
-static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool) -> MeshSet:
+static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool, gaps: Array[int] = []) -> MeshSet:
 	var points := path.points
 	var point_count := points.size()
 	if point_count < 2:
@@ -173,7 +173,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool) -> 
 		lengths[i] = section_length
 		path_length += section_length
 	
-	var result := mesh_clone_to_length(meshset, path_length)
+	var result := mesh_clone_to_length(meshset, path_length, gaps)
 	# wrap combined verts around path
 	var vert_count := result.vert_count
 	for i in range(vert_count):
@@ -209,7 +209,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool) -> 
 	return result
 	
 	
-static func mesh_clone_to_length(mesh_in: MeshSet, path_length: float) -> MeshSet:
+static func mesh_clone_to_length(mesh_in: MeshSet, path_length: float, gaps: Array[int] = []) -> MeshSet:
 	# calculate segment sizes
 	var min_x := INF
 	var max_x := -INF
@@ -228,6 +228,13 @@ static func mesh_clone_to_length(mesh_in: MeshSet, path_length: float) -> MeshSe
 	result.set_counts(mesh_in.vert_count * seg_count, mesh_in.tri_count * seg_count)
 	# tile verts along x
 	for i in range(seg_count):
+		var is_gap := false
+		for j in gaps:
+			if j == i:
+				is_gap = true
+				break
+		if is_gap:
+			continue
 		var first_vert := i * mesh_in.vert_count
 		var start_x := i * seg_length
 		for j in mesh_in.vert_count:

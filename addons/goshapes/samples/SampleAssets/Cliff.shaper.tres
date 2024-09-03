@@ -21,6 +21,7 @@ mesh = ExtResource("5_xktdr")
 scale = 1.0
 closed = true
 material = ExtResource("4_33fyf")
+gaps = Array[int]([])
 build_collider = true
 collision_layer = 1
 enabled = true

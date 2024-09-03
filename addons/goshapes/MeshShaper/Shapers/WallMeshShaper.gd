@@ -33,6 +33,14 @@ extends WallShaper
 			emit_changed()
 			
 
+## The material to apply to the generated mesh
+@export var gaps: Array[int] = []:
+	set(value):
+		if gaps != value:
+			gaps = value
+			emit_changed()
+			
+
 func get_builders() -> Array[ShapeBuilder]:
 	return [WallMeshBuilder.new(self)]
 	
@@ -61,6 +69,7 @@ class WallMeshBuilder extends WallBuilder:
 		var closed := style.closed
 		var material_count := materials.size()
 		var point_count := path.points.size()
+		var gaps := style.gaps
 		if point_count < 2:
 			return []
 			
@@ -69,7 +78,7 @@ class WallMeshBuilder extends WallBuilder:
 		for i in range(meshset_count):
 			var meshset := meshsets[i]
 			meshset = MeshUtils.scale_mesh(meshset, scale)
-			meshset = MeshUtils.wrap_mesh_to_path(meshset, path, closed)
+			meshset = MeshUtils.wrap_mesh_to_path(meshset, path, closed, gaps)
 			meshset = MeshUtils.taper_mesh(meshset, path, path.taper)
 			if material_count > 0:
 				meshset.material = materials[i % material_count]
