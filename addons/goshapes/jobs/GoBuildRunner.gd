@@ -3,7 +3,7 @@ class_name GoBuildRunner
 
 class GoBuildJob:
 	var id := 0
-	var host: Node
+	var host: Goshape
 	var builder: ShapeBuilder
 	var state := BuildState.Init
 	var path: PathData
@@ -33,14 +33,14 @@ func clear_job(id: int) -> void:
 			queue.remove_at(i)
 	
 	
-func enqueue(host: Node, path: PathData, builders: Array[ShapeBuilder], callback: Callable) -> Array[int]:
+func enqueue(host: Goshape, path: PathData, builders: Array[ShapeBuilder], callback: Callable) -> Array[int]:
 	var result: Array[int] = []
 	for builder in builders:
 		result.append(enqueue_one(host, path, builder, callback))
 	return result
 				
 
-func enqueue_one(host: Node, path: PathData, builder: ShapeBuilder, callback: Callable) -> int:
+func enqueue_one(host: Goshape, path: PathData, builder: ShapeBuilder, callback: Callable) -> int:
 	var job = GoBuildJob.new()
 	run_count += 1
 	job.id = run_count
@@ -71,7 +71,6 @@ func next() -> void:
 		thread = null
 		
 	current_job.state = BuildState.Running
-	current_job.builder.clear_mesh()
 	thread = Thread.new()
 	thread.start(run_job, Thread.PRIORITY_HIGH)
 	
@@ -83,23 +82,15 @@ func run_job() -> void:
 	
 	
 func build_run(job: GoBuildJob) -> void:
-	#OS.delay_msec(100)
 	if job.state == BuildState.Cancelled:
-		#next()
 		return
 	job.builder.build(job.host, job.path)
 	if job.state == BuildState.Cancelled:
-		#next()
-		return
-	OS.delay_msec(100)
-	if job.state == BuildState.Cancelled:
-		#next()
 		return
 	build_commit.call_deferred(job)
 	
 	
 func build_commit(job: GoBuildJob) -> void:
-	print("build complete")
 	job.builder.commit_mesh()
 	job.builder.commit_colliders()
 	job.state = BuildState.Done

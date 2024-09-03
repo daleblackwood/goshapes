@@ -241,12 +241,9 @@ func build() -> void:
 	if runner.is_busy:
 		mark_dirty()
 		return
-	#runner.clear_from(self)
 		
 	if not shaper:
 		return
-	for child in get_children():
-		child.free()
 		
 	run_build_jobs(runner)
 	is_dirty = false
@@ -254,28 +251,25 @@ func build() -> void:
 	
 func run_build_jobs(runner: GoBuildRunner) -> void:
 	start_time = Time.get_ticks_msec()
-	#shaper.build(self, get_path_data(path_options.interpolate))
-	#var jobs = shaper.get_build_jobs(get_path_data(path_options.interpolate))
-	#print("jobs", jobs)
-	#for job in jobs:
-	#	print("job", job)
-	#	runner.run(job, self, done_job)
+	for child in get_children():
+		child.free()
 	var path = get_path_data(path_options.interpolate)
 	var builders = shaper.get_builders()
-	print("run builds")
 	runner.enqueue(self, path, builders, done_job)
 	
 	
 func done_job(result):
-	#print("job done", result)
 	pass
-		
+	
+	
 func remove_control_points() -> void:
 	PathUtils.remove_control_points(curve)
 	mark_dirty()
 	
-
-func get_path_data(interpolate: int) -> PathData:
+	
+func get_path_data(interpolate: int = -1) -> PathData:
+	if interpolate < 0:
+		interpolate = path_options.interpolate
 	var twists = _get_twists()
 	if twists.size() < 1:
 		twists = null
