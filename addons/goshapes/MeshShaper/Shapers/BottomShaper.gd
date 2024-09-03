@@ -4,7 +4,7 @@ extends Shaper
 ## A Shaper that draws the bottom (or base) of a path's geometry
 
 ## The depth the base should be drawn at
-@export_range(0.0, 100.0, 0.2) var base_depth: float = 1.0:
+@export_range(0.0, 100.0, 0.2) var base_depth := 1.0:
 	set(value):
 		if base_depth != value:
 			base_depth = value
@@ -22,7 +22,7 @@ var cap_shaper: CapShaper = null
 
 
 func get_builder() -> ShapeBuilder:
-	var using_cap_shaper = cap_shaper
+	var using_cap_shaper := cap_shaper
 	if using_cap_shaper == null:
 		using_cap_shaper = CapFlatShaper.new()
 	return BottomShaperBuilder.new(self, using_cap_shaper)
@@ -36,7 +36,7 @@ class BottomShaperBuilder extends ShapeBuilder:
 		style = _style
 		cap_shaper = _cap_shaper
 	
-	func build_sets(path: PathData) -> Array[MeshSet]:
+	func build_sets(path: GoshPath) -> Array[MeshSet]:
 		var base_path = PathUtils.move_path_down(path, style.base_depth)
 		var base_shaper = cap_shaper.duplicate()
 		if style.material != null:

@@ -3,10 +3,10 @@ class_name MeshSet
 ## A data class that stores mesh information
 
 
-var verts = PackedVector3Array()
-var uvs = PackedVector2Array()
-var normals = PackedVector3Array()
-var tris = PackedInt32Array()
+var verts := PackedVector3Array()
+var uvs := PackedVector2Array()
+var normals := PackedVector3Array()
+var tris := PackedInt32Array()
 var material: Material = null
 var vert_count: int: get = get_vert_count
 var tri_count: int: get = get_tri_count
@@ -52,7 +52,7 @@ func get_tri_count() -> int:
 	
 
 func clone() -> MeshSet:
-	var result = MeshSet.new()
+	var result := MeshSet.new()
 	result.copy(self)
 	return result
 	
@@ -66,12 +66,12 @@ func copy(other: MeshSet) -> void:
 	
 	
 func recalculate_normals() -> void:
-	var new_normals = PackedVector3Array()
+	var new_normals := PackedVector3Array()
 	new_normals.resize(verts.size())
 	for i in range(new_normals.size()):
 		new_normals.set(i, Vector3.ZERO)
 		
-	var tris = self.tris
+	var tris := self.tris
 	for i in range(0, tris.size(), 3):
 		var i0 = tris[i]
 		var i1 = tris[i + 1]
@@ -91,6 +91,6 @@ func recalculate_normals() -> void:
 	
 
 func calculate_triangle_normal(v0: Vector3, v1: Vector3, v2: Vector3) -> Vector3:
-	var edge1 = v1 - v0
-	var edge2 = v2 - v0
+	var edge1 := v1 - v0
+	var edge2 := v2 - v0
 	return edge1.cross(edge2).normalized()

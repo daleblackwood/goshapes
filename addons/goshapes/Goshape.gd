@@ -52,7 +52,7 @@ var is_editing: bool: get = _get_is_editing
 
 var is_dirty = false
 var edit_proxy = null
-var cap_data: PathData = null
+var cap_data: GoshPath = null
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
@@ -249,7 +249,7 @@ func build() -> void:
 	is_dirty = false
 	
 	
-func run_build_jobs(runner: GoBuildRunner) -> void:
+func run_build_jobs(runner: GoshBuildRunner) -> void:
 	start_time = Time.get_ticks_msec()
 	for child in get_children():
 		child.free()
@@ -267,7 +267,7 @@ func remove_control_points() -> void:
 	mark_dirty()
 	
 	
-func get_path_data(interpolate: int = -1) -> PathData:
+func get_path_data(interpolate: int = -1) -> GoshPath:
 	if interpolate < 0:
 		interpolate = path_options.interpolate
 	var twists = _get_twists()

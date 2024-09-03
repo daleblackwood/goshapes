@@ -1,17 +1,17 @@
 @tool
-class_name GoBuildRunner
+class_name GoshBuildRunner
 
 class GoBuildJob:
 	var id := 0
 	var host: Goshape
 	var builder: ShapeBuilder
 	var state := BuildState.Init
-	var path: PathData
+	var path: GoshPath
 	var callback: Callable
 
 var queue: Array[GoBuildJob] = []
-var run_count = 0
-var is_busy: bool = false: get = get_is_busy
+var run_count := 0
+var is_busy := false: get = get_is_busy
 var thread: Thread = null
 
 enum BuildState { Init, Running, Done, Cancelled }
@@ -33,14 +33,14 @@ func clear_job(id: int) -> void:
 			queue.remove_at(i)
 	
 	
-func enqueue(host: Goshape, path: PathData, builders: Array[ShapeBuilder], callback: Callable) -> Array[int]:
+func enqueue(host: Goshape, path: GoshPath, builders: Array[ShapeBuilder], callback: Callable) -> Array[int]:
 	var result: Array[int] = []
 	for builder in builders:
 		result.append(enqueue_one(host, path, builder, callback))
 	return result
 				
 
-func enqueue_one(host: Goshape, path: PathData, builder: ShapeBuilder, callback: Callable) -> int:
+func enqueue_one(host: Goshape, path: GoshPath, builder: ShapeBuilder, callback: Callable) -> int:
 	var job = GoBuildJob.new()
 	run_count += 1
 	job.id = run_count
@@ -91,7 +91,7 @@ func build_run(job: GoBuildJob) -> void:
 	
 	
 func build_commit(job: GoBuildJob) -> void:
-	job.builder.commit_mesh()
+	job.builder.commit()
 	job.builder.commit_colliders()
 	job.state = BuildState.Done
 	thread.wait_to_finish()

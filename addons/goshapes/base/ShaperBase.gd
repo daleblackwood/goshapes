@@ -14,7 +14,7 @@ func get_builder() -> ShapeBuilder:
 func get_name() -> String:
 	return ResourceUtils.get_type(self)
 	
-func build(host: Node3D, path: PathData) -> void:
+func build(host: Node3D, path: GoshPath) -> void:
 	if not Engine.is_editor_hint():
 		return
 		

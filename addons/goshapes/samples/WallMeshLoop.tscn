@@ -1,11 +1,10 @@
-[gd_scene load_steps=19 format=4 uid="uid://dbwbk2qopmkt7"]
+[gd_scene load_steps=18 format=4 uid="uid://dbwbk2qopmkt7"]
 
 [ext_resource type="Script" path="res://addons/goshapes/base/GoCurve3D.gd" id="1_sfd41"]
 [ext_resource type="Script" path="res://addons/goshapes/base/PathOptions.gd" id="3_hr846"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapMoundShaper.gd" id="4_e2uld"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="4_cacil"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="5_0g0us"]
-[ext_resource type="ArrayMesh" uid="uid://dw8nkh2rfugb0" path="res://addons/goshapes/samples/SampleAssets/FenceModel.obj" id="6_agrfg"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="7_bp623"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="6_rixs0"]
 [ext_resource type="Script" path="res://addons/goshapes/Goshape.gd" id="7_l3vwp"]
 
 [sub_resource type="Curve3D" id="Curve3D_01d3m"]
@@ -29,23 +28,18 @@ points_on_ground = false
 offset_y = 0.0
 ground_placement_mask = 0
 
-[sub_resource type="Resource" id="Resource_icrik"]
-script = ExtResource("4_e2uld")
-height = 1.0
-iterations = 3
-mound_type = 0
-height_map_frequency = 1.0
-height_map_multiplier = 1.0
+[sub_resource type="Resource" id="Resource_wu3iv"]
+script = ExtResource("4_cacil")
 conform_to_wall = false
 build_collider = true
 collision_layer = 1
 enabled = true
 
-[sub_resource type="Resource" id="Resource_2jed8"]
-script = ExtResource("7_bp623")
-mesh = ExtResource("6_agrfg")
-scale = 1.0
-closed = true
+[sub_resource type="Resource" id="Resource_vq6v0"]
+script = ExtResource("6_rixs0")
+height = 1.0
+bevel = 0.0
+taper = 0.0
 build_collider = true
 collision_layer = 1
 enabled = true
@@ -53,8 +47,8 @@ enabled = true
 [sub_resource type="Resource" id="Resource_4ovtk"]
 resource_name = "FenceShape-BlockShaper"
 script = ExtResource("5_0g0us")
-cap_shaper = SubResource("Resource_icrik")
-wall_shaper = SubResource("Resource_2jed8")
+cap_shaper = SubResource("Resource_wu3iv")
+wall_shaper = SubResource("Resource_vq6v0")
 bottom_depth = 0.0
 collider_type = 2
 collider_ridge = 0.0

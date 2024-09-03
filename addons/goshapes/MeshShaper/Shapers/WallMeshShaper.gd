@@ -11,14 +11,14 @@ extends WallShaper
 			emit_changed()
 	
 ## The scale to apply to each mesh segment	
-@export_range(0.1, 10.0, 0.1) var scale = 1.0:
+@export_range(0.1, 10.0, 0.1) var scale := 1.0:
 	set(value):
 		if scale != value:
 			scale = value
 			emit_changed()
 		
 ## Causes the path to close between the first and last point
-@export var closed = true:
+@export var closed := true:
 	set(value):
 		if closed != value:
 			closed = value
@@ -44,32 +44,30 @@ class WallMeshBuilder extends WallBuilder:
 		super._init(_style)
 		style = _style
 
-	func build_sets(path: PathData) -> Array[MeshSet]:
-		var ref_mesh = style.mesh as Mesh
+	func build_sets(path: GoshPath) -> Array[MeshSet]:
+		var ref_mesh := style.mesh as Mesh
 		if not ref_mesh:
 			return []
 			
-		var surface_count = ref_mesh.get_surface_count()
-		var materials = []
+		var surface_count := ref_mesh.get_surface_count()
+		var materials: Array[Material] = []
 		if style.material != null:
 			materials = [style.material]
 		elif surface_count > 0 and ref_mesh.surface_get_material(0):
 			materials.resize(surface_count)
 			for i in range(surface_count):
 				materials[i] = ref_mesh.surface_get_material(i)
-		var scale = style.scale
-		var closed = style.closed
-		
-		var material_count = materials.size()
-			
-		var point_count = path.points.size()
+		var scale := style.scale
+		var closed := style.closed
+		var material_count := materials.size()
+		var point_count := path.points.size()
 		if point_count < 2:
 			return []
 			
-		var meshsets = MeshUtils.mesh_to_sets(ref_mesh)
-		var meshset_count = meshsets.size()
+		var meshsets := MeshUtils.mesh_to_sets(ref_mesh)
+		var meshset_count := meshsets.size()
 		for i in range(meshset_count):
-			var meshset = meshsets[i]
+			var meshset := meshsets[i]
 			meshset = MeshUtils.scale_mesh(meshset, scale)
 			meshset = MeshUtils.wrap_mesh_to_path(meshset, path, closed)
 			meshset = MeshUtils.taper_mesh(meshset, path, path.taper)

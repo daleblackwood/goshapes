@@ -124,6 +124,7 @@ class ShatterBuilder extends ShapeBuilder:
 	func _init(_style: ScatterShaper):
 		style = _style
 
+	var instances = []
 
 	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:
 		conformance = clamp(conformance, 0.0, 1.0)
@@ -131,35 +132,35 @@ class ShatterBuilder extends ShapeBuilder:
 			return basis
 			
 		var current_y := basis.y.normalized()
-		var  target_y :=  normal.normalized()
+		var target_y := normal.normalized()
 
-		var rotation_axis = current_y.cross(target_y)
-		var   dot_product = current_y.dot(target_y)
+		var rotation_axis := current_y.cross(target_y)
+		var dot_product := current_y.dot(target_y)
 
-		var rotation_angle : float
+		var rotation_angle := 0.0
 
 		# Handle parallel and opposite vectors
 		if rotation_axis.length_squared() < 1e-6:
-				if dot_product > 0.9999:
-						# Vectors are nearly identical; no rotation needed
-						return basis
-				else:
-						# Vectors are opposite; choose an arbitrary perpendicular axis
-						rotation_axis = basis.x.normalized()
-						rotation_angle = PI
+			if dot_product > 0.9999:
+				# Vectors are nearly identical; no rotation needed
+				return basis
+			else:
+				# Vectors are opposite; choose an arbitrary perpendicular axis
+				rotation_axis = basis.x.normalized()
+				rotation_angle = PI
 		else:
 				rotation_axis = rotation_axis.normalized()
 				rotation_angle = acos(clamp(dot_product, -1.0, 1.0))
 
-		var     rotation_quat := Quaternion(rotation_axis, rotation_angle)
+		var rotation_quat := Quaternion(rotation_axis, rotation_angle)
 		var interpolated_quat := Quaternion().slerp(rotation_quat, conformance)
 
 		var rotated_basis := Basis(interpolated_quat) * basis
-
 		return rotated_basis
 
 
-	func build(host: Node3D, path: PathData) -> void:
+	func build(host: Node3D, path: GoshPath) -> void:
+		self.path = path
 		if not style.model_source or not style.model_source.has_resource():
 			printerr("No scene(s) attached to ScatterShaper.")
 			return
@@ -177,11 +178,11 @@ class ShatterBuilder extends ShapeBuilder:
 			max_z = maxf(max_z, p.z)
 		var inc = style.spread
 		var density = style.density
-		var place_on_ground = style.place_on_ground
 		var ground_angle_conformance := style.ground_angle_conformance
 		var random_angle = style.random_angle
 		var scale_variance = style.scale_variance
 		var scale_multiplier = style.scale_multiplier
+		var collision_layer = style.collision_layer
 		var evenness = style.evenness
 		var noise = style.noise
 		var polygon = PackedVector2Array()
@@ -189,15 +190,13 @@ class ShatterBuilder extends ShapeBuilder:
 		for i in range(path.point_count):
 			polygon.set(i, Vector2(path.points[i].x, path.points[i].z))
 		var x = min_x
-		var instances = 0
-		var collision_layer = style.collision_layer
-		var placement_mask = path.placement_mask
+		var instance_count = 0
 		while x < max_x:
 			x += inc
 			var z = min_z
 			while z < max_z:
 				z += inc
-				if instances > INSTANCE_CAP:
+				if instance_count > INSTANCE_CAP:
 					printerr("Exceeded %d scatter instance cap" % INSTANCE_CAP)
 					return
 				var r_inst = rng.randi()
@@ -216,25 +215,10 @@ class ShatterBuilder extends ShapeBuilder:
 					continue
 				if not Geometry2D.is_point_in_polygon(Vector2(pos.x, pos.z), polygon):
 					continue
-				if place_on_ground:
-					var space = host.get_world_3d().direct_space_state
-					var ray = PhysicsRayQueryParameters3D.new()
-					ray.from = host.global_transform * Vector3(pos.x, 1000, pos.z)
-					ray.to = host.global_transform * Vector3(pos.x, -1000, pos.z)
-					ray.collision_mask = 0xFF & (~collision_layer)
-					var hit = space.intersect_ray(ray)
-					if hit.has("collider"):
-						normal = hit.normal
-						if placement_mask > 0 and ((1 << placement_mask) & (1 << hit.collider.collision_layer)) == 0:
-							continue
-						pos = host.global_transform.inverse() * hit.position
-					elif placement_mask > 0:
-						continue
-				else:
-					pos.y = curve.get_closest_point(pos).y
+				pos.y = curve.get_closest_point(pos).y
 				var inst = style.model_source.instantiate()
-				instances += 1
-				inst.name = "%s%d" % [inst.name, instances]
+				instance_count += 1
+				inst.name = "%s%d" % [inst.name, instance_count]
 				inst.transform.origin = pos
 				if collision_layer > 0 and inst is CollisionObject3D:
 					inst.collision_layer = collision_layer
@@ -242,10 +226,36 @@ class ShatterBuilder extends ShapeBuilder:
 				var angle = PI * 2.0 * r_angle
 				if random_angle:
 					basis = basis.rotated(Vector3.UP, angle)
-				if place_on_ground:
-					basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
 				var scale = scale_multiplier + r_scale * scale_variance * 2.0 - scale_variance
 				basis = basis.scaled(Vector3.ONE * scale)
 				inst.transform.basis = basis
-				SceneUtils.add_child(host, inst)
+				instances.append(inst)
+				
+	func commit() -> void:
+		var place_on_ground := style.place_on_ground
+		var placement_mask := path.placement_mask
+		var ground_angle_conformance := style.ground_angle_conformance
+		var collision_layer := style.collision_layer
+		for inst in instances:
+			var normal := Vector3.UP
+			var pos = inst.transform.origin
+			var basis = inst.transform.basis
+			if place_on_ground:
+				var space = host.get_world_3d().direct_space_state
+				var ray = PhysicsRayQueryParameters3D.new()
+				ray.from = host.global_transform * Vector3(pos.x, 1000, pos.z)
+				ray.to = host.global_transform * Vector3(pos.x, -1000, pos.z)
+				ray.collision_mask = 0xFF & (~collision_layer)
+				var hit = space.intersect_ray(ray)
+				if hit.has("collider"):
+					normal = hit.normal
+					if placement_mask > 0 and ((1 << placement_mask) & (1 << hit.collider.collision_layer)) == 0:
+						continue
+					pos = host.global_transform.inverse() * hit.position
+				elif placement_mask > 0:
+					continue
+				basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
+			inst.transform.origin = pos
+			inst.transform.basis = basis
+			SceneUtils.add_child(host, inst)
 		

@@ -3,7 +3,7 @@ extends EditorPlugin
 
 const GDBPATH = "res://addons/gdblocks"
 var editor = get_editor_interface()
-var editor_util: EditorUtil
+var editor_util: GoshEditorUtil
 var selection_handler = editor.get_selection()
 
 var block_select = true
@@ -46,7 +46,7 @@ class BlockAttributes:
 
 class EditorProxy:
 	
-	var runner := GoBuildRunner.new()
+	var runner := GoshBuildRunner.new()
 	var attributes_last := BlockAttributes.new()
 	var attributes_copied := BlockAttributes.new()
 	var selected_block: Goshape = null
@@ -130,7 +130,7 @@ func get_menuset(menuset: MenuSet):
 	
 
 func _enter_tree() -> void:
-	editor_util = EditorUtil.new(editor)
+	editor_util = GoshEditorUtil.new(editor)
 	
 	add_custom_type("Goshape", "Path3D", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
