@@ -114,8 +114,8 @@ func _init():
 	watcher_noise.watch(noise)
 			
 
-func get_builder() -> ShapeBuilder:
-	return ShatterBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [ShatterBuilder.new(self)]
 	
 			
 class ShatterBuilder extends ShapeBuilder:

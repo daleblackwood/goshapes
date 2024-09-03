@@ -33,8 +33,8 @@ extends WallShaper
 			emit_changed()
 			
 
-func get_builder() -> ShapeBuilder:
-	return WallMeshBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [WallMeshBuilder.new(self)]
 	
 			
 class WallMeshBuilder extends WallBuilder:

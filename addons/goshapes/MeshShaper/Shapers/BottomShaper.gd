@@ -21,11 +21,11 @@ extends Shaper
 var cap_shaper: CapShaper = null
 
 
-func get_builder() -> ShapeBuilder:
+func get_builders() -> Array[ShapeBuilder]:
 	var using_cap_shaper := cap_shaper
 	if using_cap_shaper == null:
 		using_cap_shaper = CapFlatShaper.new()
-	return BottomShaperBuilder.new(self, using_cap_shaper)
+	return [BottomShaperBuilder.new(self, using_cap_shaper)]
 			
 			
 class BottomShaperBuilder extends ShapeBuilder:
@@ -39,10 +39,13 @@ class BottomShaperBuilder extends ShapeBuilder:
 	func build_sets(path: GoshPath) -> Array[MeshSet]:
 		var base_path = PathUtils.move_path_down(path, style.base_depth)
 		var base_shaper = cap_shaper.duplicate()
+		var cap_builders = base_shaper.get_builders()
+		if cap_builders.size() < 1:
+			return []
+			
 		if style.material != null:
 			base_shaper.material = style.material
-		var cap_builder = base_shaper.get_builder()
-		var meshset = cap_builder.build(base_path)
+		var meshset = cap_builders[0].build(base_path)
 		var vert_count = meshset.vert_count
 		for i in range(vert_count):
 			var n = meshset.normals[i]

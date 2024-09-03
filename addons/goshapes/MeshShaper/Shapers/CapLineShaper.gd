@@ -3,8 +3,8 @@ class_name CapLineShaper
 extends CapShaper
 ## A Shaper that draws the cap for a line for winding paths
 
-func get_builder() -> ShapeBuilder:
-	return CapLineBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [CapLineBuilder.new(self)]
 			
 			
 class CapLineBuilder extends CapBuilder:

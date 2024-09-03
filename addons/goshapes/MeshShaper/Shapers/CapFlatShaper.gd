@@ -3,8 +3,8 @@ class_name CapFlatShaper
 extends CapShaper
 ## A Shaper that draws the cap (or top) of a path's geometry		
 			
-func get_builder() -> ShapeBuilder:
-	return CapFlatBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [CapFlatBuilder.new(self)]
 			
 			
 class CapFlatBuilder extends CapBuilder:

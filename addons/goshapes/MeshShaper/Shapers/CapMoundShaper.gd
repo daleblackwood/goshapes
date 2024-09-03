@@ -42,8 +42,8 @@ enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 			emit_changed()
 			
 			
-func get_builder() -> ShapeBuilder:
-	return CapMoundBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [CapMoundBuilder.new(self)]
 	
 	
 class CapMoundBuilder extends CapBuilder:
