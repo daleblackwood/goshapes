@@ -29,9 +29,6 @@ func commit_colliders() -> void:
 func build_meshes(host: Node3D, path: PathData, dest_mesh: Mesh = null) -> void:
 	meshsets = build_sets(path)
 	mesh = MeshUtils.build_meshes(meshsets, dest_mesh)
-	#call_deferred("apply_mesh", host, mesh)
-	#if base_style.build_collider:
-	#	apply_collider(host, mesh)
 	
 
 func build_sets(path: PathData) -> Array[MeshSet]:
@@ -39,15 +36,6 @@ func build_sets(path: PathData) -> Array[MeshSet]:
 	return []
 	
 	
-func build_done(group: JobGroup) -> void:
-	if group.output.size() < 1:
-		printerr("No output")
-		return
-	var output_mesh = group.output[0] as ArrayMesh
-	apply_mesh(host, output_mesh)
-	apply_collider.call_deferred(host, output_mesh)
-	
-		
 func apply_mesh(host: Node3D, new_mesh: ArrayMesh) -> void:
 	var mesh_node := MeshInstance3D.new()
 	mesh_node.mesh = new_mesh

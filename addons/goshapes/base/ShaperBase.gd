@@ -25,12 +25,6 @@ func build(host: Node3D, path: PathData) -> void:
 	else:
 		printerr("No builder for host %s" % host.name)
 	print("build job took %dms" % (Time.get_ticks_msec() - start_time))
-				
-func get_build_jobs(path: PathData) -> Array[Job]:
-	var builder = get_builder()
-	if builder != null:
-		return builder.get_build_jobs(path)
-	return []
 	
 func get_builders() -> Array[ShapeBuilder]:
 	return [get_builder()]

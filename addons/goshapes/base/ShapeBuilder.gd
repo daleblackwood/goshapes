@@ -20,6 +20,3 @@ func build(_host: Node3D, _path: PathData) -> void:
 func commit() -> void:
 	printerr("Can't commit %s on %s as it's a base type" % [ResourceUtils.get_type(base_shaper), host.name])
 	
-func get_build_jobs(path: PathData) -> Array[Job]:
-	var job = BuildJob.new(self, path)
-	return [job]
