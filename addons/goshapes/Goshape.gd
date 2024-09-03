@@ -249,6 +249,10 @@ func build() -> void:
 	is_dirty = false
 	
 	
+func _build(runner: GoshBuildRunner) -> void:
+	run_build_jobs(runner)
+	
+	
 func run_build_jobs(runner: GoshBuildRunner) -> void:
 	start_time = Time.get_ticks_msec()
 	for child in get_children():

@@ -13,7 +13,11 @@ extends WallShaper
 ## Set the curve for the wall			
 @export var curve: Curve = Curve.new():
 	set(value):
+		if curve != null:
+			curve.changed.disconnect(on_curve_changed)
 		curve = value
+		if curve != null:
+			curve.changed.connect(on_curve_changed)
 		emit_changed()
 		
 ## The taper to apply to the curve
@@ -29,6 +33,10 @@ extends WallShaper
 		if material != value:
 			material = value
 			emit_changed()
+			
+			
+func on_curve_changed() -> void:
+	emit_changed()
 			
 
 func get_builders() -> Array[ShapeBuilder]:
