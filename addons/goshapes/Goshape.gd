@@ -281,7 +281,7 @@ func get_path_data(interpolate: int = -1) -> GoshPath:
 	if path_options.line != 0:
 		path_data = PathUtils.path_to_outline(path_data, path_options.line)
 	if path_options.rounding > 0:
-		path_data = PathUtils.round_path(path_data, path_options.round_edges, path_options.rounding, interpolate)
+		path_data = PathUtils.round_path(path_data, path_options.rounding_mode, path_options.rounding, interpolate)
 	path_data.curve = curve.duplicate()
 	if path_options.ground_placement_mask:
 		path_data.placement_mask = path_options.ground_placement_mask

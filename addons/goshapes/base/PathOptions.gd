@@ -32,9 +32,10 @@ extends Resource
 
 
 ## Either rounds the edges of the path, or not
-@export var round_edges: bool = true:
+enum RoundingMode { Auto, Ignore_Edges, Off }
+@export var rounding_mode := RoundingMode.Auto:
 	set(value):
-		round_edges = value
+		rounding_mode = value
 		emit_changed()
 
 
