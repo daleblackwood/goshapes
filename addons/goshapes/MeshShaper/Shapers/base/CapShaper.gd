@@ -20,4 +20,3 @@ extends MeshShaper
 				
 
 var wall_style
-

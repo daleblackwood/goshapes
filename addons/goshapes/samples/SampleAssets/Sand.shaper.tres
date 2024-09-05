@@ -1,36 +1,27 @@
-[gd_resource type="Resource" script_class="BlockShaper" load_steps=10 format=3 uid="uid://crmkyitge0fwa"]
+[gd_resource type="Resource" script_class="BlockShaper" load_steps=9 format=3 uid="uid://crmkyitge0fwa"]
 
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/BottomShaper.gd" id="1_8p5wp"]
-[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="2_a6xuy"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapMoundShaper.gd" id="2_ddumt"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dh0ri"]
 [ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/SampleAssets/SandMat.mat.tres" id="2_yuv2d"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="4_kbrom"]
+[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="4_8elhc"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/SampleAssets/CliffFaceModel.obj" id="5_t5185"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="6_cjo2e"]
 
-[sub_resource type="Resource" id="Resource_5sco3"]
-script = ExtResource("1_8p5wp")
-base_depth = 1.0
-enabled = false
-
-[sub_resource type="Resource" id="Resource_iikrf"]
-script = ExtResource("2_ddumt")
-height = 24.4
-iterations = 2
-mound_type = 5
-height_map_frequency = 1.379
-height_map_multiplier = 1.0
+[sub_resource type="Resource" id="Resource_03q4f"]
+script = ExtResource("2_dh0ri")
 conform_to_wall = false
-material = ExtResource("2_a6xuy")
+material = ExtResource("2_yuv2d")
 build_collider = true
 collision_layer = 1
 enabled = true
 
-[sub_resource type="Resource" id="Resource_8nj8m"]
-script = ExtResource("4_kbrom")
-height = 11.6
-bevel = 0.0
-taper = 94.8
-material = ExtResource("2_yuv2d")
+[sub_resource type="Resource" id="Resource_1or7w"]
+script = ExtResource("6_cjo2e")
+mesh = ExtResource("5_t5185")
+scale = 1.0
+closed = true
+material = ExtResource("4_8elhc")
+gaps = Array[int]([])
 build_collider = true
 collision_layer = 1
 enabled = true
@@ -38,9 +29,8 @@ enabled = true
 [resource]
 resource_name = "Sand.shaper.tres:BlockShaper"
 script = ExtResource("3_f6xbb")
-cap_shaper = SubResource("Resource_iikrf")
-wall_shaper = SubResource("Resource_8nj8m")
-bottom_shaper = SubResource("Resource_5sco3")
+cap_shaper = SubResource("Resource_03q4f")
+wall_shaper = SubResource("Resource_1or7w")
 bottom_depth = 0.0
 collider_type = 4
 collider_ridge = 0.0

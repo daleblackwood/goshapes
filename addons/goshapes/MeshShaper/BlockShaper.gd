@@ -80,37 +80,13 @@ func _update():
 	emit_changed()
 	
 
-func get_builder() -> ShapeBuilder:
-	return BlockBuilder.new(self)
-	
-
-class BlockBuilder extends ShapeBuilder:
-	
-	var style: BlockShaper
-	func _init(_style: BlockShaper):
-		style = _style
-		
-	func build(_host: Node3D, _path: PathData) -> void:
-		host = _host
-		path = _path
-		if style.cap_shaper != null and style.cap_shaper.enabled:
-			style.cap_shaper.get_builder().build(host, path)
-		if style.wall_shaper != null and style.wall_shaper.enabled:
-			style.wall_shaper.get_builder().build(host, path)
-		if style.bottom_shaper != null and style.bottom_shaper.enabled:
-			style.bottom_shaper.cap_shaper = style.cap_shaper
-			style.bottom_shaper.get_builder().build(host, path)
-		
-
-	func apply_mesh(mesh: ArrayMesh) -> void:
-		var mesh_node = SceneUtils.get_or_create(host, "Mesh", MeshInstance3D)
-		mesh_node.transform = Transform3D()
-		mesh_node.mesh = mesh
-		
-		
-	func apply_collider(mesh: ArrayMesh) -> void:
-		var collider_body = SceneUtils.get_or_create(host, "Collider", StaticBody3D)
-		collider_body.transform = Transform3D()
-		var collider_shape = SceneUtils.get_or_create(collider_body, "CollisionShape", CollisionShape3D)
-		collider_shape.shape = mesh.create_trimesh_shape()
-		collider_shape.transform = Transform3D()
+func get_builders() -> Array[ShapeBuilder]:
+	var result: Array[ShapeBuilder] = []
+	if cap_shaper != null and cap_shaper.enabled:
+		result += cap_shaper.get_builders()
+	if wall_shaper != null and wall_shaper.enabled:
+		result += wall_shaper.get_builders()
+	if bottom_shaper != null and bottom_shaper.enabled:
+		bottom_shaper.cap_shaper = cap_shaper
+		result += bottom_shaper.get_builders()
+	return result

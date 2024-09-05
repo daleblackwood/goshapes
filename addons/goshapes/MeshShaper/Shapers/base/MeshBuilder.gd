@@ -12,33 +12,33 @@ func _init(_style: MeshShaper) -> void:
 	base_style = _style
 	
 
-func build(host: Node3D, path: PathData) -> void:
+func build(host: Node3D, path: GoshPath) -> void:
+	self.host = host
 	build_meshes(host, path)
 	
-	
-func build_meshes(host: Node3D, path: PathData, dest_mesh: Mesh = null) -> void:
-	meshsets = build_sets(path)
-	mesh = MeshUtils.build_meshes(meshsets, dest_mesh)
+
+func commit() -> void:
 	apply_mesh(host, mesh)
+	
+	
+func commit_colliders() -> void:
 	if base_style.build_collider:
 		apply_collider(host, mesh)
+		
+	
+func build_meshes(host: Node3D, path: GoshPath, dest_mesh: Mesh = null) -> void:
+	meshsets = build_sets(path)
+	mesh = MeshUtils.build_meshes(meshsets, dest_mesh)
 	
 
-func build_sets(path: PathData) -> Array[MeshSet]:
+func build_sets(path: GoshPath) -> Array[MeshSet]:
 	printerr("Not implemented")
 	return []
 	
 	
-func build_done(group: JobGroup) -> void:
-	if group.output.size() < 1:
-		printerr("No output")
-		return
-	var output_mesh = group.output[0] as ArrayMesh
-	apply_mesh(host, output_mesh)
-	apply_collider.call_deferred(host, output_mesh)
-	
-		
 func apply_mesh(host: Node3D, new_mesh: ArrayMesh) -> void:
+	if new_mesh == null:
+		return
 	var mesh_node := MeshInstance3D.new()
 	mesh_node.mesh = new_mesh
 	mesh_node.name = "Mesh%s" % host.get_child_count()
@@ -46,6 +46,8 @@ func apply_mesh(host: Node3D, new_mesh: ArrayMesh) -> void:
 		
 		
 func apply_collider(host: Node3D, mesh: ArrayMesh) -> void:
+	if mesh == null:
+		return
 	var collider_body = StaticBody3D.new()
 	collider_body.name = "Collider%s" % host.get_child_count()
 	collider_body.collision_layer = base_style.collision_layer

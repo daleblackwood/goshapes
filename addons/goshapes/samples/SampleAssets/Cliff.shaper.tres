@@ -3,9 +3,9 @@
 [ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/SampleAssets/GrassMat.material" id="1_1j7sk"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapLineShaper.gd" id="2_fhajo"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_r3cdr"]
-[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="5_823g7"]
-[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/SampleAssets/CliffFaceModel.obj" id="6_o7iju"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="7_xermq"]
+[ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="4_33fyf"]
+[ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/SampleAssets/CliffFaceModel.obj" id="5_xktdr"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="6_4u5uw"]
 
 [sub_resource type="Resource" id="Resource_jgcb3"]
 script = ExtResource("2_fhajo")
@@ -15,12 +15,13 @@ build_collider = true
 collision_layer = 1
 enabled = true
 
-[sub_resource type="Resource" id="Resource_dj1ma"]
-script = ExtResource("7_xermq")
-mesh = ExtResource("6_o7iju")
+[sub_resource type="Resource" id="Resource_g8u2r"]
+script = ExtResource("6_4u5uw")
+mesh = ExtResource("5_xktdr")
 scale = 1.0
 closed = true
-material = ExtResource("5_823g7")
+material = ExtResource("4_33fyf")
+gaps = Array[int]([])
 build_collider = true
 collision_layer = 1
 enabled = true
@@ -30,7 +31,7 @@ resource_local_to_scene = true
 resource_name = "Cliff.shaper.tres:BlockShaper"
 script = ExtResource("3_r3cdr")
 cap_shaper = SubResource("Resource_jgcb3")
-wall_shaper = SubResource("Resource_dj1ma")
+wall_shaper = SubResource("Resource_g8u2r")
 bottom_depth = 0.0
 collider_type = 2
 collider_ridge = 0.0

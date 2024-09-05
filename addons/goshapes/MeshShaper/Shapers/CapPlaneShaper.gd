@@ -4,29 +4,29 @@ extends CapShaper
 ## A Shaper that draws a complex planed cap useful for sloping surfaces
 
 ## The size of the subdivision grid on the cap
-@export_range(0.1, 10.0, 0.1) var grid_size: float = 1.0:
+@export_range(0.1, 10.0, 0.1) var grid_size := 1.0:
 	set(value):
 		if grid_size != value:
 			grid_size = value
 			emit_changed()
 			
 ## An amount to raise in a mountainous fashion
-@export_range(0.0, 100.0) var mound_rise: float = 0.0:
+@export_range(0.0, 100.0) var mound_rise := 0.0:
 	set(value):
 		if mound_rise != value:
 			mound_rise = value
 			emit_changed()
 			
 ## Add prominanceness to the mound_rise
-@export_range(0.0, 1.0) var mound_sharpness: float = 0.0:
+@export_range(0.0, 1.0) var mound_sharpness := 0.0:
 	set(value):
 		if mound_sharpness != value:
 			mound_sharpness = value
 			emit_changed()
 			
 
-func get_builder() -> ShapeBuilder:
-	return CapPlaneBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [CapPlaneBuilder.new(self)]
 			
 			
 class CapPlaneBuilder extends CapBuilder:
@@ -36,7 +36,7 @@ class CapPlaneBuilder extends CapBuilder:
 		super._init(_style)
 		style = _style
 		
-	func build_sets(path: PathData) -> Array[MeshSet]:
+	func build_sets(path: GoshPath) -> Array[MeshSet]:
 		var gs := 1.0 if not style.grid_size or style.grid_size == 0.0 else style.grid_size
 
 		var points := get_cap_points(style, path)
@@ -112,7 +112,7 @@ class CapPlaneBuilder extends CapBuilder:
 		return [meshset]
 		
 	func flat_dist(a: Vector3, b: Vector3) -> float:
-		var d = a - b
+		var d := a - b
 		return sqrt(d.x * d.x + d.z * d.z)
 		
 	func float_array(size: int) -> Array[float]:
@@ -129,10 +129,10 @@ class CapPlaneBuilder extends CapBuilder:
 			return 0.0
 		if n >= n_max:
 			return 0.0
-		var pc = (n - n_min) / (n_max - n_min)
-		var result = sin(pc * PI)
+		var pc := (n - n_min) / (n_max - n_min)
+		var result := sin(pc * PI)
 		if style.mound_sharpness > 0.0:
-			var prom = pc * 2.0 if pc < 0.5 else (1.0 - pc) * 2.0
+			var prom := pc * 2.0 if pc < 0.5 else (1.0 - pc) * 2.0
 			prom = prom * prom * prom * prom
 			result = lerp(result, prom, style.mound_sharpness)
 		result *= style.mound_rise

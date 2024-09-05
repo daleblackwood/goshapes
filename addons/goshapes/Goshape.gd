@@ -52,11 +52,12 @@ var is_editing: bool: get = _get_is_editing
 
 var is_dirty = false
 var edit_proxy = null
-var cap_data: PathData = null
+var cap_data: GoshPath = null
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
+var start_time = 0
 
 
 func _ready() -> void:
@@ -84,23 +85,28 @@ func _edit_begin(edit_proxy) -> void:
 	if _get_is_editing():
 		return
 	self.edit_proxy = edit_proxy
+	_edit_update()
+		
+	curve_changed.connect(on_curve_changed)
+	watcher_shaper.watch(shaper)
+	watcher_pathmod.watch(path_options)
+	
+	
+func _edit_update() -> void:
+	if not Engine.is_editor_hint():
+		return
 	set_display_folded(true)
 	if not is_instance_of(shaper, Shaper):
 		set_shaper(edit_proxy.create_shaper())
 	if not is_instance_of(path_options, PathOptions):
 		set_path_options(edit_proxy.create_path_options())
-	if not is_instance_of(curve, Curve3D) or curve.get_point_count() < 2:
-		_init_curve()
 	if not curve is GoCurve3D:
 		curve.set_script(GoCurve3D.new().get_script())
-	
+	if not is_instance_of(curve, Curve3D) or curve.get_point_count() < 2:
+		_init_curve()
 	curve = ResourceUtils.make_local(self, curve)
 	shaper = ResourceUtils.make_local(self, shaper)
 	path_options = ResourceUtils.make_local(self, path_options)
-		
-	curve_changed.connect(on_curve_changed)
-	watcher_shaper.watch(shaper)
-	watcher_pathmod.watch(path_options)
 	
 	
 func _init_curve() -> void:
@@ -236,28 +242,38 @@ func build() -> void:
 		mark_dirty()
 		return
 		
-	_build(runner)
-		
-
-func _build(runner: JobRunner) -> void:
 	if not shaper:
 		return
-	for child in get_children():
-		child.free()
+		
 	run_build_jobs(runner)
 	is_dirty = false
 	
 	
-func run_build_jobs(runner: JobRunner) -> void:
-	shaper.build(self, get_path_data(path_options.interpolate))
+func _build(runner: GoshBuildRunner) -> void:
+	run_build_jobs(runner)
 	
-		
+	
+func run_build_jobs(runner: GoshBuildRunner) -> void:
+	start_time = Time.get_ticks_msec()
+	for child in get_children():
+		child.free()
+	var path = get_path_data(path_options.interpolate)
+	var builders = shaper.get_builders()
+	runner.enqueue(self, path, builders, done_job)
+	
+	
+func done_job(result):
+	pass
+	
+	
 func remove_control_points() -> void:
 	PathUtils.remove_control_points(curve)
 	mark_dirty()
 	
-
-func get_path_data(interpolate: int) -> PathData:
+	
+func get_path_data(interpolate: int = -1) -> GoshPath:
+	if interpolate < 0:
+		interpolate = path_options.interpolate
 	var twists = _get_twists()
 	if twists.size() < 1:
 		twists = null
@@ -265,7 +281,7 @@ func get_path_data(interpolate: int) -> PathData:
 	if path_options.line != 0:
 		path_data = PathUtils.path_to_outline(path_data, path_options.line)
 	if path_options.rounding > 0:
-		path_data = PathUtils.round_path(path_data, path_options.rounding, interpolate)
+		path_data = PathUtils.round_path(path_data, path_options.rounding_mode, path_options.rounding, interpolate)
 	path_data.curve = curve.duplicate()
 	if path_options.ground_placement_mask:
 		path_data.placement_mask = path_options.ground_placement_mask

@@ -4,21 +4,21 @@ extends WallShaper
 ## A Shaper that draws a simple wall around the path
 		
 ## The height to make the wall
-@export_range(0.0, 100.0, 0.1) var height = 1.0:
+@export_range(0.0, 100.0, 0.1) var height := 1.0:
 	set(value):
 		if height != value:
 			height = value
 			emit_changed()
 
 ## Create a bevel around the wall edge	
-@export_range(0, 10.0, 0.1) var bevel = 0.0:
+@export_range(0, 10.0, 0.1) var bevel := 0.0:
 	set(value):
 		if bevel != value:
 			bevel = value
 			emit_changed()
 
 ## Creates a tapered edge
-@export_range(0.0, 100.0, 0.1) var taper = 0.0:
+@export_range(0.0, 100.0, 0.1) var taper := 0.0:
 	set(value):
 		if taper != value:
 			taper = value
@@ -32,8 +32,8 @@ extends WallShaper
 			emit_changed()
 			
 
-func get_builder() -> ShapeBuilder:
-	return WallBevelBuilder.new(self)
+func get_builders() -> Array[ShapeBuilder]:
+	return [WallBevelBuilder.new(self)]
 			
 			
 class WallBevelBuilder extends WallBuilder:
@@ -43,19 +43,19 @@ class WallBevelBuilder extends WallBuilder:
 		super._init(_style)
 		style = _style
 	
-	func build_sets(path: PathData) -> Array[MeshSet]:
-		var height = style.height
-		var taper = style.taper
-		var bevel = style.bevel
-		var material = style.material
-		var meshset = make_walls(path, height, taper, bevel)
+	func build_sets(path: GoshPath) -> Array[MeshSet]:
+		var height := style.height
+		var taper := style.taper
+		var bevel := style.bevel
+		var material := style.material
+		var meshset := make_walls(path, height, taper, bevel)
 		meshset.material = material
 		return [meshset]
 
 	
-	static func make_walls(path: PathData, height: float, taper: float, bevel: float) -> MeshSet:
+	static func make_walls(path: GoshPath, height: float, taper: float, bevel: float) -> MeshSet:
 		var meshsets: Array[MeshSet] = []
-		var paths: Array[PathData] = [path]
+		var paths: Array[GoshPath] = [path]
 		var top_path = path;
 		if bevel > 0.0:
 			var bevel_path = PathUtils.taper_path(top_path, bevel)

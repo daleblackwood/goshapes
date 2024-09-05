@@ -10,7 +10,6 @@ func set_point_position(idx: int, position: Vector3):
 	if not updating:
 		edited_point = idx
 	super.set_point_position(idx, position)
-	
 
 func emit_changed():
 	if updating:

@@ -53,6 +53,7 @@ Alongside that, there's the Path Options which can be copied between shapes.
  - **Twist** will allow you to bend the path in weird and wonderful ways for shapes like corkscrews and vertical spirals.
  - **Line** will cause the shape to extrude along the path instead of filling the path. This is useful for footpaths, roads and fences.
  - **Rounding** will round the edges of the shape by the desired distance
+ - **Round Edges** whether to round the edges of the shape or not
  - **Interpolate** affects the detail of the shape
  - **Points On Ground** will cause the points to align to the surface below them using Raycasting
  - **Offset Y** shifts the shape up or down
