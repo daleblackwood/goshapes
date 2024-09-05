@@ -122,30 +122,34 @@ static func path_to_outline(path: GoshPath, width: float) -> GoshPath:
 	return GoshPath.new(path_points, path_ups)
 	
 
-static func round_path(path: GoshPath, round_dist: float, interpolate: int = 0) -> GoshPath:
+static func round_path(path: GoshPath, rounding_mode: PathOptions.RoundingMode, round_dist: float, interpolate: int = 0) -> GoshPath:
 	if interpolate < 1:
 		interpolate = 1
 	var iterations = interpolate + 1
 	var sub_dist = round_dist
 	var result = path
 	for i in range(iterations):
-		result = round_path_it(result, sub_dist)
+		result = round_path_it(result, rounding_mode, sub_dist)
 		sub_dist /= PI
 	return result
 	
 	
-static func round_path_it(path: GoshPath, round_dist: float) -> GoshPath:
+static func round_path_it(path: GoshPath, rounding_mode: PathOptions.RoundingMode, round_dist: float) -> GoshPath:
 	var point_count = path.points.size()
 	var points = PackedVector3Array()
 	points.resize(point_count * 2)
 	var ups = PackedVector3Array()
 	ups.resize(point_count * 2)
 	for i in range(point_count):
+		var is_edge  := i == 0 or i == point_count-1
+		var do_round := (rounding_mode == PathOptions.RoundingMode.Auto) or (rounding_mode == PathOptions.RoundingMode.Ignore_Edges and not is_edge)
+		var rounding := round_dist * 0.5 if do_round else 0
+
 		var p = path.points[i]
 		var prev = path.points[i - 1 if i > 0 else point_count - 1]
 		var next = path.points[i + 1 if i < point_count - 1 else 0]
-		var a = move_point_towards(p, prev, round_dist * 0.5)
-		var b = move_point_towards(p, next, round_dist * 0.5)
+		var a = move_point_towards(p, prev, rounding)
+		var b = move_point_towards(p, next, rounding)
 		points.set(i * 2, a)
 		points.set(i * 2 + 1, b)
 		ups.set(i * 2, path.ups[i])
