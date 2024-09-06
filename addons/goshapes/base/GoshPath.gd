@@ -4,15 +4,17 @@ class_name GoshPath
 
 var points := PackedVector3Array()
 var ups := PackedVector3Array()
+var corners := PackedInt32Array()
 var point_count: int: get = get_point_count
 var taper := 0.0
 var curve: Curve3D
 var placement_mask := 0
 
 
-func _init(points = PackedVector3Array(), ups = PackedVector3Array()) -> void:
+func _init(points = PackedVector3Array(), ups = PackedVector3Array(), corners = PackedInt32Array()) -> void:
 	self.points = points
 	self.ups = ups
+	self.corners = corners
 	
 	
 func get_point(index: int) -> Vector3:
@@ -39,6 +41,23 @@ func get_up(index: int) -> Vector3:
 	return ups[index]
 	
 	
+func get_corner(index: int) -> int:
+	index = clampi(index, 0, corners.size() - 1)
+	return corners[index]
+	
+	
+func get_corner_loop(index: int) -> int:
+	var size = corners.size()
+	var normalized_index = ((index % size) + size) % size
+	return corners[normalized_index]
+	
+	
+func get_corner_count() -> int:
+	if curve == null:
+		return 1
+	return curve.point_count
+	
+	
 func get_distances(scale: float = 1.0, offset: float = 0.0) -> PackedFloat32Array:
 	var length := 0.0
 	var count := points.size()
@@ -59,6 +78,12 @@ func get_distances(scale: float = 1.0, offset: float = 0.0) -> PackedFloat32Arra
 		distance += lengths[i % count] * applied_scale
 		result[i] = distance
 	return result
+	
+
+func invert():
+	points.reverse()
+	ups.reverse()
+	corners.reverse()
 	
 	
 func duplicate():

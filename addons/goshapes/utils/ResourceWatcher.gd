@@ -14,10 +14,15 @@ func watch(new_resource: Resource) -> void:
 	unwatch()
 	resource = new_resource
 	if resource != null:
-		resource.changed.connect(callback)
+		resource.changed.connect(_on_change)
 		
 		
 func unwatch() -> void:
-	if resource != null && resource.changed.is_connected(callback):
-		resource.changed.disconnect(callback)
+	if resource != null && resource.changed.is_connected(_on_change):
+		resource.changed.disconnect(_on_change)
 	resource = null
+	
+	
+func _on_change() -> void:
+	if callback != null:
+		callback.call_deferred()

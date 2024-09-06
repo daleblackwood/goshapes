@@ -47,55 +47,59 @@ static func get_curve_center(curve: Curve3D) -> Vector3:
 	
 	
 static func move_curve(curve: Curve3D, offset: Vector3) -> void:
-	var point_count = curve.get_point_count()
-	var center = Vector3.ZERO
+	var point_count := curve.get_point_count()
+	var center := Vector3.ZERO
 	for i in range(point_count):
-		var p = curve.get_point_position(i)
+		var p := curve.get_point_position(i)
 		p += offset
 		curve.set_point_position(i, p)
 	
 	
 static func curve_to_points(curve: Curve3D, interpolate: int, inverted: bool) -> GoshPath:
-	var points = curve.tessellate(interpolate, 2)
-	var path = GoshPath.new(points)
+	var points := curve.tessellate(interpolate, 2)
+	var ups := PackedVector3Array()
+	ups.resize(points.size())
+	ups.fill(Vector3.UP)
+	var corners := PackedInt32Array()
+	corners.resize(points.size())
+	var ci = 0
+	for i in range(points.size()):
+		if points[i] == curve.get_point_position(ci):
+			ci += 1
+		corners[i] = max(0, ci - 1)
+	var path = GoshPath.new(points, ups, corners)
 	if inverted:
-		path = invert(path)
+		path.invert()
 	return path
 	
 	
-static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path_twists = PackedInt32Array()) -> GoshPath:
+static func curve_to_path(curve: Curve3D, interpolate: int, inverted: bool, path_twists := PackedInt32Array()) -> GoshPath:
 	curve = curve.duplicate()
-	var use_twists = path_twists != null
+	var use_twists := path_twists != null and path_twists.size() > 0
 	if use_twists:
 		twist_curve(curve, path_twists)
-	var curved_path = curve_to_points(curve, interpolate, inverted)
-	var point_count = curved_path.point_count
-	var points = PackedVector3Array()
-	points.resize(point_count)
-	var ups = PackedVector3Array()
-	ups.resize(point_count)
-	var length = 0.0
-	for i in range(point_count):
-		points[i] = curved_path.get_point(i)
+	var result := curve_to_points(curve, interpolate, inverted)
+	var length := 0.0
+	result.ups.resize(result.point_count)
+	for i in range(result.point_count):
 		if not use_twists or i == 0:
-			ups[i] = Vector3.UP
+			result.ups.set(i, Vector3.UP)
 		else:
-			var dif = points[i] - points[i - 1]
+			var dif = result.points[i] - result.points[i - 1]
 			length += dif.length()
-			ups[i] = curve.interpolate_baked_up_vector(length, true)
-	return GoshPath.new(points, ups)
+			result.ups.set(i, curve.interpolate_baked_up_vector(length, true))
+	return result
 	
 
 static func path_to_outline(path: GoshPath, width: float) -> GoshPath:
-	var point_count = path.points.size()
-	var ups_count = path.ups.size()
-	var point_total = point_count * 2
-	var path_points = PackedVector3Array()
-	path_points.resize(point_total)
-	var path_ups = PackedVector3Array()
-	path_ups.resize(point_total)
-	var dir_a = Vector3.FORWARD
-	var dir_b = Vector3.FORWARD
+	var point_count := path.points.size()
+	var point_total := point_count * 2
+	var result = GoshPath.new()
+	result.points.resize(point_total)
+	result.ups.resize(point_total)
+	result.corners.resize(point_total)
+	var dir_a := Vector3.FORWARD
+	var dir_b := Vector3.FORWARD
 	for i in range(point_count):
 		if i > 0:
 			dir_a = path.points[i] - path.points[i - 1]
@@ -107,25 +111,27 @@ static func path_to_outline(path: GoshPath, width: float) -> GoshPath:
 			dir_a = dir_b
 		if i == point_count - 1:
 			dir_b = dir_a
-		var dir = ((dir_a + dir_b)).normalized()
-		var up = path.get_up(i)
-		var p = path.points[i]
-		var out = dir.cross(up)
-		#out *= max(1.0, ROOT_2 - dir_b.dot(dir_a))
+		var dir := ((dir_a + dir_b)).normalized()
+		var up := path.get_up(i)
+		var corner := path.get_corner(i)
+		var p := path.points[i]
+		var out := dir.cross(up)
 		out *= lerp(ROOT_2, 1.0, dir_b.dot(dir_a))
-		var a = p + out * width * 0.5
-		var b = p - out * width * 0.5
-		path_points[i] = a
-		path_points[point_total - 1 - i] = b
-		path_ups[i] = up
-		path_ups[point_total - 1 - i] = up
-	return GoshPath.new(path_points, path_ups)
+		var a := p + out * width * 0.5
+		var b := p - out * width * 0.5
+		result.points.set(i, a)
+		result.points.set(point_total - 1 - i, b)
+		result.ups.set(i, up)
+		result.ups.set(point_total - 1 - i, up)
+		result.corners.set(i, corner)
+		result.corners.set(point_total - 1 - i, corner)
+	return result
 	
 
 static func round_path(path: GoshPath, rounding_mode: PathOptions.RoundingMode, round_dist: float, interpolate: int = 0) -> GoshPath:
 	if interpolate < 1:
 		interpolate = 1
-	var iterations = interpolate + 1
+	var iterations = interpolate# + 1
 	var sub_dist = round_dist
 	var result = path
 	for i in range(iterations):
@@ -137,24 +143,37 @@ static func round_path(path: GoshPath, rounding_mode: PathOptions.RoundingMode, 
 static func round_path_it(path: GoshPath, rounding_mode: PathOptions.RoundingMode, round_dist: float) -> GoshPath:
 	var point_count = path.points.size()
 	var points = PackedVector3Array()
-	points.resize(point_count * 2)
+	points.resize(point_count * 3)
 	var ups = PackedVector3Array()
-	ups.resize(point_count * 2)
+	ups.resize(point_count * 3)
+	var corners = PackedInt32Array()
+	corners.resize(point_count * 3)
 	for i in range(point_count):
 		var is_edge  := i == 0 or i == point_count-1
 		var do_round := (rounding_mode == PathOptions.RoundingMode.Auto) or (rounding_mode == PathOptions.RoundingMode.Ignore_Edges and not is_edge)
 		var rounding := round_dist * 0.5 if do_round else 0
-
-		var p = path.points[i]
-		var prev = path.points[i - 1 if i > 0 else point_count - 1]
-		var next = path.points[i + 1 if i < point_count - 1 else 0]
-		var a = move_point_towards(p, prev, rounding)
-		var b = move_point_towards(p, next, rounding)
-		points.set(i * 2, a)
-		points.set(i * 2 + 1, b)
-		ups.set(i * 2, path.ups[i])
-		ups.set(i * 2 + 1, path.ups[i])
-	return GoshPath.new(points, ups)
+		
+		var p := path.points[i]
+		var prev_i = i - 1 if i > 0 else point_count - 1
+		var next_i = i + 1 if i < point_count - 1 else 0
+		var prev := path.points[prev_i]
+		var next := path.points[next_i]
+		var a := move_point_towards(p, prev, rounding)
+		var c := move_point_towards(p, next, rounding)
+		var b = (a + c + p) / 3.0
+		var ai = (point_count if i == 0 else i) * 3 - 1
+		var bi = i * 3
+		var ci = i * 3 + 1
+		points.set(ai, a)
+		points.set(bi, b)
+		points.set(ci, c)
+		ups.set(ai, path.get_up(prev_i))
+		ups.set(bi, path.get_up(i))
+		ups.set(ci, path.get_up(i))
+		corners.set(ai, path.get_corner(prev_i))
+		corners.set(bi, path.get_corner(i))
+		corners.set(ci, path.get_corner(i))
+	return GoshPath.new(points, ups, corners)
 	
 	
 static func move_point_towards(source: Vector3, dest: Vector3, distance: float) -> Vector3:
@@ -163,7 +182,7 @@ static func move_point_towards(source: Vector3, dest: Vector3, distance: float) 
 	if diff.length_squared() > distance * distance * 2.0:
 		diff = diff.normalized() * distance
 		return source + diff
-	return source + diff * 0.5
+	return source + diff * 0.66667
 	
 	
 static func move_path(path: GoshPath, offset: Vector3) -> GoshPath:
@@ -220,16 +239,9 @@ static func cap_taper(a: Vector3, b: Vector3, width: float) -> Vector3:
 	
 	
 static func invert(path: GoshPath) -> GoshPath:
-	var point_count = path.points.size()
-	var result_points = PackedVector3Array()
-	result_points.resize(point_count)
-	var result_ups = PackedVector3Array()
-	result_ups.resize(point_count)
-	for i in range(point_count):
-		var index = point_count - 1 - i
-		result_points[i] = path.get_point(index)
-		result_ups[i] = path.get_up(index)
-	return GoshPath.new(result_points, result_ups)
+	var result = path.duplicate()
+	result.invert()
+	return result
 	
 	
 static func get_path_center(path: GoshPath) -> Vector3:

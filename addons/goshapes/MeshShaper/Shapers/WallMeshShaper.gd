@@ -69,6 +69,8 @@ class WallMeshBuilder extends WallBuilder:
 		var closed := style.closed
 		var material_count := materials.size()
 		var point_count := path.points.size()
+		for i in range(style.gaps.size()):
+			style.gaps[i] = clamp(style.gaps[i], 0, path.get_corner_count())
 		var gaps := style.gaps
 		if point_count < 2:
 			return []

@@ -165,15 +165,22 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool, gap
 	# calculate directions for segments
 	var lengths: Array[float] = []
 	lengths.resize(point_count)
+	
+	var corner_lengths: Array[float]
+	corner_lengths.resize(path.get_corner_count())
+	corner_lengths.fill(0.0)
+	
 	var path_length := 0.0
 	for i in range(point_count):
 		var n := (i + 1) % point_count
 		var dif := points[n] - points[i]
 		var section_length := dif.length()
+		var corner = path.get_corner(i)
+		corner_lengths[corner] = corner_lengths[corner] + section_length
 		lengths[i] = section_length
 		path_length += section_length
 	
-	var result := mesh_clone_to_length(meshset, path_length, gaps)
+	var result := mesh_clone_to_length(meshset, corner_lengths, gaps)
 	# wrap combined verts around path
 	var vert_count := result.vert_count
 	for i in range(vert_count):
@@ -209,45 +216,51 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool, gap
 	return result
 	
 	
-static func mesh_clone_to_length(mesh_in: MeshSet, path_length: float, gaps: Array[int] = []) -> MeshSet:
+static func mesh_clone_to_length(mesh_in: MeshSet, corner_lengths: Array[float], gaps: Array[int] = []) -> MeshSet:
 	# calculate segment sizes
-	var min_x := INF
-	var max_x := -INF
+	var min_x = INF
+	var max_x = -INF
 	for v in mesh_in.verts:
 		if v.x < min_x:
 			min_x = v.x
 		if v.x > max_x:
 			max_x = v.x
-	var mesh_length := max_x - min_x
-	var seg_count := int(round(path_length / mesh_length))
-	if seg_count < 1:
-		seg_count = 1
-	var seg_length := path_length / seg_count
-	var x_multi := seg_length / mesh_length
-	var result := MeshSet.new()
-	result.set_counts(mesh_in.vert_count * seg_count, mesh_in.tri_count * seg_count)
-	# tile verts along x
-	for i in range(seg_count):
-		var is_gap := false
-		for j in gaps:
-			if j == i:
-				is_gap = true
-				break
-		if is_gap:
-			continue
-		var first_vert := i * mesh_in.vert_count
-		var start_x := i * seg_length
-		for j in mesh_in.vert_count:
-			var v := mesh_in.verts[j]
-			v.x = start_x + v.x * x_multi
-			result.set_vert(first_vert + j, v)
-			var uv := mesh_in.uvs[j]
-			uv.x += float(i)
-			result.set_uv(first_vert + j, uv)
-			result.set_normal(first_vert + j, mesh_in.normals[j])
-		for j in mesh_in.tri_count:
-			result.set_tri(i * mesh_in.tri_count + j, mesh_in.tris[j] + (i * mesh_in.vert_count)) 
-	return result
+	var mesh_length = max_x - min_x
+	var vert_count = mesh_in.verts.size()
+	var corner_count = corner_lengths.size()
+	var sets: Array[MeshSet] = []
+	var off_x := 0.0
+	var off_u := 0.0
+	for corner in range(corner_count):
+		var corner_length = corner_lengths[corner]
+		var mesh_count := floor(corner_length / mesh_length)
+		if mesh_count < 1:
+			mesh_count = 1
+		var seg_length = corner_length / mesh_count
+		var x_multi = seg_length / mesh_length
+		var skip_corner = false
+		for gap in gaps:
+			if gap == corner:
+				skip_corner = true
+				break	
+		# tile verts along x, build sets
+		for i in range(mesh_count):
+			var start_x = off_x
+			off_x += seg_length
+			off_u += 1.0
+			if skip_corner:
+				continue
+			var ms = mesh_in.clone()
+			for j in vert_count:
+				var v = ms.verts[j]
+				v.x = start_x + v.x * x_multi
+				ms.set_vert(j, v)
+				var uv = ms.uvs[j]
+				uv.x += off_u
+				ms.set_uv(j, uv)
+			sets.append(ms)
+	var ms = combine_sets(sets)
+	return ms
 	
 	
 static func get_segment_count_for_path(path_length: float, segment_length: float) -> int:
