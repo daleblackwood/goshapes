@@ -1,46 +1,63 @@
 @tool
 class_name GoshBuildRunner
 
+enum JobState { Init, Running, Done, Cancelled }
+
 class GoBuildJob:
 	var id := 0
-	var host: Goshape
+	var host: Node3D
 	var builder: ShapeBuilder
-	var state := BuildState.Init
+	var state := JobState.Init
 	var path: GoshPath
-	var callback: Callable
+	var thread: Thread
+	var callback = null
+	
+	
+class GoDeferredStep:	
+	var job: GoBuildJob
+	var callable: Callable
+	var is_done := false
+	func _init(job: GoBuildJob, callable: Callable) -> void:
+		self.job = job
+		self.callable = callable
+		if job.state == JobState.Cancelled:
+			is_done = true
+		else:
+			_run.call_deferred()
+	func _run() -> void:		
+		if job.state == JobState.Running:
+			callable.call(job)
+		is_done = true
+	func wait() -> void:
+		while not is_done and job.state == JobState.Running:
+			OS.delay_msec(10)
+		
 
 var queue: Array[GoBuildJob] = []
 var run_count := 0
 var is_busy := false: get = get_is_busy
-var thread: Thread = null
-
-enum BuildState { Init, Running, Done, Cancelled }
-
 
 func get_is_busy() -> bool:
-	return queue.size() > 0 and queue[0].state < BuildState.Done
+	return queue.size() > 0 and queue[0].state < JobState.Done
 		
 		
-func clear_from(host: Node) -> void:
+func cancel(host: Node) -> void:
 	for i in range(queue.size() - 1, -1 , -1):
-		if queue[i].host == host:
+		var job = queue[i]
+		if job.host == host:
 			queue.remove_at(i)
-		
-		
-func clear_job(id: int) -> void:
-	for i in range(queue.size() - 1, -1 , -1):
-		if queue[i].id == id:
-			queue.remove_at(i)
+		if job.state == JobState.Running:
+			job_cancel(job)
 	
 	
-func enqueue(host: Goshape, path: GoshPath, builders: Array[ShapeBuilder], callback: Callable) -> Array[int]:
+func enqueue(host: Node3D, path: GoshPath, builders: Array[ShapeBuilder], callback: Callable) -> Array[int]:
 	var result: Array[int] = []
 	for builder in builders:
 		result.append(enqueue_one(host, path, builder, callback))
 	return result
 				
 
-func enqueue_one(host: Goshape, path: GoshPath, builder: ShapeBuilder, callback: Callable) -> int:
+func enqueue_one(host: Node3D, path: GoshPath, builder: ShapeBuilder, callback: Callable) -> int:
 	var job = GoBuildJob.new()
 	run_count += 1
 	job.id = run_count
@@ -56,43 +73,65 @@ func enqueue_one(host: Goshape, path: GoshPath, builder: ShapeBuilder, callback:
 	
 
 func next() -> void:
-	while queue.size() > 0 and queue[0].state >= BuildState.Done:
+	while queue.size() > 0 and queue[0].state >= JobState.Done:
 		queue.pop_front()
 		
 	if queue.size() < 1:
 		return
 		
-	var current_job = queue[0]
-	if current_job.state == BuildState.Running:
-		current_job.state == BuildState.Cancelled
+	var job = queue[0]
+	#if job.state == JobState.Running:
+	#	job.state = JobState.Cancelled
 		
-	if thread != null:
-		thread.cancel_free()
-		thread = null
+	if job.thread and job.state == JobState.Running:
+		job_cancel(job)
+		return
 		
-	current_job.state = BuildState.Running
-	thread = Thread.new()
-	thread.start(run_job, Thread.PRIORITY_HIGH)
+	job.state = JobState.Running
+	job.thread = Thread.new()
+	job.thread.start(run_job, Thread.PRIORITY_NORMAL)
 	
 	
 func run_job() -> void:
 	var job = queue[0]
-	job.state = BuildState.Running
+	job.state = JobState.Running
 	build_run(job)
-	
+	var step = GoDeferredStep.new(job, build_commit)
+	step.wait()
+	step = GoDeferredStep.new(job, build_colliders)
+	step.wait()
+	job_complete.call_deferred(job)
+		
 	
 func build_run(job: GoBuildJob) -> void:
-	if job.state == BuildState.Cancelled:
+	if job.state == JobState.Cancelled:
 		return
 	job.builder.build(job.host, job.path)
-	if job.state == BuildState.Cancelled:
-		return
-	build_commit.call_deferred(job)
 	
 	
 func build_commit(job: GoBuildJob) -> void:
+	if job.state == JobState.Cancelled:
+		return
 	job.builder.commit()
+	
+	
+func build_colliders(job: GoBuildJob) -> void:
+	if job.state == JobState.Cancelled:
+		return
 	job.builder.commit_colliders()
-	job.state = BuildState.Done
-	thread.wait_to_finish()
+	
+	
+func job_complete(job: GoBuildJob) -> void:
+	job.thread.wait_to_finish()
+	job.state = JobState.Done
+	if job.callback != null:
+		job.callback.call_deferred()
 	next()
+	
+func job_cancel(job: GoBuildJob) -> void:
+	if job.state == JobState.Cancelled:
+		return
+	if job.thread != null:
+		#job.thread.wait_to_finish()
+		job.thread = null
+	job.state == JobState.Cancelled

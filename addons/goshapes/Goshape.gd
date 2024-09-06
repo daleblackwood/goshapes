@@ -47,17 +47,15 @@ const AXIS_Z = 4
 	set = set_path_twists
 	
 
-var is_line: bool: get = get_is_line
 var is_editing: bool: get = _get_is_editing
 
-var is_dirty = false
+var is_dirty := false
 var edit_proxy = null
 var cap_data: GoshPath = null
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
-var start_time = 0
 
 
 func _ready() -> void:
@@ -109,6 +107,13 @@ func _edit_update() -> void:
 	path_options = ResourceUtils.make_local(self, path_options)
 	
 	
+func _edit_end() -> void:
+	self.edit_proxy = null
+	watcher_shaper.unwatch()
+	watcher_pathmod.unwatch()
+	curve_changed.disconnect(on_curve_changed)
+	
+	
 func _init_curve() -> void:
 	if not curve is Curve3D:
 		curve = Curve3D.new()
@@ -123,13 +128,6 @@ func _init_curve() -> void:
 		curve.add_point(Vector3(extent, 0, extent))
 		curve.add_point(Vector3(extent, 0, -extent))
 		curve.add_point(Vector3(-extent, 0, -extent))
-	
-	
-func _edit_end() -> void:
-	self.edit_proxy = null
-	watcher_shaper.unwatch()
-	watcher_pathmod.unwatch()
-	curve_changed.disconnect(on_curve_changed)
 	
 	
 func set_shaper(value: Shaper) -> void:
@@ -205,16 +203,18 @@ func on_curve_changed():
 	
 func mark_dirty():
 	if not _get_is_editing():
+		is_dirty = false
 		return
 	is_dirty = true
-	call_deferred("_update")
+
+
+func _process(delta: float) -> void:
+	var is_busy = edit_proxy != null and edit_proxy.runner.is_busy
+	if is_dirty and not is_busy:
+		_update()
+		
 	
-	
-func get_is_line():
-	return path_options.line > 0.0
-	
-	
-func _update():
+func _update():	
 	if not _get_is_editing():
 		return
 	if not get_tree():
@@ -228,14 +228,17 @@ func _update():
 		axis_match_index = -1
 		axis_match_points = PackedInt32Array()
 	
+	var runner = edit_proxy.runner
+	if runner.is_busy:
+		mark_dirty()
+		return
+	
 	build()
-	is_dirty = false
 	
 	
 func build() -> void:
 	if not shaper:
-		print("no shaper")
-		return
+		return	
 	
 	var runner = edit_proxy.runner
 	if runner.is_busy:
@@ -245,25 +248,30 @@ func build() -> void:
 	if not shaper:
 		return
 		
-	run_build_jobs(runner)
+	build_run(runner)
 	is_dirty = false
 	
 	
 func _build(runner: GoshBuildRunner) -> void:
-	run_build_jobs(runner)
+	build_run(runner)
 	
 	
-func run_build_jobs(runner: GoshBuildRunner) -> void:
-	start_time = Time.get_ticks_msec()
+func build_clear(runner: GoshBuildRunner) -> void:	
+	runner.cancel(self)
 	for child in get_children():
 		child.free()
-	var path = get_path_data(path_options.interpolate)
-	var builders = shaper.get_builders()
-	runner.enqueue(self, path, builders, done_job)
 	
 	
-func done_job(result):
-	pass
+func build_run(runner: GoshBuildRunner) -> void:
+	build_clear(runner)
+	var path := get_path_data(path_options.interpolate)
+	var builders := shaper.get_builders()
+	runner.enqueue(self, path, builders, build_done)
+	
+	
+func build_done():
+	if is_dirty:
+		_update.call_deferred()
 	
 	
 func remove_control_points() -> void:
@@ -274,10 +282,8 @@ func remove_control_points() -> void:
 func get_path_data(interpolate: int = -1) -> GoshPath:
 	if interpolate < 0:
 		interpolate = path_options.interpolate
-	var twists = _get_twists()
-	if twists.size() < 1:
-		twists = null
-	var path_data = PathUtils.curve_to_path(curve, interpolate, inverted, twists)
+	var twists := _get_twists()
+	var path_data := PathUtils.curve_to_path(curve, interpolate, inverted, twists)
 	if path_options.line != 0:
 		path_data = PathUtils.path_to_outline(path_data, path_options.line)
 	if path_options.rounding > 0:
@@ -287,20 +293,20 @@ func get_path_data(interpolate: int = -1) -> GoshPath:
 		path_data.placement_mask = path_options.ground_placement_mask
 	
 	for i in range(path_data.point_count):
-		var p = path_data.get_point(i)
+		var p := path_data.get_point(i)
 		if path_options.points_on_ground:
-			var space = get_world_3d().direct_space_state
-			var ray = PhysicsRayQueryParameters3D.new()
+			var space := get_world_3d().direct_space_state
+			var ray := PhysicsRayQueryParameters3D.new()
 			ray.from = global_transform * Vector3(p.x, 1000, p.z)
 			ray.to = global_transform * Vector3(p.x, -1000, p.z)
 			if path_options.ground_placement_mask:
 				ray.collision_mask = path_options.ground_placement_mask
-			var hit = space.intersect_ray(ray)
+			var hit := space.intersect_ray(ray)
 			if hit.has("position"):
 				p = global_transform.inverse() * hit.position
 		if path_options.offset_y:
 			p.y += path_options.offset_y
-		path_data.points[i] = p
+		path_data.points.set(i, p)
 	return path_data
 
 

@@ -13,7 +13,7 @@ extends WallShaper
 ## Set the curve for the wall			
 @export var curve: Curve = Curve.new():
 	set(value):
-		if curve != null:
+		if curve != null and curve.changed.is_connected(on_curve_changed):
 			curve.changed.disconnect(on_curve_changed)
 		curve = value
 		if curve != null:
