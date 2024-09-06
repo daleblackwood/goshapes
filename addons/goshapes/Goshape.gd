@@ -111,7 +111,8 @@ func _edit_end() -> void:
 	self.edit_proxy = null
 	watcher_shaper.unwatch()
 	watcher_pathmod.unwatch()
-	curve_changed.disconnect(on_curve_changed)
+	if curve_changed.is_connected(on_curve_changed):
+		curve_changed.disconnect(on_curve_changed)
 	
 	
 func _init_curve() -> void:

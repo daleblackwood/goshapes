@@ -80,11 +80,7 @@ func next() -> void:
 		return
 		
 	var job = queue[0]
-	#if job.state == JobState.Running:
-	#	job.state = JobState.Cancelled
-		
-	if job.thread and job.state == JobState.Running:
-		job_cancel(job)
+	if job.state == JobState.Running:
 		return
 		
 	job.state = JobState.Running
@@ -131,7 +127,4 @@ func job_complete(job: GoBuildJob) -> void:
 func job_cancel(job: GoBuildJob) -> void:
 	if job.state == JobState.Cancelled:
 		return
-	if job.thread != null:
-		#job.thread.wait_to_finish()
-		job.thread = null
 	job.state == JobState.Cancelled
