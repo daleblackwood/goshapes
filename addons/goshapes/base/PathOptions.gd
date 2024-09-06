@@ -31,6 +31,14 @@ extends Resource
 		emit_changed()
 
 
+## Either rounds the edges of the path, or not
+enum RoundingMode { Auto, Ignore_Edges, Off }
+@export var rounding_mode := RoundingMode.Auto:
+	set(value):
+		rounding_mode = value
+		emit_changed()
+
+
 ## Increases the resolution of path curve data
 @export_range(1, 4, 1) var interpolate := 1:
 	set(value):
