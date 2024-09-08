@@ -202,7 +202,7 @@ func on_curve_changed():
 	mark_dirty()
 
 	
-func mark_dirty():
+func mark_dirty() -> void:
 	if not _get_is_editing():
 		is_dirty = false
 		return
@@ -210,12 +210,11 @@ func mark_dirty():
 
 
 func _process(delta: float) -> void:
-	var is_busy = edit_proxy != null and edit_proxy.runner.is_busy
-	if is_dirty and not is_busy:
+	if is_dirty:
 		_update()
 		
 	
-func _update():	
+func _update() -> void:	
 	if not _get_is_editing():
 		return
 	if not get_tree():
@@ -264,6 +263,7 @@ func build_clear(runner: GoshBuildRunner) -> void:
 	
 	
 func build_run(runner: GoshBuildRunner) -> void:
+	print_debug("Goshape %s Build" % name)
 	build_clear(runner)
 	var path := get_path_data(path_options.interpolate)
 	var builders := shaper.get_builders()

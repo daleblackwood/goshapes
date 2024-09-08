@@ -18,14 +18,14 @@ extends Resource
 		
 
 ## Makes the path a line of the specified depth, zero to fill
-@export_range(0.0, 40.0, 0.5) var line := 0.0:
+@export_range(0.0, 100.0, 0.5) var line := 0.0:
 	set(value):
 		line = value
 		emit_changed()
 	
 
 ## Rounds the corners of the path
-@export_range(0.0, 40.0, 0.1) var rounding := 0.0: 
+@export_range(0.0, 200.0, 0.1) var rounding := 0.0: 
 	set(value):
 		rounding = value
 		emit_changed()

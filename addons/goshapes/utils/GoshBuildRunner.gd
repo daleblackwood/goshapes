@@ -122,7 +122,8 @@ func job_complete(job: GoBuildJob) -> void:
 	job.state = JobState.Done
 	if job.callback != null:
 		job.callback.call_deferred()
-	next()
+	next.call_deferred()
+	
 	
 func job_cancel(job: GoBuildJob) -> void:
 	if job.state == JobState.Cancelled:

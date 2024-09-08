@@ -30,6 +30,7 @@ flatten = true
 twist = false
 line = 0.0
 rounding = 40.0
+rounding_mode = 0
 interpolate = 1
 points_on_ground = false
 offset_y = 0.0
@@ -241,7 +242,7 @@ uv1_triplanar = true
 height = 3.13856
 radius = 0.25
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D2" type="Node3D"]
 
 [node name="MultiShape" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5396, 44, 12.656)
