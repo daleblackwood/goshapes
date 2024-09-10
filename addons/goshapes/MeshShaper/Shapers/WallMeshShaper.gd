@@ -52,7 +52,7 @@ class WallMeshBuilder extends WallBuilder:
 		super._init(_style)
 		style = _style
 
-	func build_sets(path: GoshPath) -> Array[MeshSet]:
+	func build_sets(path: GoshapePath) -> Array[MeshSet]:
 		var ref_mesh := style.mesh as Mesh
 		if not ref_mesh:
 			return []

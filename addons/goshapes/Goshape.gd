@@ -51,7 +51,7 @@ var is_editing: bool: get = _get_is_editing
 
 var is_dirty := false
 var edit_proxy = null
-var cap_data: GoshPath = null
+var cap_data: GoshapePath = null
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
@@ -230,8 +230,9 @@ func _update() -> void:
 	
 	var runner = edit_proxy.runner
 	if runner.is_busy:
-		mark_dirty()
-		return
+		#mark_dirty()
+		#return
+		pass
 	
 	build()
 	
@@ -242,8 +243,8 @@ func build() -> void:
 	
 	var runner = edit_proxy.runner
 	if runner.is_busy:
-		mark_dirty()
-		return
+		#mark_dirty()
+		pass#return
 		
 	if not shaper:
 		return
@@ -252,27 +253,22 @@ func build() -> void:
 	is_dirty = false
 	
 	
-func _build(runner: GoshBuildRunner) -> void:
+func _build(runner: GoshapeRunner) -> void:
 	build_run(runner)
 	
 	
-func build_clear(runner: GoshBuildRunner) -> void:	
+func build_clear(runner: GoshapeRunner) -> void:	
 	runner.cancel(self)
 	for child in get_children():
 		child.free()
 	
 	
-func build_run(runner: GoshBuildRunner) -> void:
-	print_debug("Goshape %s Build" % name)
+func build_run(runner: GoshapeRunner) -> void:
 	build_clear(runner)
 	var path := get_path_data(path_options.interpolate)
-	var builders := shaper.get_builders()
-	runner.enqueue(self, path, builders, build_done)
-	
-	
-func build_done():
-	if is_dirty:
-		_update.call_deferred()
+	var jobs = shaper.get_build_jobs(self, path)
+	for job in jobs:
+		runner.enqueue(job)
 	
 	
 func remove_control_points() -> void:
@@ -280,7 +276,7 @@ func remove_control_points() -> void:
 	mark_dirty()
 	
 	
-func get_path_data(interpolate: int = -1) -> GoshPath:
+func get_path_data(interpolate: int = -1) -> GoshapePath:
 	if interpolate < 0:
 		interpolate = path_options.interpolate
 	var twists := _get_twists()

@@ -22,7 +22,7 @@ static func make_cap(points: PackedVector3Array) -> MeshSet:
 	return ms
 	
 
-static func fill_concentric_paths(paths: Array[GoshPath], forward_uvs: bool = true) -> MeshSet:
+static func fill_concentric_paths(paths: Array[GoshapePath], forward_uvs: bool = true) -> MeshSet:
 	var ms := MeshSet.new()
 	
 	var segment_count := paths.size()
@@ -153,7 +153,7 @@ static func calc_mesh_height(mesh: Mesh, scale: float = 1.0) -> float:
 	return min_y * -scale
 	
 
-static func wrap_mesh_to_path(meshset: MeshSet, path: GoshPath, close: bool, gaps: Array[int] = []) -> MeshSet:
+static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, gaps: Array[int] = []) -> MeshSet:
 	var points := path.points
 	var point_count := points.size()
 	if point_count < 2:
@@ -397,7 +397,7 @@ static func scale_mesh(meshset: MeshSet, new_scale: float) -> MeshSet:
 	return result
 	
 	
-static func taper_mesh(meshset: MeshSet, path: GoshPath, taper: float) -> MeshSet:
+static func taper_mesh(meshset: MeshSet, path: GoshapePath, taper: float) -> MeshSet:
 	var center := PathUtils.get_path_center(path)
 	var result := meshset.clone()
 	var vert_count := meshset.verts.size()

@@ -1396,605 +1396,605 @@ path_options = SubResource("Resource_4ng01")
 shaper = SubResource("Resource_67xbn")
 metadata/_edit_group_ = true
 
-[node name="Palm1" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm1" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.19857, 0, 0.701969, 0, 1.389, 0, -0.701969, 0, 1.19857, -19.9194, 1.74414, 12.1093)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm1"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm1"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm1"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm1"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm2" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm2" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.799876, 0, 1.13557, 0, 1.389, 0, -1.13557, 0, -0.799876, -16.9502, 1.74402, 9.82659)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm2"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm2"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm2"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm2"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm3" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm3" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.12161, 0, 0.819343, 0, 1.389, 0, -0.819343, 0, -1.12161, -16.4937, 3.31642, 15.151)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm3"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm3"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm3"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm3"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm4" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm4" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.937688, 0, -1.02473, 0, 1.389, 0, 1.02473, 0, -0.937688, -17.9146, 1.74402, 16.1307)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm4"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm4"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm4"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm4"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm5" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm5" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.28973, 0, -0.51568, 0, 1.389, 0, 0.51568, 0, -1.28973, -15.4414, 3.56071, 9.97135)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm5"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm5"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm5"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm5"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm6" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm6" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.35872, 0, -0.28846, 0, 1.389, 0, 0.28846, 0, 1.35872, -14.2115, 3.56077, 13.1558)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm6"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm6"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm6"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm6"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm7" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm7" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.606855, 0, -1.24942, 0, 1.389, 0, 1.24942, 0, 0.606855, -14.5622, 3.56059, 17.6677)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm7"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm7"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm7"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm7"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm8" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm8" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.18833, 0, 0.719161, 0, 1.389, 0, -0.719161, 0, 1.18833, -13.3444, 3.56065, 21.2451)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm8"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm8"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm8"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm8"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm9" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm9" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.836013, 0, 1.10924, 0, 1.389, 0, -1.10924, 0, 0.836013, -11.5548, 3.56077, 8.12393)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm9"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm9"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm9"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm9"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm10" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm10" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.595852, 0, 1.2547, 0, 1.389, 0, -1.2547, 0, -0.595852, -12.5171, 3.56077, 11.613)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm10"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm10"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm10"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm10"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm11" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm11" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.31597, 0, -0.444473, 0, 1.389, 0, 0.444473, 0, -1.31597, -12.0006, 3.56077, 14.1284)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm11"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm11"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm11"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm11"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm12" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm12" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.770695, 0, 1.15557, 0, 1.389, 0, -1.15557, 0, 0.770695, -11.6321, 3.56059, 19.1682)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm12"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm12"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm12"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm12"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm13" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm13" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.34058, 0, -0.363546, 0, 1.389, 0, 0.363546, 0, 1.34058, -12.2483, 3.56077, 20.6739)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm13"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm13"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm13"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm13"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm14" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm14" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.359977, 0, 1.34154, 0, 1.389, 0, -1.34154, 0, -0.359977, -10.3495, 0.29382, 24.4494)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm14"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm14"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm14"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm14"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm15" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm15" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.25916, 0, 0.586377, 0, 1.389, 0, -0.586377, 0, 1.25916, -9.17873, 3.56071, 8.00632)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm15"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm15"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm15"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm15"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm16" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm16" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.38824, 0, 0.0459636, 0, 1.389, 0, -0.0459636, 0, -1.38824, -8.19476, 3.56071, 10.7639)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm16"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm16"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm16"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm16"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm17" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm17" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.903448, 0, -1.05504, 0, 1.389, 0, 1.05504, 0, 0.903448, -6.49805, 3.56077, 15.8919)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm17"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm17"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm17"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm17"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm18" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm18" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.21454, 0, -0.673961, 0, 1.389, 0, 0.673961, 0, 1.21454, -9.4499, 3.56077, 17.2422)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm18"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm18"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm18"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm18"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm19" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm19" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.638733, 0, -1.23343, 0, 1.389, 0, 1.23343, 0, 0.638733, -8.51046, 0.292538, 21.9794)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm19"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm19"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm19"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm19"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm20" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm20" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.859273, 0, 1.09132, 0, 1.389, 0, -1.09132, 0, 0.859273, -8.25978, 0.294125, 23.492)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm20"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm20"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm20"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm20"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm21" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm21" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.254516, 0, 1.36548, 0, 1.389, 0, -1.36548, 0, -0.254516, -4.82371, 3.56071, 4.44869)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm21"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm21"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm21"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm21"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm22" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm22" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.699948, 0, -1.19975, 0, 1.389, 0, 1.19975, 0, -0.699948, -4.81823, 3.56071, 6.33264)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm22"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm22"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm22"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm22"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm23" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm23" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.00762, 0, -0.956042, 0, 1.389, 0, 0.956042, 0, -1.00762, -4.71141, 3.56059, 9.59378)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm23"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm23"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm23"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm23"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm24" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm24" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.319144, 0, 1.35184, 0, 1.389, 0, -1.35184, 0, -0.319144, -3.99545, 3.56083, 12.729)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm24"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm24"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm24"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm24"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm26" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm26" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.0503406, 0, 1.38809, 0, 1.389, 0, -1.38809, 0, -0.0503406, -5.07673, 3.56077, 20.2513)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm26"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm26"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm26"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm26"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm27" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm27" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.411517, 0, 1.32664, 0, 1.389, 0, -1.32664, 0, 0.411517, -0.252117, 3.56083, 3.72301)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm27"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm27"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm27"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm27"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm28" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm28" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.22519, 0, 0.654394, 0, 1.389, 0, -0.654394, 0, -1.22519, -0.00221825, 3.56071, 18.8311)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm28"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm28"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm28"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm28"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm29" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm29" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.19098, 0, 0.714766, 0, 1.389, 0, -0.714766, 0, -1.19098, -1.7709, 3.56071, 20.7432)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm29"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm29"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm29"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm29"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm30" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm30" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.334816, 0, 1.34804, 0, 1.389, 0, -1.34804, 0, -0.334816, -0.670788, 0.29382, 22.9003)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm30"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm30"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm30"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm30"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm31" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm31" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.35874, 0, -0.288334, 0, 1.389, 0, 0.288334, 0, -1.35874, 2.90545, 3.56071, 22.1594)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm31"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm31"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm31"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm31"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm32" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm32" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.18047, 0, 0.731998, 0, 1.389, 0, -0.731998, 0, 1.18047, 4.87333, 3.56065, 4.13874)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm32"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm32"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm32"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm32"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm33" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm33" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-1.35921, 0, -0.286109, 0, 1.389, 0, 0.286109, 0, -1.35921, 7.32599, 3.56071, 21.933)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm33"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm33"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm33"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm33"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm34" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm34" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.38784, 0, -0.0567215, 0, 1.389, 0, 0.0567215, 0, 1.38784, 8.33792, 0.29382, 24.8873)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm34"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm34"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm34"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm34"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm35" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm35" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.14488, 0, -0.786497, 0, 1.389, 0, 0.786497, 0, 1.14488, 7.65842, 6.80951, 26.4848)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm35"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm35"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm35"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm35"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm36" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm36" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.29831, 0, 0.493669, 0, 1.389, 0, -0.493669, 0, 1.29831, 11.0245, 0.29382, 21.3247)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm36"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm36"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm36"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm36"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm37" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm37" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.31462, 0, 0.448441, 0, 1.389, 0, -0.448441, 0, 1.31462, 10.8031, 0.29382, 22.8464)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm37"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm37"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm37"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm37"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm38" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm38" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.816052, 0, -1.124, 0, 1.389, 0, 1.124, 0, 0.816052, 13.0766, 5.73005, 27.8966)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm38"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm38"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm38"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm38"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm39" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm39" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.740898, 0, -1.1749, 0, 1.389, 0, 1.1749, 0, -0.740898, 12.8564, 0.29382, 32.0239)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm39"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm39"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm39"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm39"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm40" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm40" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.53501, 0, 1.28183, 0, 1.389, 0, -1.28183, 0, 0.53501, 14.9348, 3.85743, 20.5221)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm40"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm40"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm40"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm40"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm41" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm41" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(-0.989557, 0, -0.97473, 0, 1.389, 0, 0.97473, 0, -0.989557, 14.4116, 5.18897, 25.6035)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm41"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm41"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm41"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm41"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm42" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm42" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(0.923903, 0, -1.03717, 0, 1.389, 0, 1.03717, 0, 0.923903, 14.2387, 5.52491, 28.7423)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm42"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm42"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm42"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm42"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm43" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm43" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.30466, 0, 0.476648, 0, 1.389, 0, -0.476648, 0, 1.30466, 16.8957, 3.88971, 21.1589)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm43"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm43"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm43"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm43"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm44" type="StaticBody3D" parent="TreesScatter" instance=ExtResource("16_d8et3")]
+[node name="Palm44" parent="TreesScatter" instance=ExtResource("16_d8et3")]
 transform = Transform3D(1.38899, 0, -0.00549441, 0, 1.389, 0, 0.00549441, 0, 1.38899, 18.3038, 4.1009, 22.4646)
 collision_layer = 4
 
-[node name="Cylinder" type="MeshInstance3D" parent="TreesScatter/Palm44"]
+[node name="Cylinder2" type="MeshInstance3D" parent="TreesScatter/Palm44"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TreesScatter/Palm44"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="TreesScatter/Palm44"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 

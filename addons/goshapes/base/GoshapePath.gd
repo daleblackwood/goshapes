@@ -1,5 +1,5 @@
 @tool
-class_name GoshPath
+class_name GoshapePath
 ## The object used to manipulate path points
 
 var points := PackedVector3Array()

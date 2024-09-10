@@ -36,7 +36,7 @@ class CapPlaneBuilder extends CapBuilder:
 		super._init(_style)
 		style = _style
 		
-	func build_sets(path: GoshPath) -> Array[MeshSet]:
+	func build_sets(path: GoshapePath) -> Array[MeshSet]:
 		var gs := 1.0 if not style.grid_size or style.grid_size == 0.0 else style.grid_size
 
 		var points := get_cap_points(style, path)

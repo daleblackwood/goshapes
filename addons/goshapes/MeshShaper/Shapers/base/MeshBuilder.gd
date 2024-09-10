@@ -12,8 +12,7 @@ func _init(_style: MeshShaper) -> void:
 	base_style = _style
 	
 
-func build(host: Node3D, path: GoshPath) -> void:
-	self.host = host
+func build() -> void:
 	build_meshes(host, path)
 	
 
@@ -26,12 +25,12 @@ func commit_colliders() -> void:
 		apply_collider(host, mesh)
 		
 	
-func build_meshes(host: Node3D, path: GoshPath, dest_mesh: Mesh = null) -> void:
+func build_meshes(host: Node3D, path: GoshapePath, dest_mesh: Mesh = null) -> void:
 	meshsets = build_sets(path)
 	mesh = MeshUtils.build_meshes(meshsets, dest_mesh)
 	
 
-func build_sets(path: GoshPath) -> Array[MeshSet]:
+func build_sets(path: GoshapePath) -> Array[MeshSet]:
 	printerr("Not implemented")
 	return []
 	
@@ -56,3 +55,12 @@ func apply_collider(host: Node3D, mesh: ArrayMesh) -> void:
 	collider_shape.name = "CollisionShape"
 	collider_shape.shape = mesh.create_trimesh_shape()
 	SceneUtils.add_child(collider_body, collider_shape)
+	
+	
+func get_build_jobs(host: Node3D, path: GoshapePath, offset: int) -> Array[GoshapeJob]:
+	var result: Array[GoshapeJob] = [
+		GoshapeJob.new(self, path, build, offset + 1, false),
+		GoshapeJob.new(self, path, commit, offset + 2, true),
+		GoshapeJob.new(self, path, commit_colliders, offset + 10, true)
+	]
+	return result

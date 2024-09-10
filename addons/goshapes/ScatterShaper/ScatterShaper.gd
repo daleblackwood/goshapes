@@ -159,7 +159,7 @@ class ShatterBuilder extends ShapeBuilder:
 		return rotated_basis
 
 
-	func build(host: Node3D, path: GoshPath) -> void:
+	func build() -> void:
 		self.path = path
 		if not style.model_source or not style.model_source.has_resource():
 			printerr("No scene(s) attached to ScatterShaper.")

@@ -25,4 +25,4 @@ func unwatch() -> void:
 	
 func _on_change() -> void:
 	if callback != null:
-		callback.call_deferred()
+		callback.call()

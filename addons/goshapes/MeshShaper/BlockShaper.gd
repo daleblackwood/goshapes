@@ -90,3 +90,14 @@ func get_builders() -> Array[ShapeBuilder]:
 		bottom_shaper.cap_shaper = cap_shaper
 		result += bottom_shaper.get_builders()
 	return result
+	
+func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+	var result: Array[GoshapeJob] = []
+	if cap_shaper != null and cap_shaper.enabled:
+		result += cap_shaper.get_build_jobs(host, path)
+	if wall_shaper != null and wall_shaper.enabled:
+		result += wall_shaper.get_build_jobs(host, path)
+	if bottom_shaper != null and bottom_shaper.enabled:
+		bottom_shaper.cap_shaper = cap_shaper
+		result += bottom_shaper.get_build_jobs(host, path)
+	return result

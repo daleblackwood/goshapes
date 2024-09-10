@@ -43,7 +43,7 @@ class WallBevelBuilder extends WallBuilder:
 		super._init(_style)
 		style = _style
 	
-	func build_sets(path: GoshPath) -> Array[MeshSet]:
+	func build_sets(path: GoshapePath) -> Array[MeshSet]:
 		var height := style.height
 		var taper := style.taper
 		var bevel := style.bevel
@@ -53,9 +53,9 @@ class WallBevelBuilder extends WallBuilder:
 		return [meshset]
 
 	
-	static func make_walls(path: GoshPath, height: float, taper: float, bevel: float) -> MeshSet:
+	static func make_walls(path: GoshapePath, height: float, taper: float, bevel: float) -> MeshSet:
 		var meshsets: Array[MeshSet] = []
-		var paths: Array[GoshPath] = [path]
+		var paths: Array[GoshapePath] = [path]
 		var top_path = path;
 		if bevel > 0.0:
 			var bevel_path = PathUtils.taper_path(top_path, bevel)
