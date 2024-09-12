@@ -57,10 +57,10 @@ func apply_collider(parent: Node3D, collision_mesh: ArrayMesh) -> void:
 	
 func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:
 	var result: Array[GoshapeJob] = []
-	result.append(GoshapeJob.new(self, data, build, offset + 1, false))
-	result.append(GoshapeJob.new(self, data, commit, offset + 2, true))
+	result.append(GoshapeJob.new(self, data, build, offset + 1))
+	result.append(GoshapeJob.new(self, data, commit, offset + 2, GoshapeJob.Mode.Scene))
 	if should_build_colliders():
-		result.append(GoshapeJob.new(self, data, commit_colliders, offset + 10, true))
+		result.append(GoshapeJob.new(self, data, commit_colliders, offset + 10, GoshapeJob.Mode.Scene))
 	return result
 	
 	

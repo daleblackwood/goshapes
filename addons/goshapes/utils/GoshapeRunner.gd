@@ -12,7 +12,7 @@ func get_is_busy() -> bool:
 func cancel(owner: Object) -> void:
 	for i in range(queue.size() - 1, -1 , -1):
 		var job = queue[i]
-		if job.owner == owner:
+		if job.owner == owner or job.data.parent == owner:
 			queue.remove_at(i)
 		if job.state == GoshapeJob.State.Running:
 			job_cancel(job)
@@ -49,18 +49,20 @@ func next() -> void:
 		return
 		
 	job.state = GoshapeJob.State.Running
-	job.thread = Thread.new()
-	job.thread.start(job_run, Thread.PRIORITY_NORMAL)
+	if job.mode == GoshapeJob.Mode.Immediate:
+		job_run()
+	else:
+		job.thread = Thread.new()
+		job.thread.start(job_run, Thread.PRIORITY_HIGH)
 	
 	
 func job_run() -> void:
 	if queue.size() < 1:
 		return
 	var job = queue[0]
-	if job.state > GoshapeJob.State.Running:
-		return
-	job.state = GoshapeJob.State.Running
-	job.run()
+	if job.state <= GoshapeJob.State.Running:
+		job.state = GoshapeJob.State.Running
+		job.run()
 	while not job.has_ran and job.state == GoshapeJob.State.Running:
 		OS.delay_msec(1)
 	job_complete.call_deferred(job)
