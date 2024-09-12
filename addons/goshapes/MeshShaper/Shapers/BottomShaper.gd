@@ -21,7 +21,7 @@ extends Shaper
 var cap_shaper: CapShaper = null
 
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	var using_cap_shaper := cap_shaper
 	if using_cap_shaper == null:
 		using_cap_shaper = CapFlatShaper.new()

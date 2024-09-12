@@ -80,7 +80,7 @@ func _update():
 	emit_changed()
 	
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	var result: Array[ShapeBuilder] = []
 	if cap_shaper != null and cap_shaper.enabled:
 		result += cap_shaper.get_builders()

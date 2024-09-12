@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://dbwbk2qopmkt7"]
+[gd_scene load_steps=19 format=4 uid="uid://dbwbk2qopmkt7"]
 
 [ext_resource type="Script" path="res://addons/goshapes/base/GoCurve3D.gd" id="1_sfd41"]
 [ext_resource type="Script" path="res://addons/goshapes/base/PathOptions.gd" id="3_hr846"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="4_cacil"]
 [ext_resource type="Material" uid="uid://cvlrwl87cmun0" path="res://addons/goshapes/samples/SampleAssets/GrassMat.material" id="4_msyo7"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="5_0g0us"]
-[ext_resource type="ArrayMesh" uid="uid://dw8nkh2rfugb0" path="res://addons/goshapes/samples/SampleAssets/FenceModel.obj" id="6_bpxyb"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="7_fy6du"]
 [ext_resource type="Script" path="res://addons/goshapes/Goshape.gd" id="7_l3vwp"]
 
@@ -45,10 +44,10 @@ albedo_color = Color(0.405112, 0.303137, 0.108443, 1)
 
 [sub_resource type="Resource" id="Resource_2u0hv"]
 script = ExtResource("7_fy6du")
-mesh = ExtResource("6_bpxyb")
 scale = 1.0
 closed = true
 material = SubResource("StandardMaterial3D_rm0t1")
+lod_distance = 500.0
 gaps = Array[int]([2, 0])
 build_collider = false
 collision_layer = 1

@@ -3,8 +3,10 @@ class_name CapBuilder
 extends MeshBuilder
 ## The base class for all cap builders
 
+
 func _init(_style: MeshShaper):
 	super._init(_style)
+	tag = "Cap"
 
 
 func get_cap_points(style: CapShaper, path: GoshapePath) -> PackedVector3Array:

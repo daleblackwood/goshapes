@@ -6,6 +6,7 @@ extends Path3D
 const AXIS_X = 1
 const AXIS_Y = 2
 const AXIS_Z = 4
+const BLOCKING = false
 
 ## Invert the direction of the path
 @export var inverted = false:
@@ -56,6 +57,7 @@ var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
+var last_curve_points := PackedVector3Array()
 
 
 func _ready() -> void:
@@ -85,7 +87,8 @@ func _edit_begin(edit_proxy) -> void:
 	self.edit_proxy = edit_proxy
 	_edit_update()
 		
-	curve_changed.connect(on_curve_changed)
+	if not curve_changed.is_connected(on_curve_changed):
+		curve_changed.connect(on_curve_changed)
 	watcher_shaper.watch(shaper)
 	watcher_pathmod.watch(path_options)
 	
@@ -133,8 +136,10 @@ func _init_curve() -> void:
 	
 func set_shaper(value: Shaper) -> void:
 	shaper = value
+	if shaper != null:
+		shaper.host = self
+		mark_dirty()
 	watcher_shaper.watch(shaper)
-	mark_dirty()
 	
 	
 func set_path_options(value: PathOptions) -> void:
@@ -155,8 +160,24 @@ func on_curve_changed():
 		return
 	if is_dirty:
 		return
-	is_dirty = true
 	
+	# manual curve change detection
+	var has_change = false
+	if last_curve_points.size() != curve.point_count:
+		last_curve_points.resize(curve.point_count)
+		has_change = true
+	else:
+		for i in curve.point_count:
+			if last_curve_points[i] != curve.get_point_position(i):
+				has_change = true
+				break
+	for i in curve.point_count:
+		last_curve_points.set(i, curve.get_point_position(i))
+		
+	if not has_change:
+		return
+
+	is_dirty = true
 	curve.updating = true
 	
 	if axis_matched_editing:
@@ -229,10 +250,9 @@ func _update() -> void:
 		axis_match_points = PackedInt32Array()
 	
 	var runner = edit_proxy.runner
-	if runner.is_busy:
-		#mark_dirty()
-		#return
-		pass
+	if BLOCKING and runner.is_busy:
+		mark_dirty()
+		return
 	
 	build()
 	
@@ -242,9 +262,9 @@ func build() -> void:
 		return	
 	
 	var runner = edit_proxy.runner
-	if runner.is_busy:
-		#mark_dirty()
-		pass#return
+	if BLOCKING and runner.is_busy:
+		mark_dirty()
+		return
 		
 	if not shaper:
 		return
@@ -269,6 +289,7 @@ func build_run(runner: GoshapeRunner) -> void:
 	var jobs = shaper.get_build_jobs(self, path)
 	for job in jobs:
 		runner.enqueue(job)
+	runner.run()
 	
 	
 func remove_control_points() -> void:

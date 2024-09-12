@@ -40,7 +40,7 @@ func _update():
 	emit_changed()
 	
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	var result: Array[ShapeBuilder] = []
 	for shaper in shapers:
 		if shaper != null and shaper.enabled:

@@ -30,7 +30,10 @@ func enqueue(job: GoshapeJob) -> void:
 		queue.insert(queue_index, job)
 	else:
 		queue.append(job)
-	if queue.size() == 1:
+		
+		
+func run() -> void:
+	if queue.size() > 0:
 		next()
 	
 

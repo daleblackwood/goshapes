@@ -39,7 +39,7 @@ func on_curve_changed() -> void:
 	emit_changed()
 			
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [WallCurveBuilder.new(self)]
 			
 			

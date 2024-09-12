@@ -8,8 +8,17 @@ extends Resource
 		enabled = value
 		emit_changed()
 		
-func get_builders() -> Array[ShapeBuilder]:
+var builders: Array[ShapeBuilder] = []
+var host: Node3D
+		
+func create_builders() -> Array[ShapeBuilder]:
 	return []
+	
+func get_builders() -> Array[ShapeBuilder]:
+	builders = create_builders()
+	for builder in builders:
+		builder.host = self.host
+	return builders
 	
 func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
 	return []

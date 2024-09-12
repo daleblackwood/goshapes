@@ -32,7 +32,7 @@ extends WallShaper
 			emit_changed()
 			
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [WallBevelBuilder.new(self)]
 			
 			

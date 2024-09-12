@@ -114,8 +114,14 @@ func _init():
 	watcher_noise.watch(noise)
 			
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [ShatterBuilder.new(self)]
+	
+	
+func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+	var builder = ShatterBuilder.new(self)
+	builder.setup(host, path)
+	return builder.get_build_jobs(host, path)
 	
 			
 class ShatterBuilder extends ShapeBuilder:
@@ -125,38 +131,13 @@ class ShatterBuilder extends ShapeBuilder:
 		style = _style
 
 	var instances = []
-
-	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:
-		conformance = clamp(conformance, 0.0, 1.0)
-		if conformance == 0.0:
-			return basis
-			
-		var current_y := basis.y.normalized()
-		var target_y := normal.normalized()
-
-		var rotation_axis := current_y.cross(target_y)
-		var dot_product := current_y.dot(target_y)
-
-		var rotation_angle := 0.0
-
-		# Handle parallel and opposite vectors
-		if rotation_axis.length_squared() < 1e-6:
-			if dot_product > 0.9999:
-				# Vectors are nearly identical; no rotation needed
-				return basis
-			else:
-				# Vectors are opposite; choose an arbitrary perpendicular axis
-				rotation_axis = basis.x.normalized()
-				rotation_angle = PI
-		else:
-				rotation_axis = rotation_axis.normalized()
-				rotation_angle = acos(clamp(dot_product, -1.0, 1.0))
-
-		var rotation_quat := Quaternion(rotation_axis, rotation_angle)
-		var interpolated_quat := Quaternion().slerp(rotation_quat, conformance)
-
-		var rotated_basis := Basis(interpolated_quat) * basis
-		return rotated_basis
+		
+	func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+		var jobs: Array[GoshapeJob] = []
+		self.host = host
+		jobs.append(GoshapeJob.new(self, path, build, 0, false))
+		jobs.append(GoshapeJob.new(self, path, commit, 1, true))
+		return jobs	
 
 
 	func build() -> void:
@@ -258,4 +239,37 @@ class ShatterBuilder extends ShapeBuilder:
 			inst.transform.origin = pos
 			inst.transform.basis = basis
 			SceneUtils.add_child(host, inst)
+			
+
+	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:
+		conformance = clamp(conformance, 0.0, 1.0)
+		if conformance == 0.0:
+			return basis
+			
+		var current_y := basis.y.normalized()
+		var target_y := normal.normalized()
+
+		var rotation_axis := current_y.cross(target_y)
+		var dot_product := current_y.dot(target_y)
+
+		var rotation_angle := 0.0
+
+		# Handle parallel and opposite vectors
+		if rotation_axis.length_squared() < 1e-6:
+			if dot_product > 0.9999:
+				# Vectors are nearly identical; no rotation needed
+				return basis
+			else:
+				# Vectors are opposite; choose an arbitrary perpendicular axis
+				rotation_axis = basis.x.normalized()
+				rotation_angle = PI
+		else:
+				rotation_axis = rotation_axis.normalized()
+				rotation_angle = acos(clamp(dot_product, -1.0, 1.0))
+
+		var rotation_quat := Quaternion(rotation_axis, rotation_angle)
+		var interpolated_quat := Quaternion().slerp(rotation_quat, conformance)
+
+		var rotated_basis := Basis(interpolated_quat) * basis
+		return rotated_basis
 		

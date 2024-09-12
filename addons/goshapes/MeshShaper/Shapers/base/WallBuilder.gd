@@ -4,3 +4,4 @@ extends MeshBuilder
 
 func _init(_style: MeshShaper):
 	super._init(_style)
+	tag = "Wall"

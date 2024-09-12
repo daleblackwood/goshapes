@@ -25,7 +25,7 @@ extends CapShaper
 			emit_changed()
 			
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [CapPlaneBuilder.new(self)]
 			
 			
