@@ -64,6 +64,7 @@ func create_builders() -> Array[ShapeBuilder]:
 class WallMeshBuilder extends WallBuilder:
 	
 	var style: WallMeshShaper
+	var use_low_poly := false
 	
 	func _init(_style: WallMeshShaper):
 		super._init(_style)
@@ -74,8 +75,9 @@ class WallMeshBuilder extends WallBuilder:
 		var base_offset = offset
 		if style.mesh_low != null:
 			base_offset += 2
+			use_low_poly = true
 		var jobs := super.get_build_jobs(data, base_offset)
-		if style.mesh_low != null:
+		if use_low_poly:
 			jobs.append(GoshapeJob.new(self, data, build_low, offset))
 			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, GoshapeJob.Mode.Scene))
 		return jobs
@@ -96,15 +98,15 @@ class WallMeshBuilder extends WallBuilder:
 	func commit(data: GoshapeBuildData) -> void:
 		super.commit(data)
 		var instance_count = instances.size()
-		if instance_count > 1:
+		if instance_count > 1 and use_low_poly:
 			var range = style.lod_distance
 			for i in range(instance_count):
 				var is_low = i < instance_count / 2
 				var instance = instances[i]
 				if is_low:
-					instance.visibility_range_end = range
-				else:
 					instance.visibility_range_begin = range
+				else:
+					instance.visibility_range_end = range
 		
 
 	func build_sets(path: GoshapePath) -> Array[MeshSet]:

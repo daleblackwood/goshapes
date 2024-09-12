@@ -277,1029 +277,1029 @@ shape = SubResource("ConcavePolygonShape3D_cscvj")
 [node name="WallCollider6" type="CollisionShape3D" parent="MultiShape/WallBody5"]
 shape = SubResource("ConcavePolygonShape3D_y7klt")
 
-[node name="Palm1" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm1" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.384047, 0, 0.923313, 0, 1, 0, -0.923313, 0, -0.384047, -24.6207, 0, -3.09804)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm1"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm1"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm1"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm1"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm2" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm2" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.850089, 0, 0.526639, 0, 1, 0, -0.526639, 0, 0.850089, -26.3308, 0, 2.62531)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm2"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm2"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm2"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm2"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm3" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm3" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.825653, 0, 0.564178, 0, 1, 0, -0.564178, 0, 0.825653, -26.981, 0, 8.10228)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm3"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm3"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm3"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm3"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm4" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm4" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.999857, 0, -0.0169334, 0, 1, 0, 0.0169334, 0, 0.999857, -24.8058, 0, 14.4031)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm4"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm4"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm4"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm4"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm5" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm5" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.685917, 0, -0.72768, 0, 1, 0, 0.72768, 0, 0.685917, -20.074, 0, -7.72976)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm5"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm5"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm5"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm5"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm6" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm6" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.416404, 0, -0.90918, 0, 1, 0, 0.90918, 0, 0.416404, -23.5867, 0, -4.65746)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm6"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm6"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm6"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm6"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm7" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm7" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.418856, 0, 0.908053, 0, 1, 0, -0.908053, 0, -0.418856, -22.0716, 0, 5.79464)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm7"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm7"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm7"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm7"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm8" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm8" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.0509328, 0, -0.998702, 0, 1, 0, 0.998702, 0, 0.0509328, -24.3975, 0, 7.10788)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm8"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm8"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm8"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm8"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm9" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm9" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.667343, 0, -0.74475, 0, 1, 0, 0.74475, 0, 0.667343, -21.1303, 0, 13.2769)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm9"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm9"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm9"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm9"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm10" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm10" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.679611, 0, 0.733572, 0, 1, 0, -0.733572, 0, -0.679611, -19.7661, 0, 21.3978)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm10"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm10"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm10"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm10"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm11" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm11" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.170571, 0, -0.985345, 0, 1, 0, 0.985345, 0, 0.170571, -15.6018, 0, -16.6217)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm11"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm11"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm11"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm11"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm12" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm12" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.5851, 0, 0.810961, 0, 1, 0, -0.810961, 0, 0.5851, -12.8453, 0, -10.1052)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm12"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm12"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm12"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm12"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm13" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm13" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.139196, 0, 0.990265, 0, 1, 0, -0.990265, 0, -0.139196, -13.1955, 0, -3.58769)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm13"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm13"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm13"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm13"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm14" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm14" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.899181, 0, 0.437577, 0, 1, 0, -0.437577, 0, 0.899181, -15.4749, 6.10352e-05, 0.575431)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm14"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm14"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm14"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm14"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm15" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm15" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.720683, 0, -0.693265, 0, 1, 0, 0.693265, 0, 0.720683, -17.2378, 6.10352e-05, 9.25744)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm15"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm15"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm15"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm15"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm16" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm16" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.0522078, 0, 0.998636, 0, 1, 0, -0.998636, 0, -0.0522078, -13.6263, 0, 16.743)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm16"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm16"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm16"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm16"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm17" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm17" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.221568, 0, -0.975145, 0, 1, 0, 0.975145, 0, 0.221568, -18.2863, 0, 19.4079)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm17"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm17"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm17"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm17"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm18" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm18" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.383013, 0, -0.923743, 0, 1, 0, 0.923743, 0, -0.383013, -6.74456, 0, -25.0986)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm18"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm18"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm18"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm18"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm19" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm19" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.859733, 0, 0.510743, 0, 1, 0, -0.510743, 0, -0.859733, -7.18558, 0, -22.448)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm19"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm19"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm19"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm19"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm20" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm20" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.00237004, 0, 0.999997, 0, 1, 0, -0.999997, 0, -0.00237004, -8.03087, 0, -14.3307)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm20"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm20"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm20"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm20"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm21" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm21" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.621496, 0, -0.783418, 0, 1, 0, 0.783418, 0, 0.621496, -9.06803, 0, -7.42993)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm21"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm21"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm21"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm21"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm22" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm22" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.909998, 0, -0.414613, 0, 1, 0, 0.414613, 0, -0.909998, -11.3888, 0, -4.16356)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm22"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm22"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm22"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm22"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm23" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm23" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.885577, 0, -0.464493, 0, 1, 0, 0.464493, 0, -0.885577, -7.51395, 6.10352e-05, 4.25084)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm23"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm23"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm23"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm23"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm24" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm24" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.980788, 0, -0.195077, 0, 1, 0, 0.195077, 0, 0.980788, -7.87977, 6.10352e-05, 7.41129)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm24"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm24"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm24"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm24"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm25" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm25" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.780105, 0, 0.625648, 0, 1, 0, -0.625648, 0, -0.780105, -10.5412, 0, 17.2992)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm25"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm25"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm25"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm25"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm26" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm26" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.651881, 0, 0.758322, 0, 1, 0, -0.758322, 0, 0.651881, -10.2249, 0, 22.5217)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm26"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm26"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm26"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm26"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm27" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm27" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.969384, 0, -0.245549, 0, 1, 0, 0.245549, 0, 0.969384, -6.38069, 0, -24.1257)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm27"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm27"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm27"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm27"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm28" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm28" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.991125, 0, 0.132934, 0, 1, 0, -0.132934, 0, 0.991125, -6.51249, 0, -22.5555)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm28"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm28"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm28"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm28"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm29" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm29" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.706655, 0, 0.707559, 0, 1, 0, -0.707559, 0, -0.706655, -6.40964, 0, -12.8727)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm29"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm29"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm29"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm29"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm30" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm30" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.997657, 0, -0.0684092, 0, 1, 0, 0.0684092, 0, 0.997657, -4.6567, 0, -9.74387)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm30"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm30"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm30"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm30"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm31" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm31" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.574409, 0, -0.818569, 0, 1, 0, 0.818569, 0, 0.574409, -1.81238, 0, -5.45607)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm31"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm31"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm31"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm31"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm32" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm32" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.805752, 0, -0.592254, 0, 1, 0, 0.592254, 0, -0.805752, -5.50062, 6.10352e-05, 5.15174)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm32"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm32"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm32"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm32"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm33" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm33" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.891175, 0, -0.45366, 0, 1, 0, 0.45366, 0, -0.891175, -3.02357, 6.10352e-05, 9.1325)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm33"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm33"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm33"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm33"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm34" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm34" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.657798, 0, -0.753194, 0, 1, 0, 0.753194, 0, 0.657798, -4.3708, 6.10352e-05, 16.0385)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm34"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm34"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm34"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm34"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm35" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm35" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.532536, 0, -0.846407, 0, 1, 0, 0.846407, 0, 0.532536, 3.99788, 0, -33.3269)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm35"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm35"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm35"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm35"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm36" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm36" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.948158, 0, 0.3178, 0, 1, 0, -0.3178, 0, -0.948158, 1.08142, 0, -29.3653)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm36"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm36"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm36"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm36"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm37" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm37" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.455645, 0, -0.890162, 0, 1, 0, 0.890162, 0, 0.455645, 4.97614, 0, -22.6718)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm37"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm37"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm37"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm37"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm38" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm38" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.800953, 0, 0.598727, 0, 1, 0, -0.598727, 0, 0.800953, 5.19306, 0, -14.9639)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm38"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm38"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm38"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm38"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm39" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm39" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.927203, 0, 0.37456, 0, 1, 0, -0.37456, 0, 0.927203, 2.1072, 0, -11.279)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm39"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm39"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm39"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm39"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm40" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm40" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.929552, 0, -0.368692, 0, 1, 0, 0.368692, 0, -0.929552, 4.70896, 6.10352e-05, -0.484197)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm40"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm40"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm40"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm40"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm41" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm41" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.867931, 0, -0.496685, 0, 1, 0, 0.496685, 0, -0.867931, 3.17442, 6.10352e-05, 5.73055)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm41"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm41"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm41"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm41"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm42" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm42" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.897329, 0, -0.441363, 0, 1, 0, 0.441363, 0, -0.897329, 2.99273, 6.10352e-05, 8.51443)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm42"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm42"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm42"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm42"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm43" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm43" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.342089, 0, 0.939667, 0, 1, 0, -0.939667, 0, -0.342089, 3.59914, 6.10352e-05, 13.4484)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm43"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm43"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm43"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm43"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm44" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm44" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.0681158, 0, -0.997677, 0, 1, 0, 0.997677, 0, -0.0681158, 5.61001, 0, -33.049)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm44"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm44"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm44"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm44"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm45" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm45" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.425864, 0, -0.904787, 0, 1, 0, 0.904787, 0, 0.425864, 7.86936, 0, -25.3531)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm45"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm45"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm45"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm45"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm46" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm46" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.386521, 0, 0.922281, 0, 1, 0, -0.922281, 0, -0.386521, 9.68806, 0, -17.8845)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm46"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm46"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm46"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm46"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm47" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm47" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.881483, 0, -0.472216, 0, 1, 0, 0.472216, 0, -0.881483, 7.44015, 0, -12.4045)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm47"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm47"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm47"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm47"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm48" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm48" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.292551, 0, 0.95625, 0, 1, 0, -0.95625, 0, 0.292551, 6.50644, 0, -10.0073)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm48"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm48"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm48"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm48"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm49" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm49" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.993855, 0, 0.110686, 0, 1, 0, -0.110686, 0, 0.993855, 8.56375, 6.10352e-05, -4.80778)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm49"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm49"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm49"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm49"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm50" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm50" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.93412, 0, -0.356959, 0, 1, 0, 0.356959, 0, 0.93412, 8.95371, 6.10352e-05, 1.8096)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm50"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm50"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm50"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm50"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm51" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm51" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.984458, 0, 0.175618, 0, 1, 0, -0.175618, 0, 0.984458, 6.58622, 6.10352e-05, 11.7591)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm51"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm51"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm51"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm51"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm52" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm52" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.952305, 0, -0.305147, 0, 1, 0, 0.305147, 0, -0.952305, 6.26525, 6.10352e-05, 13.1609)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm52"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm52"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm52"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm52"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm53" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm53" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.351719, 0, 0.936106, 0, 1, 0, -0.936106, 0, 0.351719, 12.0331, 0, -31.7958)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm53"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm53"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm53"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm53"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm54" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm54" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.625576, 0, 0.780163, 0, 1, 0, -0.780163, 0, 0.625576, 15.8368, 0, -28.4036)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm54"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm54"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm54"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm54"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm55" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm55" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.219722, 0, -0.975562, 0, 1, 0, 0.975562, 0, 0.219722, 17.1219, 0, -18.4091)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm55"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm55"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm55"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm55"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm56" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm56" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.343751, 0, 0.939061, 0, 1, 0, -0.939061, 0, 0.343751, 12.3601, 0, -14.9285)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm56"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm56"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm56"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm56"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm57" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm57" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.991619, 0, -0.129199, 0, 1, 0, 0.129199, 0, 0.991619, 14.2966, 0, -7.46375)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm57"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm57"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm57"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm57"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm58" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm58" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.233408, 0, 0.972379, 0, 1, 0, -0.972379, 0, -0.233408, 12.8495, 6.10352e-05, -2.91985)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm58"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm58"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm58"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm58"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm59" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm59" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.026386, 0, -0.999652, 0, 1, 0, 0.999652, 0, -0.026386, 15.7263, 6.10352e-05, 1.38495)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm59"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm59"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm59"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm59"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm60" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm60" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.355789, 0, -0.934566, 0, 1, 0, 0.934566, 0, -0.355789, 12.3937, 6.10352e-05, 7.30489)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm60"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm60"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm60"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm60"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm61" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm61" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.536597, 0, -0.843839, 0, 1, 0, 0.843839, 0, -0.536597, 16.5958, -0.00012207, 13.4877)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm61"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm61"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm61"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm61"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm62" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm62" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.0530507, 0, 0.998592, 0, 1, 0, -0.998592, 0, 0.0530507, 20.2375, 0, -28.4471)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm62"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm62"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm62"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm62"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm63" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm63" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.252703, 0, -0.967544, 0, 1, 0, 0.967544, 0, -0.252703, 19.2215, 0, -19.0416)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm63"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm63"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm63"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm63"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm64" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm64" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.95172, 0, -0.306969, 0, 1, 0, 0.306969, 0, 0.95172, 18.3467, 0, -16.2921)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm64"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm64"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm64"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm64"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm65" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm65" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.152016, 0, -0.988378, 0, 1, 0, 0.988378, 0, -0.152016, 19.0748, 0, -7.33614)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm65"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm65"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm65"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm65"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm66" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm66" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.724676, 0, -0.68909, 0, 1, 0, 0.68909, 0, -0.724676, 20.4242, 6.10352e-05, -2.18141)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm66"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm66"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm66"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm66"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm67" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm67" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.5758, 0, 0.817591, 0, 1, 0, -0.817591, 0, -0.5758, 21.3948, -0.00012207, 3.6726)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm67"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm67"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm67"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm67"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm68" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm68" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.747913, 0, 0.663796, 0, 1, 0, -0.663796, 0, 0.747913, 18.7219, -0.00012207, 7.70528)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm68"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm68"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm68"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm68"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm69" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm69" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.998248, 0, -0.0591736, 0, 1, 0, 0.0591736, 0, 0.998248, 22.1437, -0.00012207, 15.1394)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm69"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm69"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm69"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm69"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm70" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm70" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.474985, 0, -0.879994, 0, 1, 0, 0.879994, 0, 0.474985, 24.9729, 0, -21.4227)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm70"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm70"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm70"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm70"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm71" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm71" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.831074, 0, 0.556162, 0, 1, 0, -0.556162, 0, 0.831074, 27.8043, 0, -11.8498)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm71"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm71"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm71"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm71"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm72" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm72" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.690153, 0, 0.723663, 0, 1, 0, -0.723663, 0, -0.690153, 25.5722, 0, -10.2658)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm72"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm72"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm72"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm72"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm73" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm73" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.552995, 0, 0.833185, 0, 1, 0, -0.833185, 0, 0.552995, 25.28, 6.10352e-05, -3.56357)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm73"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm73"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm73"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm73"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm74" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm74" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.997791, 0, 0.0664359, 0, 1, 0, -0.0664359, 0, -0.997791, 23.7283, -0.00012207, 2.85001)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm74"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm74"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm74"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm74"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm75" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm75" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.229732, 0, -0.973254, 0, 1, 0, 0.973254, 0, -0.229732, 29.3259, 0, 11.1929)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm75"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm75"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm75"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm75"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm76" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm76" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.27174, 0, -0.962371, 0, 1, 0, 0.962371, 0, -0.27174, 30.7089, 6.10352e-05, -6.27946)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm76"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm76"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm76"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm76"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm77" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm77" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.984205, 0, -0.177035, 0, 1, 0, 0.177035, 0, 0.984205, 34.7414, 0, -3.10742)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm77"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm77"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm77"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm77"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm78" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm78" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(0.637838, 0, 0.77017, 0, 1, 0, -0.77017, 0, 0.637838, 33.3995, 0, 4.82553)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm78"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm78"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm78"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm78"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")
 
-[node name="Palm79" type="StaticBody3D" parent="MultiShape" instance=ExtResource("11_g2rwa")]
+[node name="Palm79" parent="MultiShape" instance=ExtResource("11_g2rwa")]
 transform = Transform3D(-0.952858, 0, 0.303416, 0, 1, 0, -0.303416, 0, -0.952858, 30.3593, 0, 9.94523)
 
-[node name="Cylinder" type="MeshInstance3D" parent="MultiShape/Palm79"]
+[node name="Cylinder2" type="MeshInstance3D" parent="MultiShape/Palm79"]
 mesh = SubResource("ArrayMesh_2emcu")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_a0g2v")
 surface_material_override/1 = SubResource("StandardMaterial3D_ljh2r")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MultiShape/Palm79"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="MultiShape/Palm79"]
 transform = Transform3D(0.992538, 0.121932, 0.00129394, -0.121939, 0.992482, 0.0105322, -2.49796e-10, -0.0106114, 0.999944, 0.112414, 1.47649, 0)
 shape = SubResource("CylinderShape3D_6fgo1")

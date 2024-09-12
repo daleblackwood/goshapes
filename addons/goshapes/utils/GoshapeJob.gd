@@ -15,6 +15,7 @@ var order := 0
 var is_scene := false
 var has_ran := false
 var mode := Mode.Normal
+var start_time := 0
 
 
 func _init(owner: Object, data: GoshapeBuildData, callable: Callable, order := 0, mode := Mode.Normal) -> void:
