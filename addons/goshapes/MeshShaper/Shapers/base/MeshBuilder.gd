@@ -3,28 +3,36 @@ class_name MeshBuilder
 extends ShapeBuilder
 ## The base type for all geometry shape builders
 	
-var mesh: ArrayMesh
-var mesh_low: ArrayMesh
-var child_mesh: MeshInstance3D
 var tag := "Shape"
 var base_style: MeshShaper
+var meshes: Array[ArrayMesh] = []
+var instances: Array[MeshInstance3D] = []
 
 func _init(_style: MeshShaper) -> void:
 	base_style = _style
+	clear()
+	
+	
+func clear() -> void:
+	meshes = []
+	instances = []
 	
 
 func build(data: GoshapeBuildData) -> void:
-	var meshsets = build_sets(data.path)
-	mesh = MeshUtils.build_meshes(meshsets, null)
+	var meshsets := build_sets(data.path)
+	var mesh := MeshUtils.build_meshes(meshsets, null)
+	meshes.append(mesh)
 	
 
 func commit(data: GoshapeBuildData) -> void:
-	child_mesh = apply_mesh(data.parent, mesh)
+	var mesh := meshes[meshes.size() - 1]
+	var instance := apply_mesh(data.parent, mesh)
+	instances.append(instance)
 	
 	
 func commit_colliders(data: GoshapeBuildData) -> void:
 	if should_build_colliders():
-		var collision_mesh = mesh_low if mesh_low != null else mesh
+		var collision_mesh := meshes[0]
 		apply_collider(data.parent, collision_mesh)
 	
 

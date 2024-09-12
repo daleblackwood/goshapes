@@ -64,7 +64,6 @@ func create_builders() -> Array[ShapeBuilder]:
 class WallMeshBuilder extends WallBuilder:
 	
 	var style: WallMeshShaper
-	var child_mesh_low: MeshInstance3D
 	
 	func _init(_style: WallMeshShaper):
 		super._init(_style)
@@ -83,21 +82,29 @@ class WallMeshBuilder extends WallBuilder:
 		
 		
 	func build_low(data: GoshapeBuildData) -> void:
-		child_mesh_low = null
 		var meshsets = build_wall_mesh(data.path, style.mesh_low)
-		mesh_low = MeshUtils.build_meshes(meshsets, null)
+		var mesh_low = MeshUtils.build_meshes(meshsets, null)
+		meshes.append(mesh_low)
 		
 		
 	func commit_low(data: GoshapeBuildData) -> void:
-		child_mesh_low = apply_mesh(data.parent, mesh_low, "MeshLow")
+		var mesh_low = meshes[0]
+		var instance = apply_mesh(data.parent, mesh_low, "MeshLow")
+		instances.append(instance)
 		
 		
 	func commit(data: GoshapeBuildData) -> void:
 		super.commit(data)
-		if child_mesh != null and child_mesh_low != null:
+		var instance_count = instances.size()
+		if instance_count > 1:
 			var range = style.lod_distance
-			child_mesh.visibility_range_end = range
-			child_mesh_low.visibility_range_begin = range
+			for i in range(instance_count):
+				var is_low = i < instance_count / 2
+				var instance = instances[i]
+				if is_low:
+					instance.visibility_range_end = range
+				else:
+					instance.visibility_range_begin = range
 		
 
 	func build_sets(path: GoshapePath) -> Array[MeshSet]:
