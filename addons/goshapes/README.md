@@ -75,14 +75,14 @@ Shapers can be picked from the top of the GoShape inspector (Shaper must be expa
 
 Blockshapers are the main Shaper type for rendering geometry, they combine up to three Shapers to make geometry: the **CapShaper**, the **WallShaper** and the **BottomShaper**. For the most part, this is automatic.
 
-##### The CapShaper (generates a cap at the top, best used as part of a BlackShaper)
+#### The CapShaper (generates a cap at the top, best used as part of a BlackShaper)
 There are three cap shaper types: **Flat**, **Plane** and **Line**. Flat and Plane are great for building most shapes (with Plane containing more detail) and Line is useful when using the line PathOption (see above). These three methods alter the triangulation technique used for the caps.
 
 ![image](https://user-images.githubusercontent.com/386025/174335390-e10761f4-2ae9-4006-a33f-e115f9df2794.png)
 
 All Cap shapers take a material and render its UVs 1:1 in world space.
 
-##### The WallShapers (generates a wall around the path, best used as part of a BlackShaper)
+#### The WallShapers (generates a wall around the path, best used as part of a BlackShaper)
 There are two wall shaper types: **Bevel** and **Mesh**. Bevel will generate a straight wall and allows tapering and bevelling. **MeshWall** is the most useful, allowing you to **create custom geometry and wrap it to a wall**. There are some tricks to creating that geometry, that I go into below (see Making Mesh Walls).
 
 ![image](https://user-images.githubusercontent.com/386025/174335860-a66f9344-9209-487b-b2b1-fdd604b1de5c.png)
