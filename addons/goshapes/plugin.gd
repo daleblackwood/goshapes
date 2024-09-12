@@ -46,7 +46,7 @@ class BlockAttributes:
 
 class EditorProxy:
 	
-	var runner := GoshBuildRunner.new()
+	var runner := GoshapeRunner.new()
 	var attributes_last := BlockAttributes.new()
 	var attributes_copied := BlockAttributes.new()
 	var selected_block: Goshape = null

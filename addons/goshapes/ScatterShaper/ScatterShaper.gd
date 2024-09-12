@@ -114,53 +114,32 @@ func _init():
 	watcher_noise.watch(noise)
 			
 
-func get_builders() -> Array[ShapeBuilder]:
-	return [ShatterBuilder.new(self)]
+func create_builders() -> Array[ShapeBuilder]:
+	return [ScatterBuilder.new(self)]
+	
+	
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	var builder = get_builders()[0]
+	return builder.get_build_jobs(data)
 	
 			
-class ShatterBuilder extends ShapeBuilder:
+class ScatterBuilder extends ShapeBuilder:
 	
 	var style: ScatterShaper
 	func _init(_style: ScatterShaper):
 		style = _style
 
 	var instances = []
-
-	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:
-		conformance = clamp(conformance, 0.0, 1.0)
-		if conformance == 0.0:
-			return basis
-			
-		var current_y := basis.y.normalized()
-		var target_y := normal.normalized()
-
-		var rotation_axis := current_y.cross(target_y)
-		var dot_product := current_y.dot(target_y)
-
-		var rotation_angle := 0.0
-
-		# Handle parallel and opposite vectors
-		if rotation_axis.length_squared() < 1e-6:
-			if dot_product > 0.9999:
-				# Vectors are nearly identical; no rotation needed
-				return basis
-			else:
-				# Vectors are opposite; choose an arbitrary perpendicular axis
-				rotation_axis = basis.x.normalized()
-				rotation_angle = PI
-		else:
-				rotation_axis = rotation_axis.normalized()
-				rotation_angle = acos(clamp(dot_product, -1.0, 1.0))
-
-		var rotation_quat := Quaternion(rotation_axis, rotation_angle)
-		var interpolated_quat := Quaternion().slerp(rotation_quat, conformance)
-
-		var rotated_basis := Basis(interpolated_quat) * basis
-		return rotated_basis
+		
+	func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+		var jobs: Array[GoshapeJob] = []
+		jobs.append(GoshapeJob.new(self, data, build, 100, false))
+		jobs.append(GoshapeJob.new(self, data, commit, 101, true))
+		return jobs	
 
 
-	func build(host: Node3D, path: GoshPath) -> void:
-		self.path = path
+	func build(data: GoshapeBuildData) -> void:
+		var path := data.path
 		if not style.model_source or not style.model_source.has_resource():
 			printerr("No scene(s) attached to ScatterShaper.")
 			return
@@ -231,7 +210,10 @@ class ShatterBuilder extends ShapeBuilder:
 				inst.transform.basis = basis
 				instances.append(inst)
 				
-	func commit() -> void:
+				
+	func commit(data: GoshapeBuildData) -> void:
+		var path := data.path
+		var parent := data.parent
 		var place_on_ground := style.place_on_ground
 		var placement_mask := path.placement_mask
 		var ground_angle_conformance := style.ground_angle_conformance
@@ -241,21 +223,54 @@ class ShatterBuilder extends ShapeBuilder:
 			var pos = inst.transform.origin
 			var basis = inst.transform.basis
 			if place_on_ground:
-				var space = host.get_world_3d().direct_space_state
+				var space = parent.get_world_3d().direct_space_state
 				var ray = PhysicsRayQueryParameters3D.new()
-				ray.from = host.global_transform * Vector3(pos.x, 1000, pos.z)
-				ray.to = host.global_transform * Vector3(pos.x, -1000, pos.z)
+				ray.from = parent.global_transform * Vector3(pos.x, 1000, pos.z)
+				ray.to = parent.global_transform * Vector3(pos.x, -1000, pos.z)
 				ray.collision_mask = 0xFF & (~collision_layer)
 				var hit = space.intersect_ray(ray)
 				if hit.has("collider"):
 					normal = hit.normal
 					if placement_mask > 0 and ((1 << placement_mask) & (1 << hit.collider.collision_layer)) == 0:
 						continue
-					pos = host.global_transform.inverse() * hit.position
+					pos = parent.global_transform.inverse() * hit.position
 				elif placement_mask > 0:
 					continue
 				basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
 			inst.transform.origin = pos
 			inst.transform.basis = basis
-			SceneUtils.add_child(host, inst)
+			SceneUtils.add_child(parent, inst)
+			
+
+	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:
+		conformance = clamp(conformance, 0.0, 1.0)
+		if conformance == 0.0:
+			return basis
+			
+		var current_y := basis.y.normalized()
+		var target_y := normal.normalized()
+
+		var rotation_axis := current_y.cross(target_y)
+		var dot_product := current_y.dot(target_y)
+
+		var rotation_angle := 0.0
+
+		# Handle parallel and opposite vectors
+		if rotation_axis.length_squared() < 1e-6:
+			if dot_product > 0.9999:
+				# Vectors are nearly identical; no rotation needed
+				return basis
+			else:
+				# Vectors are opposite; choose an arbitrary perpendicular axis
+				rotation_axis = basis.x.normalized()
+				rotation_angle = PI
+		else:
+				rotation_axis = rotation_axis.normalized()
+				rotation_angle = acos(clamp(dot_product, -1.0, 1.0))
+
+		var rotation_quat := Quaternion(rotation_axis, rotation_angle)
+		var interpolated_quat := Quaternion().slerp(rotation_quat, conformance)
+
+		var rotated_basis := Basis(interpolated_quat) * basis
+		return rotated_basis
 		

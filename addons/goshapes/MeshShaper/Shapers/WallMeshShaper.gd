@@ -31,6 +31,22 @@ extends WallShaper
 		if material != value:
 			material = value
 			emit_changed()
+
+			
+## An optional low poly mesh for collisions and quicker calculations
+@export var mesh_low: Mesh: 
+	set(value):
+		if mesh_low != value:
+			mesh_low = value
+			emit_changed()
+			
+			
+## An optional low poly mesh for collisions and quicker calculations
+@export var lod_distance := 100.0: 
+	set(value):
+		if lod_distance != value:
+			lod_distance = value
+			emit_changed()
 			
 
 ## The material to apply to the generated mesh
@@ -41,19 +57,55 @@ extends WallShaper
 			emit_changed()
 			
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [WallMeshBuilder.new(self)]
 	
 			
 class WallMeshBuilder extends WallBuilder:
 	
 	var style: WallMeshShaper
+	var child_mesh_low: MeshInstance3D
+	
 	func _init(_style: WallMeshShaper):
 		super._init(_style)
 		style = _style
+		
+		
+	func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:
+		var base_offset = offset
+		if style.mesh_low != null:
+			base_offset += 2
+		var jobs := super.get_build_jobs(data, base_offset)
+		if style.mesh_low != null:
+			jobs.append(GoshapeJob.new(self, data, build_low, offset, false))
+			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, true))
+		return jobs
+		
+		
+	func build_low(data: GoshapeBuildData) -> void:
+		child_mesh_low = null
+		var meshsets = build_wall_mesh(data.path, style.mesh_low)
+		mesh_low = MeshUtils.build_meshes(meshsets, null)
+		
+		
+	func commit_low(data: GoshapeBuildData) -> void:
+		child_mesh_low = apply_mesh(data.parent, mesh_low, "MeshLow")
+		
+		
+	func commit(data: GoshapeBuildData) -> void:
+		super.commit(data)
+		if child_mesh != null and child_mesh_low != null:
+			var range = style.lod_distance
+			child_mesh.visibility_range_end = range
+			child_mesh_low.visibility_range_begin = range
+		
 
-	func build_sets(path: GoshPath) -> Array[MeshSet]:
-		var ref_mesh := style.mesh as Mesh
+	func build_sets(path: GoshapePath) -> Array[MeshSet]:
+		var wall_mesh = style.mesh
+		return build_wall_mesh(path, wall_mesh)
+		
+		
+	func build_wall_mesh(path: GoshapePath, ref_mesh: Mesh) -> Array[MeshSet]:
 		if not ref_mesh:
 			return []
 			

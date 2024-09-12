@@ -42,7 +42,7 @@ enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 			emit_changed()
 			
 			
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [CapMoundBuilder.new(self)]
 	
 	
@@ -53,21 +53,21 @@ class CapMoundBuilder extends CapBuilder:
 		super._init(_style)
 		style = _style
 		
-	func build_sets(path: GoshPath) -> Array[MeshSet]:
+	func build_sets(path: GoshapePath) -> Array[MeshSet]:
 		var sets: Array[MeshSet] = []
 		var mid := PathUtils.get_path_center(path)
 		mid.y += style.height
 		var iterations := clamp(style.iterations, 1, 16)
 		var height_img := null if not style.height_map else style.height_map.get_image()
 		var point_count := path.point_count
-		var paths: Array[GoshPath] = []
+		var paths: Array[GoshapePath] = []
 		for j in range(iterations + 1):
 			var points := PackedVector3Array();
 			points.resize(point_count)
 			for i in range(point_count):
 				var p = lerp_mound_p(mid, path.get_point(i), j, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
 				points.set(i, p)
-			paths.append(GoshPath.new(points))
+			paths.append(GoshapePath.new(points))
 		var ms := MeshUtils.fill_concentric_paths(paths, false)
 		ms.material = style.material
 		return [ms]

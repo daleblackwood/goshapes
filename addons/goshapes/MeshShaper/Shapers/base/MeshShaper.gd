@@ -17,3 +17,16 @@ extends Shaper
 		if collision_layer != value:
 			collision_layer = value
 			emit_changed()
+			
+	
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	var result: Array[GoshapeJob] = []
+	var builders := get_builders()
+	var offset = get_order_offset()
+	for builder in builders:
+		result += builder.get_build_jobs(data, offset)
+	return result
+	
+	
+func get_order_offset() -> int:
+	return 0

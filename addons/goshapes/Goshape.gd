@@ -6,6 +6,7 @@ extends Path3D
 const AXIS_X = 1
 const AXIS_Y = 2
 const AXIS_Z = 4
+const BLOCKING = false
 
 ## Invert the direction of the path
 @export var inverted = false:
@@ -51,11 +52,12 @@ var is_editing: bool: get = _get_is_editing
 
 var is_dirty := false
 var edit_proxy = null
-var cap_data: GoshPath = null
+var cap_data: GoshapePath = null
 var watcher_shaper := ResourceWatcher.new(mark_dirty)
 var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
+var last_curve_points := PackedVector3Array()
 
 
 func _ready() -> void:
@@ -85,7 +87,8 @@ func _edit_begin(edit_proxy) -> void:
 	self.edit_proxy = edit_proxy
 	_edit_update()
 		
-	curve_changed.connect(on_curve_changed)
+	if not curve_changed.is_connected(on_curve_changed):
+		curve_changed.connect(on_curve_changed)
 	watcher_shaper.watch(shaper)
 	watcher_pathmod.watch(path_options)
 	
@@ -133,8 +136,8 @@ func _init_curve() -> void:
 	
 func set_shaper(value: Shaper) -> void:
 	shaper = value
-	watcher_shaper.watch(shaper)
 	mark_dirty()
+	watcher_shaper.watch(shaper)
 	
 	
 func set_path_options(value: PathOptions) -> void:
@@ -155,8 +158,24 @@ func on_curve_changed():
 		return
 	if is_dirty:
 		return
-	is_dirty = true
 	
+	# manual curve change detection
+	var has_change = false
+	if last_curve_points.size() != curve.point_count:
+		last_curve_points.resize(curve.point_count)
+		has_change = true
+	else:
+		for i in curve.point_count:
+			if last_curve_points[i] != curve.get_point_position(i):
+				has_change = true
+				break
+	for i in curve.point_count:
+		last_curve_points.set(i, curve.get_point_position(i))
+		
+	if not has_change:
+		return
+
+	is_dirty = true
 	curve.updating = true
 	
 	if axis_matched_editing:
@@ -229,7 +248,7 @@ func _update() -> void:
 		axis_match_points = PackedInt32Array()
 	
 	var runner = edit_proxy.runner
-	if runner.is_busy:
+	if BLOCKING and runner.is_busy:
 		mark_dirty()
 		return
 	
@@ -241,7 +260,7 @@ func build() -> void:
 		return	
 	
 	var runner = edit_proxy.runner
-	if runner.is_busy:
+	if BLOCKING and runner.is_busy:
 		mark_dirty()
 		return
 		
@@ -252,27 +271,26 @@ func build() -> void:
 	is_dirty = false
 	
 	
-func _build(runner: GoshBuildRunner) -> void:
+func _build(runner: GoshapeRunner) -> void:
 	build_run(runner)
 	
 	
-func build_clear(runner: GoshBuildRunner) -> void:	
+func build_clear(runner: GoshapeRunner) -> void:	
 	runner.cancel(self)
 	for child in get_children():
 		child.free()
 	
 	
-func build_run(runner: GoshBuildRunner) -> void:
-	print_debug("Goshape %s Build" % name)
+func build_run(runner: GoshapeRunner) -> void:
 	build_clear(runner)
-	var path := get_path_data(path_options.interpolate)
-	var builders := shaper.get_builders()
-	runner.enqueue(self, path, builders, build_done)
-	
-	
-func build_done():
-	if is_dirty:
-		_update.call_deferred()
+	var data = GoshapeBuildData.new()
+	data.parent = self
+	data.path = get_path_data(path_options.interpolate)
+	var jobs = shaper.get_build_jobs(data)
+	for job in jobs:
+		runner.enqueue(job)
+	print("%s did %d jobs" % [name, jobs.size()])
+	runner.run()
 	
 	
 func remove_control_points() -> void:
@@ -280,7 +298,7 @@ func remove_control_points() -> void:
 	mark_dirty()
 	
 	
-func get_path_data(interpolate: int = -1) -> GoshPath:
+func get_path_data(interpolate: int = -1) -> GoshapePath:
 	if interpolate < 0:
 		interpolate = path_options.interpolate
 	var twists := _get_twists()

@@ -22,18 +22,22 @@ You can also use paths to procedurally place instances:
 
 [Screenshots](https://imgur.com/a/R0b3cXD)
 
-### What's New in 1.1.0
-Goshapes 1.1.0 has been released Feb 14th, 2023 and follows RC1 of Godot 4. It fixes several issues that arose due to changes throughout the alpha and beta.
-- Goshapes' folder structure now correctly adheres to the Godot plugin specification, making it an easy include from the Asset Store.
-- Compilation fixes to issues that arose from changes made to GDScript during the Godot 4 alpha period. 
-- Line-pathed Goshapes now generate much cleaner and more even corners, making squared paths easy to generate.
-- Inspector hints have been added.
+### What's New in 1.3.0
+Goshapes 1.3.0 has been released Sept 12th, 2024. Some new features include:
+- Wider compatibility with Godot 4.2.x, 4.3.x
+- Added Mound Caps and Curved Walls
+- Gaps in Mesh Walls
+- Support for LOD wall meshes, colliders
+- Threaded building
 
 ### Installation
 To install, use the Godot Asset Library or clone this repository into the addons folder of your Godot 4 project, so that its path in your project is `res://addons/goshapes`.
 
-### Demo Scene
-A few sample scenes, and some sample shape styles and materials have been included under the `addons/goshapes/samples` folder. Have a play around there, it should help demonstrate what's possible.
+### Demo Scenes
+A few sample scenes, and some sample shape styles and materials have been included under the `addons/goshapes/samples` folder. Have a play around there, it should help demonstrate what's possible. Some of these include:
+ - WallMeshLoop: demonstrates how to use a mesh as a shape wall, including using caps
+ - SampleIsland: contains a combination of most shaper types including block shapers, wall mesh shapers and scatter shapers
+ - SampleLineShape: demonstrates how the line function works
 
 ### Editor Tools
 Goshapes works mainly in the inspector. You can add a new Goshape through the add menu or the Goshapes menu in the top toolbar.
@@ -71,14 +75,14 @@ Shapers can be picked from the top of the GoShape inspector (Shaper must be expa
 
 Blockshapers are the main Shaper type for rendering geometry, they combine up to three Shapers to make geometry: the **CapShaper**, the **WallShaper** and the **BottomShaper**. For the most part, this is automatic.
 
-##### The CapShaper (generates a cap at the top, best used as part of a BlackShaper)
+#### The CapShaper (generates a cap at the top, best used as part of a BlackShaper)
 There are three cap shaper types: **Flat**, **Plane** and **Line**. Flat and Plane are great for building most shapes (with Plane containing more detail) and Line is useful when using the line PathOption (see above). These three methods alter the triangulation technique used for the caps.
 
 ![image](https://user-images.githubusercontent.com/386025/174335390-e10761f4-2ae9-4006-a33f-e115f9df2794.png)
 
 All Cap shapers take a material and render its UVs 1:1 in world space.
 
-##### The WallShapers (generates a wall around the path, best used as part of a BlackShaper)
+#### The WallShapers (generates a wall around the path, best used as part of a BlackShaper)
 There are two wall shaper types: **Bevel** and **Mesh**. Bevel will generate a straight wall and allows tapering and bevelling. **MeshWall** is the most useful, allowing you to **create custom geometry and wrap it to a wall**. There are some tricks to creating that geometry, that I go into below (see Making Mesh Walls).
 
 ![image](https://user-images.githubusercontent.com/386025/174335860-a66f9344-9209-487b-b2b1-fdd604b1de5c.png)
@@ -93,10 +97,6 @@ A ScatterShaper allows for as many instances as is needed within an area:
  - **Place on ground** causes the genernated instances to be placed on the ground using Raycasting
  - **Noise** lets you override the inbuilt random function with a noise texture
  - **Evenness** changes how well aligned the instances are to each other. The higher the value, the less *organic* the scatter selection is.
-
-
-### What happened to GDBlocks for Godot 3?
-I initially developed this addon for Godot 3, as [GDBlocks](https://github.com/daleblackwood/gdblocks). Goshapes marks an increase in scope that was made possible thanks to new tools and performance improvements in Godot 4 and was developed predominantly during the Godot 4 alpha period. As the change is quite dramatic, I've decided to fork my own project and make the improvements here. Going forward, this will be the only active project in development - though I'm working on it as slowly as a hobby.
 
 ### Contribution Policy
 I will endeavour to review any pull requests on Github that fix, optimise or compliment existing functionality without changing the nature of previously generated output. Please note that, while I'm a hobbyist and may sometimes take a little while to respond, I do enjoy and welcome the code contributions of others.

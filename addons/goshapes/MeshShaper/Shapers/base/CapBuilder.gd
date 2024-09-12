@@ -3,11 +3,13 @@ class_name CapBuilder
 extends MeshBuilder
 ## The base class for all cap builders
 
+
 func _init(_style: MeshShaper):
 	super._init(_style)
+	tag = "Cap"
 
 
-func get_cap_points(style: CapShaper, path: GoshPath) -> PackedVector3Array:
+func get_cap_points(style: CapShaper, path: GoshapePath) -> PackedVector3Array:
 	if style.conform_to_wall and style.wall_style != null and style.wall_style.has_method("get_mesh"):
 		var mesh = style.wall_style.get_mesh() as Mesh
 		var scale = 1.0
@@ -35,7 +37,7 @@ func sort_on_x(a: Vector3, b: Vector3) -> bool:
 	return a.x < b.x
 		
 	
-func mesh_to_cap_points(mesh: Mesh, path: GoshPath, scale: float) -> PackedVector3Array:
+func mesh_to_cap_points(mesh: Mesh, path: GoshapePath, scale: float) -> PackedVector3Array:
 	var result = PackedVector3Array()
 	var top_points = mesh_to_top_points(mesh)
 	var meshset = MeshSet.new()

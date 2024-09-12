@@ -3,7 +3,7 @@ class_name CapLineShaper
 extends CapShaper
 ## A Shaper that draws the cap for a line for winding paths
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	return [CapLineBuilder.new(self)]
 			
 			
@@ -15,7 +15,7 @@ class CapLineBuilder extends CapBuilder:
 		style = _style
 	
 	
-	func build_sets(path: GoshPath) -> Array[MeshSet]:
+	func build_sets(path: GoshapePath) -> Array[MeshSet]:
 		var material := style.material
 		var points := get_cap_points(style, path)
 		var point_count := points.size()

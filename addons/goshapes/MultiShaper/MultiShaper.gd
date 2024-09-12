@@ -40,9 +40,17 @@ func _update():
 	emit_changed()
 	
 
-func get_builders() -> Array[ShapeBuilder]:
+func create_builders() -> Array[ShapeBuilder]:
 	var result: Array[ShapeBuilder] = []
 	for shaper in shapers:
 		if shaper != null and shaper.enabled:
 			result += shaper.get_builders()
+	return result
+	
+	
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	var result: Array[GoshapeJob] = []
+	for shaper in shapers:
+		if shaper != null and shaper.enabled:
+			result += shaper.get_build_jobs(data)
 	return result
