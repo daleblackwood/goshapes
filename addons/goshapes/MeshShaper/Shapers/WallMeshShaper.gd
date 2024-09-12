@@ -77,8 +77,8 @@ class WallMeshBuilder extends WallBuilder:
 			base_offset += 2
 		var jobs := super.get_build_jobs(data, base_offset)
 		if style.mesh_low != null:
-			jobs.append(GoshapeJob.new(self, data, build_low, offset, false))
-			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, true))
+			jobs.append(GoshapeJob.new(self, data, build_low, offset))
+			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		

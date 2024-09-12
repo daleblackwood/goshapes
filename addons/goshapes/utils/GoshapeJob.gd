@@ -2,6 +2,8 @@ class_name GoshapeJob
 
 enum State { Init, Running, Done, Cancelled }
 
+enum Mode { Normal, Immediate, Scene }
+
 var id := 0
 var data: GoshapeBuildData
 var owner: Object
@@ -12,18 +14,19 @@ var thread: Thread
 var order := 0
 var is_scene := false
 var has_ran := false
+var mode := Mode.Normal
 
 
-func _init(owner: Object, data: GoshapeBuildData, callable: Callable, order := 0, is_scene := false) -> void:
+func _init(owner: Object, data: GoshapeBuildData, callable: Callable, order := 0, mode := Mode.Normal) -> void:
 	self.owner = owner
 	self.data = data
 	self.callable = callable
 	self.order = order
-	self.is_scene = is_scene
+	self.mode = mode
 	
 
 func run() -> void:
-	if is_scene:
+	if mode == Mode.Scene:
 		do_run.call_deferred()
 	else:
 		do_run.call()

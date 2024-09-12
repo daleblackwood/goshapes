@@ -289,7 +289,6 @@ func build_run(runner: GoshapeRunner) -> void:
 	var jobs = shaper.get_build_jobs(data)
 	for job in jobs:
 		runner.enqueue(job)
-	print("%s did %d jobs" % [name, jobs.size()])
 	runner.run()
 	
 	
