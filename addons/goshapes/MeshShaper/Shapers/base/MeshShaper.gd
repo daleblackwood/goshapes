@@ -19,13 +19,12 @@ extends Shaper
 			emit_changed()
 			
 	
-func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 	var result: Array[GoshapeJob] = []
 	var builders := get_builders()
 	var offset = get_order_offset()
 	for builder in builders:
-		builder.setup(host, path)
-		result += builder.get_build_jobs(host, path, offset)
+		result += builder.get_build_jobs(data, offset)
 	return result
 	
 	

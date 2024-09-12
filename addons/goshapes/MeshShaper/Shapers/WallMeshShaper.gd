@@ -71,29 +71,29 @@ class WallMeshBuilder extends WallBuilder:
 		style = _style
 		
 		
-	func get_build_jobs(host: Node3D, path: GoshapePath, offset: int) -> Array[GoshapeJob]:
+	func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:
 		var base_offset = offset
 		if style.mesh_low != null:
 			base_offset += 2
-		var jobs := super.get_build_jobs(host, path, base_offset)
+		var jobs := super.get_build_jobs(data, base_offset)
 		if style.mesh_low != null:
-			jobs.append(GoshapeJob.new(self, path, build_low, offset, false))
-			jobs.append(GoshapeJob.new(self, path, commit_low, offset + 1, true))
+			jobs.append(GoshapeJob.new(self, data, build_low, offset, false))
+			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, true))
 		return jobs
 		
 		
-	func build_low() -> void:
+	func build_low(data: GoshapeBuildData) -> void:
 		child_mesh_low = null
-		var meshsets =  build_wall_mesh(path, style.mesh_low)
+		var meshsets = build_wall_mesh(data.path, style.mesh_low)
 		mesh_low = MeshUtils.build_meshes(meshsets, null)
 		
 		
-	func commit_low() -> void:
-		child_mesh_low = apply_mesh(host, mesh_low, "MeshLow")
+	func commit_low(data: GoshapeBuildData) -> void:
+		child_mesh_low = apply_mesh(data.parent, mesh_low, "MeshLow")
 		
 		
-	func commit() -> void:
-		super.commit()
+	func commit(data: GoshapeBuildData) -> void:
+		super.commit(data)
 		if child_mesh != null and child_mesh_low != null:
 			var range = style.lod_distance
 			child_mesh.visibility_range_end = range

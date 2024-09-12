@@ -9,10 +9,10 @@ func get_is_busy() -> bool:
 	return queue.size() > 0 and queue[0].state < GoshapeJob.State.Done
 		
 		
-func cancel(host: Node) -> void:
+func cancel(owner: Object) -> void:
 	for i in range(queue.size() - 1, -1 , -1):
 		var job = queue[i]
-		if job.host == host:
+		if job.owner == owner:
 			queue.remove_at(i)
 		if job.state == GoshapeJob.State.Running:
 			job_cancel(job)
@@ -69,8 +69,6 @@ func job_run() -> void:
 func job_complete(job: GoshapeJob) -> void:
 	job.thread.wait_to_finish()
 	job.state = GoshapeJob.State.Done
-	#if job.callback != null:
-	#	job.callback.call_deferred()
 	next.call()
 	
 	

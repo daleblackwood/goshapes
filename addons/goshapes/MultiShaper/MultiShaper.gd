@@ -48,9 +48,9 @@ func create_builders() -> Array[ShapeBuilder]:
 	return result
 	
 	
-func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 	var result: Array[GoshapeJob] = []
 	for shaper in shapers:
 		if shaper != null and shaper.enabled:
-			result += shaper.get_build_jobs(host, path)
+			result += shaper.get_build_jobs(data)
 	return result

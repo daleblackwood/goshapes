@@ -136,9 +136,7 @@ func _init_curve() -> void:
 	
 func set_shaper(value: Shaper) -> void:
 	shaper = value
-	if shaper != null:
-		shaper.host = self
-		mark_dirty()
+	mark_dirty()
 	watcher_shaper.watch(shaper)
 	
 	
@@ -285,10 +283,13 @@ func build_clear(runner: GoshapeRunner) -> void:
 	
 func build_run(runner: GoshapeRunner) -> void:
 	build_clear(runner)
-	var path := get_path_data(path_options.interpolate)
-	var jobs = shaper.get_build_jobs(self, path)
+	var data = GoshapeBuildData.new()
+	data.parent = self
+	data.path = get_path_data(path_options.interpolate)
+	var jobs = shaper.get_build_jobs(data)
 	for job in jobs:
 		runner.enqueue(job)
+	print("%s did %d jobs" % [name, jobs.size()])
 	runner.run()
 	
 	

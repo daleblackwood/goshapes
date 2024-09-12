@@ -2,10 +2,9 @@ class_name GoshapeJob
 
 enum State { Init, Running, Done, Cancelled }
 
-
 var id := 0
-var host: Node3D
-var builder: ShapeBuilder
+var data: GoshapeBuildData
+var owner: Object
 var callable: Callable
 var state := State.Init
 var path: GoshapePath
@@ -15,10 +14,9 @@ var is_scene := false
 var has_ran := false
 
 
-func _init(builder: ShapeBuilder, path: GoshapePath, callable: Callable, order := 0, is_scene := false) -> void:
-	self.host = builder.host
-	self.builder = builder
-	self.path = path
+func _init(owner: Object, data: GoshapeBuildData, callable: Callable, order := 0, is_scene := false) -> void:
+	self.owner = owner
+	self.data = data
 	self.callable = callable
 	self.order = order
 	self.is_scene = is_scene
@@ -36,5 +34,5 @@ func do_run() -> void:
 		has_ran = true
 		return
 	if callable is Callable:
-		callable.call()
+		callable.call(data)
 	has_ran = true

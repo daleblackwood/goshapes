@@ -115,16 +115,15 @@ func _init():
 			
 
 func create_builders() -> Array[ShapeBuilder]:
-	return [ShatterBuilder.new(self)]
+	return [ScatterBuilder.new(self)]
 	
 	
-func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
-	var builder = ShatterBuilder.new(self)
-	builder.setup(host, path)
-	return builder.get_build_jobs(host, path)
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	var builder = get_builders()[0]
+	return builder.get_build_jobs(data)
 	
 			
-class ShatterBuilder extends ShapeBuilder:
+class ScatterBuilder extends ShapeBuilder:
 	
 	var style: ScatterShaper
 	func _init(_style: ScatterShaper):
@@ -132,16 +131,15 @@ class ShatterBuilder extends ShapeBuilder:
 
 	var instances = []
 		
-	func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+	func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 		var jobs: Array[GoshapeJob] = []
-		self.host = host
-		jobs.append(GoshapeJob.new(self, path, build, 0, false))
-		jobs.append(GoshapeJob.new(self, path, commit, 1, true))
+		jobs.append(GoshapeJob.new(self, data, build, 100, false))
+		jobs.append(GoshapeJob.new(self, data, commit, 101, true))
 		return jobs	
 
 
-	func build() -> void:
-		self.path = path
+	func build(data: GoshapeBuildData) -> void:
+		var path := data.path
 		if not style.model_source or not style.model_source.has_resource():
 			printerr("No scene(s) attached to ScatterShaper.")
 			return
@@ -212,7 +210,10 @@ class ShatterBuilder extends ShapeBuilder:
 				inst.transform.basis = basis
 				instances.append(inst)
 				
-	func commit() -> void:
+				
+	func commit(data: GoshapeBuildData) -> void:
+		var path := data.path
+		var parent := data.parent
 		var place_on_ground := style.place_on_ground
 		var placement_mask := path.placement_mask
 		var ground_angle_conformance := style.ground_angle_conformance
@@ -222,23 +223,23 @@ class ShatterBuilder extends ShapeBuilder:
 			var pos = inst.transform.origin
 			var basis = inst.transform.basis
 			if place_on_ground:
-				var space = host.get_world_3d().direct_space_state
+				var space = parent.get_world_3d().direct_space_state
 				var ray = PhysicsRayQueryParameters3D.new()
-				ray.from = host.global_transform * Vector3(pos.x, 1000, pos.z)
-				ray.to = host.global_transform * Vector3(pos.x, -1000, pos.z)
+				ray.from = parent.global_transform * Vector3(pos.x, 1000, pos.z)
+				ray.to = parent.global_transform * Vector3(pos.x, -1000, pos.z)
 				ray.collision_mask = 0xFF & (~collision_layer)
 				var hit = space.intersect_ray(ray)
 				if hit.has("collider"):
 					normal = hit.normal
 					if placement_mask > 0 and ((1 << placement_mask) & (1 << hit.collider.collision_layer)) == 0:
 						continue
-					pos = host.global_transform.inverse() * hit.position
+					pos = parent.global_transform.inverse() * hit.position
 				elif placement_mask > 0:
 					continue
 				basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
 			inst.transform.origin = pos
 			inst.transform.basis = basis
-			SceneUtils.add_child(host, inst)
+			SceneUtils.add_child(parent, inst)
 			
 
 	func _conform_basis_y_to_normal(basis: Basis, normal: Vector3, conformance: float) -> Basis:

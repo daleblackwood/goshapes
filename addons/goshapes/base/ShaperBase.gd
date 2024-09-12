@@ -9,24 +9,21 @@ extends Resource
 		emit_changed()
 		
 var builders: Array[ShapeBuilder] = []
-var host: Node3D
 		
 func create_builders() -> Array[ShapeBuilder]:
 	return []
 	
 func get_builders() -> Array[ShapeBuilder]:
 	builders = create_builders()
-	for builder in builders:
-		builder.host = self.host
 	return builders
 	
-func get_build_jobs(host: Node3D, path: GoshapePath) -> Array[GoshapeJob]:
+func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 	return []
 	
 func get_name() -> String:
 	return ResourceUtils.get_type(self)
 	
-func build(host: Node3D, path: GoshapePath) -> void:
+func build(data: GoshapeBuildData) -> void:
 	if not Engine.is_editor_hint():
 		return
 		
@@ -35,10 +32,9 @@ func build(host: Node3D, path: GoshapePath) -> void:
 	if builders.size() > 0:
 		for builder in builders:
 			if builder != null:
-				builder.setup(host, path)
-				builder.build()
-				builder.commit()
-				builder.commit_colliders()
+				builder.build(data)
+				builder.commit(data)
+				builder.commit_colliders(data)
 	else:
-		printerr("No builder for host %s" % host.name)
+		printerr("No builder for host %s" % data.host.name)
 	print("build job took %dms" % (Time.get_ticks_msec() - start_time))
