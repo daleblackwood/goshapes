@@ -61,25 +61,25 @@ class CapLineBuilder extends CapBuilder:
 		
 	func split_quad_four(quad: MeshSet) -> Array:
 		var sets: Array[MeshSet] = []
-		var a := quad.clone()
+		var a := quad.duplicate()
 		lerp_set(a, quad, 1, 0, 0.5)
 		lerp_set(a, quad, 2, 0, 0.5)
 		lerp_set(a, quad, 3, 1, 0.5)
 		lerp_set(a, a, 3, 2, 0.5)
 		sets.append(a)
-		var b := quad.clone()
+		var b := quad.duplicate()
 		lerp_set(b, quad, 0, 1, 0.5)
 		lerp_set(b, quad, 3, 1, 0.5)
 		lerp_set(b, quad, 2, 3, 0.5)
 		lerp_set(b, b, 2, 0, 0.5)
 		sets.append(b)
-		var c := quad.clone()
+		var c := quad.duplicate()
 		lerp_set(c, quad, 0, 2, 0.5)
 		lerp_set(c, quad, 3, 2, 0.5)
 		lerp_set(c, quad, 1, 0, 0.5)
 		lerp_set(c, c, 1, 3, 0.5)
 		sets.append(c)
-		var d := quad.clone()
+		var d := quad.duplicate()
 		lerp_set(d, quad, 1, 3, 0.5)
 		lerp_set(d, quad, 2, 3, 0.5)
 		lerp_set(d, quad, 0, 2, 0.5)
@@ -90,18 +90,18 @@ class CapLineBuilder extends CapBuilder:
 		
 	func split_quad_length(quad: MeshSet) -> Array[MeshSet]:
 		var sets: Array[MeshSet] = []
-		var a := quad.clone()
+		var a := quad.duplicate()
 		lerp_set(a, quad, 2, 0, 0.5)
 		lerp_set(a, quad, 3, 1, 0.5)
 		sets.append(a)
-		var b := quad.clone()
+		var b := quad.duplicate()
 		lerp_set(b, quad, 0, 2, 0.5)
 		lerp_set(b, quad, 1, 3, 0.5)
 		sets.append(b)
 		return sets
 		
 		
-	func lerp_set(set: MeshSet, ref: MeshSet, a: int, b: int, amount: float) -> void:
-		set.set_vert(a, ref.verts[a].lerp(ref.verts[b], amount))
-		set.set_uv(a, ref.uvs[a].lerp(ref.uvs[b], amount))
-		set.set_normal(a, ref.normals[a].lerp(ref.normals[b], amount))
+	func lerp_set(ms: MeshSet, ref: MeshSet, a: int, b: int, amount: float) -> void:
+		ms.set_vert(a, ref.verts[a].lerp(ref.verts[b], amount))
+		ms.set_uv(a, ref.uvs[a].lerp(ref.uvs[b], amount))
+		ms.set_normal(a, ref.normals[a].lerp(ref.normals[b], amount))

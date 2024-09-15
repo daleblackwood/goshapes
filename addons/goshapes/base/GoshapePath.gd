@@ -48,8 +48,11 @@ func get_corner(index: int) -> int:
 	
 func get_corner_loop(index: int) -> int:
 	var size = corners.size()
-	var normalized_index = ((index % size) + size) % size
-	return corners[normalized_index]
+	return corners[((index % size) + size) % size]
+	
+	
+func get_corner_position(index: int) -> Vector3:
+	return curve.get_point_position(((index % curve.point_count) + curve.point_count) % curve.point_count)
 	
 	
 func get_corner_count() -> int:
@@ -79,6 +82,12 @@ func get_distances(scale: float = 1.0, offset: float = 0.0) -> PackedFloat32Arra
 		result[i] = distance
 	return result
 	
+	
+func set_point_count(count: int) -> void:
+	points.resize(count)
+	ups.resize(count)
+	corners.resize(count)
+	
 
 func invert():
 	points.reverse()
@@ -87,4 +96,4 @@ func invert():
 	
 	
 func duplicate():
-	return get_script().new(points, ups)
+	return get_script().new(points, ups, corners)

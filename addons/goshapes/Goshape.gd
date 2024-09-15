@@ -272,7 +272,7 @@ func build() -> void:
 	
 	
 func _build(runner: GoshapeRunner) -> void:
-	build_run(runner)
+	build_run(runner, true)
 	
 	
 func build_clear(runner: GoshapeRunner) -> void:	
@@ -281,11 +281,12 @@ func build_clear(runner: GoshapeRunner) -> void:
 		child.free()
 	
 	
-func build_run(runner: GoshapeRunner) -> void:
+func build_run(runner: GoshapeRunner, rebuild := false) -> void:
 	build_clear(runner)
 	var data = GoshapeBuildData.new()
 	data.parent = self
 	data.path = get_path_data(path_options.interpolate)
+	data.rebuild = rebuild
 	var jobs = shaper.get_build_jobs(data)
 	for job in jobs:
 		runner.enqueue(job)

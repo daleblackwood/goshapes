@@ -140,6 +140,29 @@ static func round_path(path: GoshapePath, rounding_mode: PathOptions.RoundingMod
 	return result
 	
 	
+static func split_path_by_corner(path: GoshapePath) -> Array[GoshapePath]:
+	var corner_count := path.get_corner_count()
+	var corner_sizes := PackedInt32Array()
+	corner_sizes.resize(corner_count)
+	for corner in path.corners:
+		corner_sizes[corner] = corner_sizes[corner] + 1
+	var result: Array[GoshapePath] = []
+	result.resize(corner_count)
+	var corner_offset := 0
+	for corner in range(corner_count):
+		var point_count := corner_sizes[corner] + 1
+		var cp := GoshapePath.new()
+		cp.set_point_count(point_count)
+		for i in range(point_count):
+			var pi := (i + corner_offset) % path.point_count
+			cp.points.set(i, path.get_point(pi))
+			cp.ups.set(i, path.get_up(pi))
+			cp.corners.set(i, 0)
+		result[corner] = cp
+		corner_offset += point_count - 1
+	return result
+	
+	
 static func round_path_it(path: GoshapePath, rounding_mode: PathOptions.RoundingMode, round_dist: float) -> GoshapePath:
 	var point_count = path.points.size()
 	var points = PackedVector3Array()
@@ -187,13 +210,13 @@ static func move_point_towards(source: Vector3, dest: Vector3, distance: float) 
 	
 static func move_path(path: GoshapePath, offset: Vector3) -> GoshapePath:
 	var point_count = path.points.size()
-	var result = PackedVector3Array()
-	result.resize(point_count)
+	var points = PackedVector3Array()
+	points.resize(point_count)
 	for i in range(point_count):
 		var p = path.points[i]
 		p += offset
-		result[i] = p
-	return GoshapePath.new(result, path.ups)
+		points[i] = p
+	return GoshapePath.new(points, path.ups, path.corners)
 	
 	
 static func get_closest_point_index(path: GoshapePath, v: Vector3) -> int:

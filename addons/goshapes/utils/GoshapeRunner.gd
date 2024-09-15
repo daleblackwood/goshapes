@@ -25,7 +25,7 @@ func enqueue(job: GoshapeJob) -> void:
 	for i in range(queue.size() - 1, -1, -1):
 		if queue[i].state == GoshapeJob.State.Running:
 			break
-		if queue[i].order < job.order:
+		if queue[i].order <= job.order:
 			break
 		queue_index = i
 	if queue_index >= 0:

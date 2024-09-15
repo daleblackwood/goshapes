@@ -14,10 +14,15 @@ func create_builders() -> Array[ShapeBuilder]:
 	return []
 	
 func get_builders() -> Array[ShapeBuilder]:
-	builders = create_builders()
+	if builders.size() < 1:
+		builders = create_builders()
+	for builder in builders:
+		builder.reset()
 	return builders
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	if data.rebuild:
+		builders.resize(0)
 	return []
 	
 func get_name() -> String:
