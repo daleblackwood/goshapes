@@ -92,6 +92,8 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		
 	func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:
 		var jobs: Array[GoshapeJob] = []
+		if style.mesh == null:
+			return []
 		
 		var rebuild = data.rebuild or not style.mesh_caching
 		if style.rebuild_next:
@@ -104,7 +106,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		build_count = corner_count
 		builds.resize(build_count)
 		
-		use_low_poly = style.low_poly_mesh != null and style.mesh != null
+		use_low_poly = style.low_poly_mesh != null
 		
 		var paths := PathUtils.split_path_by_corner(data.path)
 		
@@ -121,12 +123,6 @@ class WallMeshSegmentBuilder extends WallBuilder:
 					build.reuse = false
 			builds[i] = build
 		
-		# spread reuse to adjacent meshes
-		for i in range(build_count):
-			if not builds[i].reuse:
-				builds[(i - 1 + build_count) % build_count].reuse = false
-				builds[(i + 1) % build_count].reuse = false
-		
 		# enqueue jobs
 		for i in range(build_count):
 			var build_info = builds[i]
@@ -134,13 +130,14 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			build_data.path = build_info.path
 			build_data.index = i
 			jobs.append(GoshapeJob.new(self, build_data, build_segment, offset))
-			jobs.append(GoshapeJob.new(self, build_data, commit_segment, offset + 1, GoshapeJob.Mode.Scene))
+			jobs.append(GoshapeJob.new(self, build_data, commit_segment, offset + 10, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
 	func build_segment(data: GoshapeBuildData) -> void:
 		var build_info := builds[data.index]
 		if build_info.reuse:
+			print("reuse mesh ", data.index)
 			build_info.mesh = commits[data.index].mesh
 		if build_info.mesh == null:
 			var mesh_in := style.mesh
