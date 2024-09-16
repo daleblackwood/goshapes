@@ -70,7 +70,6 @@ class WallMeshSegmentData:
 	var anchor := Vector3.ZERO
 	var reuse := false
 	var mesh: ArrayMesh
-	var mesh_low: ArrayMesh
 	var path: GoshapePath
 
 
@@ -105,6 +104,8 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		build_count = corner_count
 		builds.resize(build_count)
 		
+		use_low_poly = style.low_poly_mesh != null and style.mesh != null
+		
 		var paths := PathUtils.split_path_by_corner(data.path)
 		
 		# calculate builds and reuses
@@ -132,22 +133,22 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			var build_data := data.duplicate()
 			build_data.path = build_info.path
 			build_data.index = i
-			if build_info.reuse:
-				build_info.mesh = commits[i].mesh
-			else:
-				jobs.append(GoshapeJob.new(self, build_data, build_segment, offset))
+			jobs.append(GoshapeJob.new(self, build_data, build_segment, offset))
 			jobs.append(GoshapeJob.new(self, build_data, commit_segment, offset + 1, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
 	func build_segment(data: GoshapeBuildData) -> void:
-		var mesh_in := style.mesh
-		var meshsets := build_wall_mesh(data.path, mesh_in)
-		var mesh := MeshUtils.build_meshes(meshsets, null)
+		var build_info := builds[data.index]
+		if build_info.reuse:
+			build_info.mesh = commits[data.index].mesh
+		if build_info.mesh == null:
+			var mesh_in := style.mesh
+			var meshsets := build_wall_mesh(data.path, mesh_in)
+			build_info.mesh = MeshUtils.build_meshes(meshsets, null)
 		if meshes.size() <= data.index:
 			meshes.resize(data.index + 1)
-		meshes[data.index] = mesh
-		builds[data.index].mesh = mesh
+		meshes[data.index] = build_info.mesh
 		
 					
 	func commit_segment(data: GoshapeBuildData) -> void:
