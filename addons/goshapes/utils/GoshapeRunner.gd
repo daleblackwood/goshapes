@@ -68,7 +68,6 @@ func job_run() -> void:
 		job.run()
 	while not job.has_ran and job.state == GoshapeJob.State.Running:
 		OS.delay_msec(1)
-	OS.delay_msec(1)
 	job_complete.call_deferred(job)
 	
 	

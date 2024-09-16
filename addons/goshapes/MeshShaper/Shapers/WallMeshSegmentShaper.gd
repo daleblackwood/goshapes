@@ -111,6 +111,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		builds.resize(build_count)
 		
 		# calculate builds and reuses
+		var reuse_count := 0 # used to offset rebuild order 
 		for i in range(build_count):
 			var build := WallMeshSegmentData.new()
 			var path = paths[i % path_count]
@@ -121,6 +122,8 @@ class WallMeshSegmentBuilder extends WallBuilder:
 				var committed := commits[i]
 				if committed.mesh == null or committed.anchor != build.anchor:
 					build.reuse = false
+			if build.reuse:
+				reuse_count += 1
 			builds[i] = build
 		
 		# enqueue jobs
@@ -129,10 +132,13 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			var build_data := data.duplicate()
 			build_data.path = build_info.path
 			build_data.index = i
+			var order = offset
 			if build_info.reuse:
 				build_info.mesh = commits[data.index].mesh
-			jobs.append(GoshapeJob.new(self, build_data, build_segment, offset + 5))
-			jobs.append(GoshapeJob.new(self, build_data, commit_segment, offset + 10, GoshapeJob.Mode.Scene))
+			else:
+				order += reuse_count
+			jobs.append(GoshapeJob.new(self, build_data, build_segment, order))
+			jobs.append(GoshapeJob.new(self, build_data, commit_segment, order, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
