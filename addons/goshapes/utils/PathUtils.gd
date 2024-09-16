@@ -131,7 +131,7 @@ static func path_to_outline(path: GoshapePath, width: float) -> GoshapePath:
 static func round_path(path: GoshapePath, rounding_mode: PathOptions.RoundingMode, round_dist: float, interpolate: int = 0) -> GoshapePath:
 	if interpolate < 1:
 		interpolate = 1
-	var iterations = interpolate# + 1
+	var iterations = interpolate
 	var sub_dist = round_dist
 	var result = path
 	for i in range(iterations):
@@ -151,8 +151,6 @@ static func split_path_by_corner(path: GoshapePath) -> Array[GoshapePath]:
 			prev_corner = corner
 		else:
 			corner_sizes.set(corner_count - 1, corner_sizes[corner_count - 1] + 1)
-	for corner in path.corners:
-		corner_sizes[corner] = corner_sizes[corner] + 1
 	var result: Array[GoshapePath] = []
 	result.resize(corner_count)
 	var corner_offset := 0

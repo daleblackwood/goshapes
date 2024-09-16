@@ -166,9 +166,9 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 	var lengths: Array[float] = []
 	lengths.resize(point_count)
 	
-	var corner_lengths: Array[float]
-	corner_lengths.resize(path.get_corner_count())
-	corner_lengths.fill(0.0)
+	var segment_lengths: Array[float]
+	segment_lengths.resize(path.get_corner_count())
+	segment_lengths.fill(0.0)
 	
 	var path_length := 0.0
 	for i in range(point_count):
@@ -176,11 +176,11 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 		var dif := points[n] - points[i]
 		var section_length := dif.length()
 		var corner = path.get_corner(i)
-		corner_lengths[corner] = corner_lengths[corner] + section_length
+		segment_lengths[corner] = segment_lengths[corner] + section_length
 		lengths[i] = section_length
 		path_length += section_length
 	
-	var result := mesh_clone_to_length(meshset, corner_lengths, gaps)
+	var result := mesh_clone_to_length(meshset, segment_lengths, gaps)
 	# wrap combined verts around path
 	var vert_count := result.vert_count
 	for i in range(vert_count):
@@ -216,7 +216,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 	return result
 	
 	
-static func mesh_clone_to_length(mesh_in: MeshSet, corner_lengths: Array[float], gaps: Array[int] = []) -> MeshSet:
+static func mesh_clone_to_length(mesh_in: MeshSet, segment_lengths: Array[float], gaps: Array[int] = []) -> MeshSet:
 	# calculate segment sizes
 	var min_x = INF
 	var max_x = -INF
@@ -227,12 +227,12 @@ static func mesh_clone_to_length(mesh_in: MeshSet, corner_lengths: Array[float],
 			max_x = v.x
 	var mesh_length = max_x - min_x
 	var vert_count = mesh_in.verts.size()
-	var corner_count = corner_lengths.size()
+	var segment_count = segment_lengths.size()
 	var sets: Array[MeshSet] = []
 	var off_x := 0.0
 	var off_u := 0.0
-	for corner in range(corner_count):
-		var corner_length = corner_lengths[corner]
+	for corner in range(segment_count):
+		var corner_length = segment_lengths[corner]
 		var mesh_count := floor(corner_length / mesh_length)
 		if mesh_count < 1:
 			mesh_count = 1
