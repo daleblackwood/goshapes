@@ -11,48 +11,55 @@ extends WallShaper
 @export var mesh: Mesh: 
 	set(value):
 		mesh = value
-		emit_changed()
+		set_dirty(true)
 	
 ## The scale to apply to each mesh segment	
 @export_range(0.1, 10.0, 0.1) var scale := 1.0:
 	set(value):
 		scale = value
-		emit_changed()
+		set_dirty(true)
 	
 ## Causes the path to close between the first and last point
 @export var closed := true:
 	set(value):
 		closed = value
-		emit_changed()
+		set_dirty()
 
 ## The material to apply to the generated mesh
 @export var material: Material:
 	set(value):
 		material = value
-		emit_changed()
+		set_dirty()
 
 ## An optional low poly mesh for collisions and quicker calculations
 @export var lod_distance := 100.0: 
 	set(value):
 		lod_distance = value
-		emit_changed()
+		set_dirty()
 		
 ## The mesh to repeat around the path (repeats along the x-axis)
 @export var low_poly_mesh: Mesh: 
 	set(value):
 		low_poly_mesh = value
-		emit_changed()
+		set_dirty(true)
 			
 ## The material to apply to the generated mesh
 @export var gaps: Array[int] = []:
 	set(value):
 		gaps = value
-		emit_changed()
+		set_dirty()
 			
 @export var mesh_caching := true:
 	set(value):
 		mesh_caching = value
-		emit_changed()
+		set_dirty(true)
+		
+var rebuild_next := false
+		
+func set_dirty(rebuild := false) -> void:
+	if rebuild:
+		rebuild_next = true
+	emit_changed()
 			
 
 func create_builders() -> Array[ShapeBuilder]:
@@ -63,6 +70,7 @@ class WallMeshSegmentData:
 	var anchor := Vector3.ZERO
 	var reuse := false
 	var mesh: ArrayMesh
+	var mesh_low: ArrayMesh
 	var path: GoshapePath
 
 
@@ -87,6 +95,10 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		var jobs: Array[GoshapeJob] = []
 		
 		var rebuild = data.rebuild or not style.mesh_caching
+		if style.rebuild_next:
+			rebuild = true
+			style.rebuild_next = false
+			
 		var corner_count := data.path.get_corner_count()
 		if corner_count < 1:
 			return []
@@ -101,19 +113,17 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			var path = paths[i]
 			build.anchor = (path.get_point(0) + path.get_point(path.point_count - 1)) * 0.5
 			build.path = PathUtils.move_path(path, -build.anchor)
-			build.reuse = not rebuild
-			if build.reuse and commits.size() > i:
+			build.reuse = not rebuild and commits.size() > i
+			if build.reuse:
 				var committed := commits[i]
 				if committed.mesh == null or committed.anchor != build.anchor:
 					build.reuse = false
-			else:
-				build.reuse = false
 			builds[i] = build
 		
-		# spread reuse to adjacent corners
+		# spread reuse to adjacent meshes
 		for i in range(build_count):
 			if not builds[i].reuse:
-				builds[(i + build_count - 1) % build_count].reuse = false
+				builds[(i - 1 + build_count) % build_count].reuse = false
 				builds[(i + 1) % build_count].reuse = false
 		
 		# enqueue jobs
