@@ -141,9 +141,16 @@ static func round_path(path: GoshapePath, rounding_mode: PathOptions.RoundingMod
 	
 	
 static func split_path_by_corner(path: GoshapePath) -> Array[GoshapePath]:
-	var corner_count := path.get_corner_count()
+	var corner_count := 0
+	var prev_corner = -1
 	var corner_sizes := PackedInt32Array()
-	corner_sizes.resize(corner_count)
+	for corner in path.corners:
+		if corner != prev_corner:
+			corner_sizes.append(1)
+			corner_count += 1
+			prev_corner = corner
+		else:
+			corner_sizes.set(corner_count - 1, corner_sizes[corner_count - 1] + 1)
 	for corner in path.corners:
 		corner_sizes[corner] = corner_sizes[corner] + 1
 	var result: Array[GoshapePath] = []

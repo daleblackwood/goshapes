@@ -76,7 +76,7 @@ class WallMeshSegmentData:
 class WallMeshSegmentBuilder extends WallBuilder:
 	
 	var style: WallMeshSegmentShaper
-	var use_low_poly := false
+	var build_low_poly := false
 	var commits: Array[WallMeshSegmentData] = []
 	var builds: Array[WallMeshSegmentData] = []
 	var build_count := 0
@@ -100,20 +100,20 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			rebuild = true
 			style.rebuild_next = false
 			
-		var corner_count := data.path.get_corner_count()
-		if corner_count < 1:
-			return []
-		build_count = corner_count
-		builds.resize(build_count)
+		build_low_poly = style.low_poly_mesh != null
 		
-		use_low_poly = style.low_poly_mesh != null
 		
+		print("corners ", data.path.corners)
 		var paths := PathUtils.split_path_by_corner(data.path)
+		var path_count = paths.size()
+		print("path_count ", path_count)
+		build_count = path_count
+		builds.resize(build_count)
 		
 		# calculate builds and reuses
 		for i in range(build_count):
 			var build := WallMeshSegmentData.new()
-			var path = paths[i]
+			var path = paths[i % path_count]
 			build.anchor = (path.get_point(0) + path.get_point(path.point_count - 1)) * 0.5
 			build.path = PathUtils.move_path(path, -build.anchor)
 			build.reuse = not rebuild and commits.size() > i
@@ -129,7 +129,9 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			var build_data := data.duplicate()
 			build_data.path = build_info.path
 			build_data.index = i
-			jobs.append(GoshapeJob.new(self, build_data, build_segment, offset))
+			if build_info.reuse:
+				build_info.mesh = commits[data.index].mesh
+			jobs.append(GoshapeJob.new(self, build_data, build_segment, offset + 5))
 			jobs.append(GoshapeJob.new(self, build_data, commit_segment, offset + 10, GoshapeJob.Mode.Scene))
 		return jobs
 		
