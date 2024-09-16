@@ -8,33 +8,29 @@ const AXIS_Y = 2
 const AXIS_Z = 4
 const BLOCKING = false
 
+
 ## Invert the direction of the path
 @export var inverted = false:
 	set(value):
 		inverted = value
 		mark_dirty()
 	
-
 ## A toggle that moves the origin of the path to the center
 @export var recenter = false:
 	set(value):
 		if value:
 			recenter_points()
 			
-
 ## An editing option that causes aligned points to move together
 @export var axis_matched_editing = false
 	
-
 ## The PathOptions Resource that contains the options for this shape
 @export var path_options: PathOptions:
 	set = set_path_options
-	
 
 ## The Shaper Resource that configures how to build this Goshape
 @export var shaper: Shaper:
 	set = set_shaper
-	
 	
 ## Cause path twists to build along the path (useful for loop-de-loops) 
 @export var cascade_twists = false:
@@ -42,12 +38,10 @@ const BLOCKING = false
 		cascade_twists = value
 		mark_dirty()
 		
-
 ## An array of twists to apply to each point in the path
 @export var path_twists : Array[int]:
 	set = set_path_twists
 	
-
 var is_editing: bool: get = _get_is_editing
 
 var is_dirty := false

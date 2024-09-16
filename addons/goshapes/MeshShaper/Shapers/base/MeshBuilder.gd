@@ -11,18 +11,13 @@ var instances: Array[MeshInstance3D] = []
 func _init(_style: MeshShaper) -> void:
 	base_style = _style
 	reset()
-
-	
-func reset() -> void:
-	#meshes = []
-	#instances = []
-	pass
 	
 
 func build(data: GoshapeBuildData) -> void:
 	var meshsets := build_sets(data.path)
 	var mesh := MeshUtils.build_meshes(meshsets, null)
-	meshes.resize(data.index + 1)
+	if meshes.size() <= data.index:
+		meshes.resize(data.index + 1)
 	meshes[data.index] = mesh
 	
 
