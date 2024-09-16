@@ -32,7 +32,7 @@ extends WallShaper
 		set_dirty()
 
 ## An optional low poly mesh for collisions and quicker calculations
-@export var lod_distance := 100.0: 
+@export var lod_distance := 500.0: 
 	set(value):
 		lod_distance = value
 		set_dirty()
@@ -102,16 +102,15 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			
 		build_low_poly = style.low_poly_mesh != null
 		
-		
-		print("corners ", data.path.corners)
 		var paths := PathUtils.split_path_by_corner(data.path)
 		var path_count = paths.size()
-		print("path_count ", path_count)
 		build_count = path_count
+		if build_low_poly:
+			build_count *= 2
 		builds.resize(build_count)
 		
 		# calculate builds and reuses
-		var reuse_count := 0 # used to offset rebuild order 
+		var reuse_count := 0 # used to offset rebuilds 
 		for i in range(build_count):
 			var build := WallMeshSegmentData.new()
 			var path = paths[i % path_count]
@@ -120,7 +119,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			build.reuse = not rebuild and commits.size() > i
 			if build.reuse:
 				var committed := commits[i]
-				if committed.mesh == null or committed.anchor != build.anchor:
+				if committed == null or committed.mesh == null or committed.anchor != build.anchor:
 					build.reuse = false
 			if build.reuse:
 				reuse_count += 1
@@ -132,23 +131,29 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			var build_data := data.duplicate()
 			build_data.path = build_info.path
 			build_data.index = i
-			var order = offset
+			var build_order := offset
+			var commit_order := build_order
+			if build_low_poly and i > (build_count / 2):
+				# build higher poly versions last
+				build_order += path_count
+				commit_order += path_count * 2
 			if build_info.reuse:
 				build_info.mesh = commits[data.index].mesh
 			else:
-				order += reuse_count
-			jobs.append(GoshapeJob.new(self, build_data, build_segment, order))
-			jobs.append(GoshapeJob.new(self, build_data, commit_segment, order, GoshapeJob.Mode.Scene))
+				build_order += reuse_count # place at back of queue
+				commit_order += reuse_count
+			jobs.append(GoshapeJob.new(self, build_data, build_segment, build_order))
+			jobs.append(GoshapeJob.new(self, build_data, commit_segment, commit_order, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
 	func build_segment(data: GoshapeBuildData) -> void:
+		var use_low_poly = build_low_poly and data.index < (build_count / 2)
 		var build_info := builds[data.index]
 		if build_info.reuse:
-			print("reuse mesh ", data.index)
 			build_info.mesh = commits[data.index].mesh
 		if build_info.mesh == null:
-			var mesh_in := style.mesh
+			var mesh_in := style.mesh if not use_low_poly else style.low_poly_mesh
 			var meshsets := build_wall_mesh(data.path, mesh_in)
 			build_info.mesh = MeshUtils.build_meshes(meshsets, null)
 		if meshes.size() <= data.index:
@@ -163,8 +168,23 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		var instance := apply_mesh(data.parent, build.mesh)
 		if instance == null:
 			return
+		var instance_name = "%sWallMesh%d" % [data.parent.name, data.index]
+		if build_low_poly:
+			var range = style.lod_distance
+			if data.index < (build_count / 2):
+				instance_name = "%sWallMesh%dLow" % [data.parent.name, data.index]
+			else:
+				var low_poly_index := data.index - (build_count / 2)
+				var low_poly_version := instances[low_poly_index] if low_poly_index < instances.size() else null
+				if low_poly_version != null:
+					low_poly_version.visibility_range_begin = range
+					instance.visibility_range_end = range
+					instance_name = "%sWallMesh%dHigh" % [data.parent.name, low_poly_index]
+		instance.name = instance_name
 		instance.transform.origin = build.anchor
-		instances.append(instance)
+		if instances.size() < build_count:
+			instances.resize(build_count)
+		instances[data.index] = instance
 		if commits.size() < build_count:
 			commits.resize(build_count)
 		commits[data.index] = build
