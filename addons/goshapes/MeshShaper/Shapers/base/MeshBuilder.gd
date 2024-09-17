@@ -16,6 +16,9 @@ func _init(_style: MeshShaper) -> void:
 func build(data: GoshapeBuildData) -> void:
 	var meshsets := build_sets(data.path)
 	var mesh := MeshUtils.build_meshes(meshsets, null)
+	if mesh == null:
+		return
+	mesh.resource_name = "%s%s%d" % [data.parent.name, tag, data.index]
 	if meshes.size() <= data.index:
 		meshes.resize(data.index + 1)
 	meshes[data.index] = mesh
@@ -38,26 +41,28 @@ func build_sets(path: GoshapePath) -> Array[MeshSet]:
 	return []
 	
 	
-func apply_mesh(parent: Node3D, new_mesh: ArrayMesh, prefix := "Mesh") -> MeshInstance3D:
+func apply_mesh(parent: Node3D, new_mesh: ArrayMesh, name_tag := "Mesh") -> MeshInstance3D:
 	if new_mesh == null:
 		return
 	var mesh_node := MeshInstance3D.new()
 	mesh_node.mesh = new_mesh
-	mesh_node.name = "%s%s%s" % [prefix, tag, parent.get_child_count()]
+	mesh_node.name = "%s%s" % [new_mesh.resource_name, name_tag]
 	return SceneUtils.add_child(parent, mesh_node) as MeshInstance3D
 		
 		
-func apply_collider(parent: Node3D, collision_mesh: ArrayMesh) -> void:
+func apply_collider(parent: Node3D, collision_mesh: ArrayMesh) -> StaticBody3D:
 	if collision_mesh == null:
 		return
 	var collider_body = StaticBody3D.new()
-	collider_body.name = "%sBody%s" % [tag, parent.get_child_count()]
+	collider_body.name = "%sBody" % collision_mesh.resource_name
 	collider_body.collision_layer = base_style.collision_layer
 	SceneUtils.add_child(parent, collider_body)
 	var collider_shape = CollisionShape3D.new()
-	collider_shape.name = "%sCollider%s" % [tag, parent.get_child_count()]
+	collider_shape.name = "%sCollider" % collision_mesh.resource_name
 	collider_shape.shape = collision_mesh.create_trimesh_shape()
 	SceneUtils.add_child(collider_body, collider_shape)
+	collider_body.set_display_folded(true)
+	return collider_body
 	
 	
 func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:

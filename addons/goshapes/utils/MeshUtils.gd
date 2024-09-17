@@ -166,17 +166,14 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 	var lengths: Array[float] = []
 	lengths.resize(point_count)
 	
-	var segment_lengths: Array[float]
-	segment_lengths.resize(path.get_corner_count())
-	segment_lengths.fill(0.0)
+	var segment_lengths: Array[float] = []
 	
 	var path_length := 0.0
-	for i in range(point_count):
+	for i in range(point_count - 1):
 		var n := (i + 1) % point_count
 		var dif := points[n] - points[i]
 		var section_length := dif.length()
-		var corner = path.get_corner(i)
-		segment_lengths[corner] = segment_lengths[corner] + section_length
+		segment_lengths.append(section_length)
 		lengths[i] = section_length
 		path_length += section_length
 	
@@ -204,6 +201,8 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 		var pc := 0.0 if len_end == len_start else (v.x - len_start) / (len_end - len_start)
 		var up := ua.lerp(ub, pc)
 		var right := (pb - pa).normalized()
+		if ai == bi and ai > 0:
+			right = (pa - points[ai - 1]).normalized()
 		var out := right.cross(up)
 		var down := -up
 		var orig_x := v.x - len_start

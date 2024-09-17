@@ -80,6 +80,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 	var commits: Array[WallMeshSegmentData] = []
 	var builds: Array[WallMeshSegmentData] = []
 	var build_count := 0
+	var parents: Array[Node3D]
 	
 	func _init(_style: WallMeshSegmentShaper) -> void:
 		super._init(_style)
@@ -138,12 +139,14 @@ class WallMeshSegmentBuilder extends WallBuilder:
 				build_order += path_count
 				commit_order += path_count * 2
 			if build_info.reuse:
-				build_info.mesh = commits[data.index].mesh
+				build_info.mesh = commits[i].mesh
 			else:
 				build_order += reuse_count # place at back of queue
 				commit_order += reuse_count
 			jobs.append(GoshapeJob.new(self, build_data, build_segment, build_order))
 			jobs.append(GoshapeJob.new(self, build_data, commit_segment, commit_order, GoshapeJob.Mode.Scene))
+			if should_build_colliders() and (not build_low_poly or i < (build_count / 2)):
+				jobs.append(GoshapeJob.new(self, build_data, commit_collider, commit_order + build_count, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
@@ -156,6 +159,9 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			var mesh_in := style.mesh if not use_low_poly else style.low_poly_mesh
 			var meshsets := build_wall_mesh(data.path, mesh_in)
 			build_info.mesh = MeshUtils.build_meshes(meshsets, null)
+			if build_info.mesh == null:
+				return
+			build_info.mesh.resource_name = "%s%s%d" % [data.parent.name, tag, data.index]
 		if meshes.size() <= data.index:
 			meshes.resize(data.index + 1)
 		meshes[data.index] = build_info.mesh
@@ -165,23 +171,36 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		if data.index >= builds.size():
 			return
 		var build := builds[data.index]
-		var instance := apply_mesh(data.parent, build.mesh)
+		if build == null or build.mesh == null:
+			return
+		var parent_name = build.mesh.resource_name
+		var parent_index = data.index
+		if build_low_poly and data.index >= (build_count / 2):
+			parent_index = parent_index - (build_count / 2)
+		if parent_index >= parents.size():
+			parents.resize(parent_index + 1)
+		if parents[parent_index] == null:
+			parents[parent_index] = SceneUtils.add_child(data.parent, Node3D.new())
+			parents[parent_index].name = parent_name
+			parents[parent_index].transform.origin = build.anchor
+		var parent = parents[parent_index]
+		parent.set_display_folded(true)
+		var instance := apply_mesh(parent, build.mesh)
 		if instance == null:
 			return
-		var instance_name = "%sWallMesh%d" % [data.parent.name, data.index]
+		var instance_name = parent_name + "Mesh"
 		if build_low_poly:
 			var range = style.lod_distance
 			if data.index < (build_count / 2):
-				instance_name = "%sWallMesh%dLow" % [data.parent.name, data.index]
+				instance_name = parent_name + "MeshLow"
 			else:
 				var low_poly_index := data.index - (build_count / 2)
 				var low_poly_version := instances[low_poly_index] if low_poly_index < instances.size() else null
 				if low_poly_version != null:
 					low_poly_version.visibility_range_begin = range
 					instance.visibility_range_end = range
-					instance_name = "%sWallMesh%dHigh" % [data.parent.name, low_poly_index]
+					instance_name = parent_name + "MeshHigh"
 		instance.name = instance_name
-		instance.transform.origin = build.anchor
 		if instances.size() < build_count:
 			instances.resize(build_count)
 		instances[data.index] = instance
@@ -189,6 +208,17 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			commits.resize(build_count)
 		commits[data.index] = build
 		
+		
+	func commit_collider(data: GoshapeBuildData) -> void:
+		if data.index >= builds.size():
+			return
+		var build := builds[data.index]
+		if build == null or build.mesh == null:
+			return
+		var collision_mesh := build.mesh
+		var parent = parents[data.index]
+		apply_collider(parent, collision_mesh)
+	
 		
 	func build_wall_mesh(path: GoshapePath, ref_mesh: Mesh) -> Array[MeshSet]:
 		if not ref_mesh:
