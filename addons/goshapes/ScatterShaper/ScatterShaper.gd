@@ -126,10 +126,16 @@ func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 class ScatterBuilder extends ShapeBuilder:
 	
 	var style: ScatterShaper
+	var instances = []
+	
 	func _init(_style: ScatterShaper):
 		style = _style
 
-	var instances = []
+	
+	func reset() -> void:
+		super.reset()
+		instances = []
+	
 		
 	func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 		var jobs: Array[GoshapeJob] = []

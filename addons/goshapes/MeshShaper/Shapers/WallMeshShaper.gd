@@ -71,6 +71,8 @@ class WallMeshBuilder extends WallBuilder:
 		if use_low_poly:
 			jobs.append(GoshapeJob.new(self, data, build_low, offset))
 			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, GoshapeJob.Mode.Scene))
+		if should_build_colliders():
+			jobs.append(GoshapeJob.new(self, data, commit_colliders, offset + 10, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		

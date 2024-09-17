@@ -162,20 +162,29 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 	if close:
 		points.append(points[0])
 		point_count += 1
+		
 	# calculate directions for segments
 	var lengths: Array[float] = []
 	lengths.resize(point_count)
 	
 	var segment_lengths: Array[float] = []
-	
 	var path_length := 0.0
+	var segment_length := 0.0
+	var prev_corner = -1
 	for i in range(point_count - 1):
 		var n := (i + 1) % point_count
 		var dif := points[n] - points[i]
-		var section_length := dif.length()
-		segment_lengths.append(section_length)
-		lengths[i] = section_length
-		path_length += section_length
+		var point_length := dif.length()
+		var corner = path.get_corner(i)
+		lengths[i] = point_length
+		path_length += point_length
+		segment_length += point_length
+		if corner != prev_corner:
+			segment_lengths.append(segment_length)
+			prev_corner = corner
+			segment_length = 0.0
+	if segment_length > 0.0:
+		segment_lengths.append(segment_length)
 	
 	var result := mesh_clone_to_length(meshset, segment_lengths, gaps)
 	# wrap combined verts around path
