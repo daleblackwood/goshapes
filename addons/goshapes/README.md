@@ -22,13 +22,14 @@ You can also use paths to procedurally place instances:
 
 [Screenshots](https://imgur.com/a/R0b3cXD)
 
-### What's New in 1.3.0
-Goshapes 1.3.0 has been released Sept 12th, 2024. Some new features include:
+### What's New in 1.3
+Goshapes 1.3 has been released Sept 12th, 2024. Some new features include:
 - Wider compatibility with Godot 4.2.x, 4.3.x
 - Added Mound Caps and Curved Walls
 - Gaps in Mesh Walls
 - Support for LOD wall meshes, colliders
 - Threaded building
+- Segmented wall mesh (in testing) which allows for caching and better threaded building
 
 ### Installation
 To install, use the Godot Asset Library or clone this repository into the addons folder of your Godot 4 project, so that its path in your project is `res://addons/goshapes`.
