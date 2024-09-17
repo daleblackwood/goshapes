@@ -42,13 +42,30 @@ extends WallShaper
 	set(value):
 		low_poly_mesh = value
 		set_dirty(true)
+		
+## Built from a certain part of the mesh
+@export var gap_from := 0:
+	set(value):
+		gap_from = value
+		set_dirty()
+		
+## Built to a certain part of the mesh
+@export var gap_to := 0:
+	set(value):
+		gap_to = value
+		set_dirty()
 			
-## The material to apply to the generated mesh
+## Holes in the wall
 @export var gaps: Array[int] = []:
 	set(value):
 		gaps = value
 		set_dirty()
-			
+		
+@export var gap_end_item: ScatterSource:
+	set(value):
+		gap_end_item = value
+		set_dirty()
+		
 @export var mesh_caching := true:
 	set(value):
 		mesh_caching = value
@@ -71,6 +88,7 @@ class WallMeshSegmentData:
 	var reuse := false
 	var mesh: ArrayMesh
 	var path: GoshapePath
+	var skip := false
 
 
 class WallMeshSegmentBuilder extends WallBuilder:
@@ -81,6 +99,8 @@ class WallMeshSegmentBuilder extends WallBuilder:
 	var builds: Array[WallMeshSegmentData] = []
 	var build_count := 0
 	var parents: Array[Node3D]
+	var applied_gaps := PackedByteArray()
+	
 	
 	func _init(_style: WallMeshSegmentShaper) -> void:
 		super._init(_style)
@@ -105,6 +125,26 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		
 		var paths := PathUtils.split_path_by_corner(data.path)
 		var path_count = paths.size()
+		
+		applied_gaps.resize(path_count)
+		applied_gaps.fill(0)
+		var gap_from = clamp(style.gap_from, 0, path_count - 1)
+		var gap_to = clamp(style.gap_to, 0, path_count - 1)
+		if gap_to == 0:
+			gap_to = path_count - 1
+		for i in range(path_count):
+			if i < gap_from:
+				applied_gaps.set(i, 1)
+				continue
+			if i > gap_to:
+				applied_gaps.set(i, 1)
+				continue
+			for gap in style.gaps:
+				if gap == i:
+					applied_gaps.set(i, 1)
+		if not style.closed:
+			applied_gaps.set(path_count - 1, 1)
+		
 		build_count = path_count
 		if build_low_poly:
 			build_count *= 2
@@ -113,8 +153,10 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		# calculate builds and reuses
 		var reuse_count := 0 # used to offset rebuilds 
 		for i in range(build_count):
+			var path_index = i % path_count
+			var path = paths[path_index]
 			var build := WallMeshSegmentData.new()
-			var path = paths[i % path_count]
+			build.skip = applied_gaps[path_index] == 1
 			build.anchor = (path.get_point(0) + path.get_point(path.point_count - 1)) * 0.5
 			build.path = PathUtils.move_path(path, -build.anchor)
 			build.reuse = not rebuild and commits.size() > i
@@ -127,6 +169,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			builds[i] = build
 		
 		# enqueue jobs
+		var has_gaps = false
 		for i in range(build_count):
 			var build_info = builds[i]
 			var build_data := data.duplicate()
@@ -138,6 +181,9 @@ class WallMeshSegmentBuilder extends WallBuilder:
 				# build higher poly versions last
 				build_order += path_count
 				commit_order += path_count * 2
+			if build_info.skip:
+				has_gaps = true
+				continue
 			if build_info.reuse:
 				build_info.mesh = commits[i].mesh
 			else:
@@ -147,6 +193,8 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			jobs.append(GoshapeJob.new(self, build_data, commit_segment, commit_order, GoshapeJob.Mode.Scene))
 			if should_build_colliders() and (not build_low_poly or i < (build_count / 2)):
 				jobs.append(GoshapeJob.new(self, build_data, commit_collider, commit_order + build_count, GoshapeJob.Mode.Scene))
+		if style.gap_end_item and has_gaps:
+			jobs.append(GoshapeJob.new(self, data, create_ends, build_count + 1, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
@@ -218,6 +266,19 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		var collision_mesh := build.mesh
 		var parent = parents[data.index]
 		apply_collider(parent, collision_mesh)
+		
+		
+	func create_ends(data: GoshapeBuildData) -> void:
+		var was_gap := false
+		for i in range(applied_gaps.size()):
+			var is_gap := applied_gaps[i] == 1
+			if is_gap == was_gap:
+				continue
+			was_gap = is_gap
+			var end_position := builds[i].path.get_point(0) + builds[i].anchor
+			var instance := style.gap_end_item.instantiate(i)
+			instance.transform.origin = end_position
+			SceneUtils.add_child(data.parent, instance)
 	
 		
 	func build_wall_mesh(path: GoshapePath, ref_mesh: Mesh) -> Array[MeshSet]:
@@ -236,9 +297,6 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		var closed := style.closed
 		var material_count := materials.size()
 		var point_count := path.points.size()
-		for i in range(style.gaps.size()):
-			style.gaps[i] = clamp(style.gaps[i], 0, path.get_corner_count())
-		var gaps := style.gaps
 		if point_count < 2:
 			return []
 			
@@ -247,7 +305,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		for i in range(meshset_count):
 			var meshset := meshsets[i]
 			meshset = MeshUtils.scale_mesh(meshset, scale)
-			meshset = MeshUtils.wrap_mesh_to_path(meshset, path, false, gaps)
+			meshset = MeshUtils.wrap_mesh_to_path(meshset, path, false)
 			meshset = MeshUtils.taper_mesh(meshset, path, path.taper)
 			if material_count > 0:
 				meshset.material = materials[i % material_count]
