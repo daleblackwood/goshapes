@@ -83,22 +83,24 @@ func _update():
 func create_builders() -> Array[ShapeBuilder]:
 	var result: Array[ShapeBuilder] = []
 	if cap_shaper != null and cap_shaper.enabled:
-		result += cap_shaper.get_builders()
+		result += cap_shaper.create_builders()
 	if wall_shaper != null and wall_shaper.enabled:
-		result += wall_shaper.get_builders()
+		result += wall_shaper.create_builders()
 	if bottom_shaper != null and bottom_shaper.enabled:
 		bottom_shaper.cap_shaper = cap_shaper
-		result += bottom_shaper.get_builders()
+		result += bottom_shaper.create_builders()
 	return result
 	
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	var local_data = data.duplicate()
+	local_data.owner = self
 	var result: Array[GoshapeJob] = []
 	if cap_shaper != null and cap_shaper.enabled:
-		result += cap_shaper.get_build_jobs(data)
+		result += cap_shaper.get_build_jobs(local_data)
 	if wall_shaper != null and wall_shaper.enabled:
-		result += wall_shaper.get_build_jobs(data)
+		result += wall_shaper.get_build_jobs(local_data)
 	if bottom_shaper != null and bottom_shaper.enabled:
 		bottom_shaper.cap_shaper = cap_shaper
-		result += bottom_shaper.get_build_jobs(data)
+		result += bottom_shaper.get_build_jobs(local_data)
 	return result

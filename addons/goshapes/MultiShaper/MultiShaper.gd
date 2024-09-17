@@ -44,13 +44,15 @@ func create_builders() -> Array[ShapeBuilder]:
 	var result: Array[ShapeBuilder] = []
 	for shaper in shapers:
 		if shaper != null and shaper.enabled:
-			result += shaper.get_builders()
+			result += shaper.create_builders()
 	return result
 	
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
+	var local_data = data.duplicate()
+	local_data.owner = self
 	var result: Array[GoshapeJob] = []
 	for shaper in shapers:
 		if shaper != null and shaper.enabled:
-			result += shaper.get_build_jobs(data)
+			result += shaper.get_build_jobs(local_data)
 	return result

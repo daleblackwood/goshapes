@@ -1,11 +1,7 @@
 @tool
 class_name WallMeshSegmentShaper
 extends WallShaper
-## A Shaper that wraps repeating mesh geometry around the path
-
-@export var warning := "EXPERIMENTAL SHAPER":
-	set(value):
-		pass
+## A Shaper that wraps repeating mesh geometry around the path, for large meshes
 
 ## The mesh to repeat around the path (repeats along the x-axis)
 @export var mesh: Mesh: 
@@ -221,6 +217,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		var build := builds[data.index]
 		if build == null or build.mesh == null:
 			return
+		build.mesh.surface_set_material(0, style.material)
 		var parent_name = build.mesh.resource_name
 		var parent_index = data.index
 		if build_low_poly and data.index >= (build_count / 2):

@@ -6,12 +6,16 @@
 
 [resource]
 script = ExtResource("4_qevbg")
+warning = "EXPERIMENTAL SHAPER"
 mesh = ExtResource("2_lh2w6")
 scale = 0.9
 closed = true
 material = ExtResource("1_ijhax")
 lod_distance = 100.0
+gap_from = 0
+gap_to = 0
 gaps = Array[int]([])
+mesh_caching = true
 build_collider = true
 collision_layer = 1
 enabled = true

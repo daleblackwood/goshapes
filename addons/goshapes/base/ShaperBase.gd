@@ -8,21 +8,27 @@ extends Resource
 		enabled = value
 		emit_changed()
 		
-var builders: Array[ShapeBuilder] = []
+#var builders: Dictionary[ShapeBuilder] = []
+var builders: Dictionary = {}
 		
 func create_builders() -> Array[ShapeBuilder]:
 	return []
 	
-func get_builders() -> Array[ShapeBuilder]:
-	if builders.size() < 1:
-		builders = create_builders()
-	for builder in builders:
-		builder.reset()
-	return builders
+func get_builders(owner_id: int) -> Array[ShapeBuilder]:
+	if not builders.has(owner_id):
+		var local_builders = create_builders()
+		for builder in local_builders:
+			builder.reset()
+		builders[owner_id] = local_builders
+	return builders[owner_id]
+	
+func clear_builders(owner_id: int) -> void:
+	if builders.has(owner_id):
+		builders.erase(owner_id)
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 	if data.rebuild:
-		builders.resize(0)
+		clear_builders(data.get_owner_id())
 	return []
 	
 func get_name() -> String:
@@ -33,7 +39,7 @@ func build(data: GoshapeBuildData) -> void:
 		return
 		
 	var start_time = Time.get_ticks_msec()
-	var builders = get_builders()
+	var builders = get_builders(data.get_owner_id())
 	if builders.size() > 0:
 		for builder in builders:
 			if builder != null:

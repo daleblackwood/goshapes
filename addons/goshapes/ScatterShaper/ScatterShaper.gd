@@ -119,7 +119,7 @@ func create_builders() -> Array[ShapeBuilder]:
 	
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
-	var builder = get_builders()[0]
+	var builder = get_builders(data.get_owner_id())[0]
 	return builder.get_build_jobs(data)
 	
 			
@@ -225,6 +225,8 @@ class ScatterBuilder extends ShapeBuilder:
 		var ground_angle_conformance := style.ground_angle_conformance
 		var collision_layer := style.collision_layer
 		for inst in instances:
+			if inst == null:
+				continue
 			var normal := Vector3.UP
 			var pos = inst.transform.origin
 			var basis = inst.transform.basis
