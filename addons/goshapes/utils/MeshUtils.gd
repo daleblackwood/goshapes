@@ -133,7 +133,7 @@ static func vert_uv(points: PackedVector3Array, normal: Vector3) -> PackedVector
 	
 	
 static func flip_normals(meshset: MeshSet) -> MeshSet:
-	var result := meshset.clone()
+	var result := meshset.duplicate()
 	var vert_vount := result.vert_count
 	for i in range(vert_vount):
 		result.set_normal(i, -result.verts[i])
@@ -162,25 +162,31 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 	if close:
 		points.append(points[0])
 		point_count += 1
+		
 	# calculate directions for segments
 	var lengths: Array[float] = []
 	lengths.resize(point_count)
 	
-	var corner_lengths: Array[float]
-	corner_lengths.resize(path.get_corner_count())
-	corner_lengths.fill(0.0)
-	
+	var segment_lengths: Array[float] = []
 	var path_length := 0.0
-	for i in range(point_count):
+	var segment_length := 0.0
+	var prev_corner = -1
+	for i in range(point_count - 1):
 		var n := (i + 1) % point_count
 		var dif := points[n] - points[i]
-		var section_length := dif.length()
+		var point_length := dif.length()
 		var corner = path.get_corner(i)
-		corner_lengths[corner] = corner_lengths[corner] + section_length
-		lengths[i] = section_length
-		path_length += section_length
+		lengths[i] = point_length
+		path_length += point_length
+		segment_length += point_length
+		if corner != prev_corner:
+			segment_lengths.append(segment_length)
+			prev_corner = corner
+			segment_length = 0.0
+	if segment_length > 0.0:
+		segment_lengths.append(segment_length)
 	
-	var result := mesh_clone_to_length(meshset, corner_lengths, gaps)
+	var result := mesh_clone_to_length(meshset, segment_lengths, gaps)
 	# wrap combined verts around path
 	var vert_count := result.vert_count
 	for i in range(vert_count):
@@ -204,6 +210,8 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 		var pc := 0.0 if len_end == len_start else (v.x - len_start) / (len_end - len_start)
 		var up := ua.lerp(ub, pc)
 		var right := (pb - pa).normalized()
+		if ai == bi and ai > 0:
+			right = (pa - points[ai - 1]).normalized()
 		var out := right.cross(up)
 		var down := -up
 		var orig_x := v.x - len_start
@@ -216,7 +224,7 @@ static func wrap_mesh_to_path(meshset: MeshSet, path: GoshapePath, close: bool, 
 	return result
 	
 	
-static func mesh_clone_to_length(mesh_in: MeshSet, corner_lengths: Array[float], gaps: Array[int] = []) -> MeshSet:
+static func mesh_clone_to_length(mesh_in: MeshSet, segment_lengths: Array[float], gaps: Array[int] = []) -> MeshSet:
 	# calculate segment sizes
 	var min_x = INF
 	var max_x = -INF
@@ -227,12 +235,12 @@ static func mesh_clone_to_length(mesh_in: MeshSet, corner_lengths: Array[float],
 			max_x = v.x
 	var mesh_length = max_x - min_x
 	var vert_count = mesh_in.verts.size()
-	var corner_count = corner_lengths.size()
+	var segment_count = segment_lengths.size()
 	var sets: Array[MeshSet] = []
 	var off_x := 0.0
 	var off_u := 0.0
-	for corner in range(corner_count):
-		var corner_length = corner_lengths[corner]
+	for corner in range(segment_count):
+		var corner_length = segment_lengths[corner]
 		var mesh_count := floor(corner_length / mesh_length)
 		if mesh_count < 1:
 			mesh_count = 1
@@ -250,7 +258,7 @@ static func mesh_clone_to_length(mesh_in: MeshSet, corner_lengths: Array[float],
 			off_u += 1.0
 			if skip_corner:
 				continue
-			var ms = mesh_in.clone()
+			var ms := mesh_in.duplicate()
 			for j in vert_count:
 				var v = ms.verts[j]
 				v.x = start_x + v.x * x_multi
@@ -341,7 +349,7 @@ static func smooth_mesh(meshset: MeshSet) -> MeshSet:
 	
 	
 static func offset_mesh(meshset: MeshSet, offset: Vector3) -> MeshSet:
-	var result := meshset.clone()
+	var result := meshset.duplicate()
 	var vert_count := meshset.vert_count
 	for i in range(vert_count):
 		var v := result.verts[i]
@@ -386,7 +394,7 @@ static func combine_sets(sets: Array[MeshSet]) -> MeshSet:
 	
 	
 static func scale_mesh(meshset: MeshSet, new_scale: float) -> MeshSet:
-	var result := meshset.clone()
+	var result := meshset.duplicate()
 	var vert_count := meshset.verts.size()
 	var verts := PackedVector3Array(meshset.verts)
 	verts.resize(vert_count)
@@ -399,7 +407,7 @@ static func scale_mesh(meshset: MeshSet, new_scale: float) -> MeshSet:
 	
 static func taper_mesh(meshset: MeshSet, path: GoshapePath, taper: float) -> MeshSet:
 	var center := PathUtils.get_path_center(path)
-	var result := meshset.clone()
+	var result := meshset.duplicate()
 	var vert_count := meshset.verts.size()
 	var verts := PackedVector3Array(meshset.verts)
 	verts.resize(vert_count)

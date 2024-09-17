@@ -40,7 +40,7 @@ enum RoundingMode { Auto, Ignore_Edges, Off }
 
 
 ## Increases the resolution of path curve data
-@export_range(1, 4, 1) var interpolate := 1:
+@export_range(1, 3, 1) var interpolate := 1:
 	set(value):
 		interpolate = value
 		emit_changed()

@@ -21,6 +21,8 @@ extends Shaper
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 	var result: Array[GoshapeJob] = []
+	if data.rebuild:
+		self.builders = []
 	var builders := get_builders()
 	var offset = get_order_offset()
 	for builder in builders:

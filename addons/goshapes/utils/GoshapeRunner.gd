@@ -1,6 +1,8 @@
 @tool
 class_name GoshapeRunner
 
+const PRINT_DEBUG := false
+
 var queue: Array[GoshapeJob] = []
 var run_count := 0
 var is_busy := false: get = get_is_busy
@@ -14,8 +16,8 @@ func cancel(owner: Object) -> void:
 		var job = queue[i]
 		if job.owner == owner or job.data.parent == owner:
 			queue.remove_at(i)
-		if job.state == GoshapeJob.State.Running:
-			job_cancel(job)
+			if job.state == GoshapeJob.State.Running:
+				job_cancel(job)
 			
 			
 func enqueue(job: GoshapeJob) -> void:
@@ -23,7 +25,7 @@ func enqueue(job: GoshapeJob) -> void:
 	for i in range(queue.size() - 1, -1, -1):
 		if queue[i].state == GoshapeJob.State.Running:
 			break
-		if queue[i].order < job.order:
+		if queue[i].order <= job.order:
 			break
 		queue_index = i
 	if queue_index >= 0:
@@ -38,14 +40,14 @@ func run() -> void:
 	
 
 func next() -> void:
-	while queue.size() > 0 and queue[0].state >= GoshapeJob.State.Done:
+	while queue.size() > 0 and queue[0].state > GoshapeJob.State.Running:
 		queue.pop_front()
 		
 	if queue.size() < 1:
 		return
 		
 	var job = queue[0]
-	if job.state == GoshapeJob.State.Running:
+	if job.state >= GoshapeJob.State.Running:
 		return
 		
 	job.state = GoshapeJob.State.Running
@@ -62,15 +64,20 @@ func job_run() -> void:
 	var job = queue[0]
 	if job.state <= GoshapeJob.State.Running:
 		job.state = GoshapeJob.State.Running
+		job.start_time = Time.get_ticks_msec()
 		job.run()
 	while not job.has_ran and job.state == GoshapeJob.State.Running:
-		OS.delay_msec(1)
+		continue
 	job_complete.call_deferred(job)
 	
 	
 func job_complete(job: GoshapeJob) -> void:
-	job.thread.wait_to_finish()
-	job.state = GoshapeJob.State.Done
+	if job.thread != null:
+		job.thread.wait_to_finish()
+	if job.state == GoshapeJob.State.Running:
+		job.state = GoshapeJob.State.Done
+	if PRINT_DEBUG:
+		print_debug("job %s took %dms" % [job.callable.get_method(), Time.get_ticks_msec() - job.start_time])
 	next.call()
 	
 	

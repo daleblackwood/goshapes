@@ -6,56 +6,47 @@ extends WallShaper
 ## The mesh to repeat around the path (repeats along the x-axis)
 @export var mesh: Mesh: 
 	set(value):
-		if mesh != value:
-			mesh = value
-			emit_changed()
+		mesh = value
+		emit_changed()
 	
 ## The scale to apply to each mesh segment	
 @export_range(0.1, 10.0, 0.1) var scale := 1.0:
 	set(value):
-		if scale != value:
-			scale = value
-			emit_changed()
+		scale = value
+		emit_changed()
 		
 ## Causes the path to close between the first and last point
 @export var closed := true:
 	set(value):
-		if closed != value:
-			closed = value
-			emit_changed()
-			
+		closed = value
+		emit_changed()
 
 ## The material to apply to the generated mesh
 @export var material: Material:
 	set(value):
-		if material != value:
-			material = value
-			emit_changed()
+		material = value
+		emit_changed()
 
 			
 ## An optional low poly mesh for collisions and quicker calculations
-@export var mesh_low: Mesh: 
+@export var mesh_low_poly: Mesh: 
 	set(value):
-		if mesh_low != value:
-			mesh_low = value
-			emit_changed()
-			
+		mesh_low_poly = value
+		emit_changed()
 			
 ## An optional low poly mesh for collisions and quicker calculations
 @export var lod_distance := 100.0: 
 	set(value):
-		if lod_distance != value:
-			lod_distance = value
-			emit_changed()
+		lod_distance = value
+		emit_changed()
 			
-
 ## The material to apply to the generated mesh
 @export var gaps: Array[int] = []:
 	set(value):
 		if gaps != value:
 			gaps = value
 			emit_changed()
-			
+	
 
 func create_builders() -> Array[ShapeBuilder]:
 	return [WallMeshBuilder.new(self)]
@@ -64,7 +55,7 @@ func create_builders() -> Array[ShapeBuilder]:
 class WallMeshBuilder extends WallBuilder:
 	
 	var style: WallMeshShaper
-	var child_mesh_low: MeshInstance3D
+	var use_low_poly := false
 	
 	func _init(_style: WallMeshShaper):
 		super._init(_style)
@@ -73,31 +64,42 @@ class WallMeshBuilder extends WallBuilder:
 		
 	func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:
 		var base_offset = offset
-		if style.mesh_low != null:
+		if style.mesh_low_poly != null:
 			base_offset += 2
+			use_low_poly = true
 		var jobs := super.get_build_jobs(data, base_offset)
-		if style.mesh_low != null:
+		if use_low_poly:
 			jobs.append(GoshapeJob.new(self, data, build_low, offset))
 			jobs.append(GoshapeJob.new(self, data, commit_low, offset + 1, GoshapeJob.Mode.Scene))
+		if should_build_colliders():
+			jobs.append(GoshapeJob.new(self, data, commit_colliders, offset + 10, GoshapeJob.Mode.Scene))
 		return jobs
 		
 		
 	func build_low(data: GoshapeBuildData) -> void:
-		child_mesh_low = null
-		var meshsets = build_wall_mesh(data.path, style.mesh_low)
-		mesh_low = MeshUtils.build_meshes(meshsets, null)
+		var meshsets = build_wall_mesh(data.path, style.mesh_low_poly)
+		var mesh_low = MeshUtils.build_meshes(meshsets, null)
+		meshes.append(mesh_low)
 		
 		
 	func commit_low(data: GoshapeBuildData) -> void:
-		child_mesh_low = apply_mesh(data.parent, mesh_low, "MeshLow")
+		var mesh_low = meshes[0]
+		var instance = apply_mesh(data.parent, mesh_low, "MeshLow")
+		instances.append(instance)
 		
 		
 	func commit(data: GoshapeBuildData) -> void:
 		super.commit(data)
-		if child_mesh != null and child_mesh_low != null:
+		var instance_count = instances.size()
+		if instance_count > 1 and use_low_poly:
 			var range = style.lod_distance
-			child_mesh.visibility_range_end = range
-			child_mesh_low.visibility_range_begin = range
+			for i in range(instance_count):
+				var is_low = i < instance_count / 2
+				var instance = instances[i]
+				if is_low:
+					instance.visibility_range_begin = range
+				else:
+					instance.visibility_range_end = range
 		
 
 	func build_sets(path: GoshapePath) -> Array[MeshSet]:

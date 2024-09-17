@@ -51,7 +51,7 @@ func get_tri_count() -> int:
 	return tris.size()
 	
 
-func clone() -> MeshSet:
+func duplicate() -> MeshSet:
 	var result := MeshSet.new()
 	result.copy(self)
 	return result
