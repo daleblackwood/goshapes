@@ -29,16 +29,22 @@ enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 			height_map = value
 			emit_changed()
 			
-@export_range(0.01, 10.0) var height_map_frequency: float = 1.0:
+@export_range(0.01, 50.0) var height_map_frequency: float = 1.0:
 	set(value):
 		if height_map_frequency != value:
 			height_map_frequency = value
 			emit_changed()
 			
-@export_range(0.01, 10.0) var height_map_multiplier: float = 1.0:
+@export_range(0.01, 50.0) var height_map_multiplier: float = 1.0:
 	set(value):
 		if height_map_multiplier != value:
 			height_map_multiplier = value
+			emit_changed()
+			
+@export_range(0.0, 1.0) var plateau: float = 1.0:
+	set(value):
+		if plateau != value:
+			plateau = value
 			emit_changed()
 			
 			
@@ -66,6 +72,10 @@ class CapMoundBuilder extends CapBuilder:
 			points.resize(point_count)
 			for i in range(point_count):
 				var p = lerp_mound_p(mid, path.get_point(i), j, iterations, style.mound_type, height_img, style.height_map_frequency, style.height_map_multiplier)
+				if j > 0 and style.plateau != null and style.plateau > 0.0:
+					var a = path.get_point(i)
+					a.y = p.y
+					p = lerp(p, a, clampf(style.plateau, 0.0, 1.0))
 				points.set(i, p)
 			paths.append(GoshapePath.new(points))
 		var ms := MeshUtils.fill_concentric_paths(paths, false)
