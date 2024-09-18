@@ -140,34 +140,6 @@ static func round_path(path: GoshapePath, rounding_mode: PathOptions.RoundingMod
 	return result
 	
 	
-static func split_path_by_corner(path: GoshapePath) -> Array[GoshapePath]:
-	var corner_count := 0
-	var prev_corner = -1
-	var corner_sizes := PackedInt32Array()
-	for corner in path.corners:
-		if corner != prev_corner:
-			corner_sizes.append(1)
-			corner_count += 1
-			prev_corner = corner
-		else:
-			corner_sizes.set(corner_count - 1, corner_sizes[corner_count - 1] + 1)
-	var result: Array[GoshapePath] = []
-	result.resize(corner_count)
-	var corner_offset := 0
-	for corner in range(corner_count):
-		var point_count := corner_sizes[corner] + 1
-		var cp := GoshapePath.new()
-		cp.set_point_count(point_count)
-		for i in range(point_count):
-			var pi := (i + corner_offset) % path.point_count
-			cp.points.set(i, path.get_point(pi))
-			cp.ups.set(i, path.get_up(pi))
-			cp.corners.set(i, 0)
-		result[corner] = cp
-		corner_offset += point_count - 1
-	return result
-	
-	
 static func round_path_it(path: GoshapePath, rounding_mode: PathOptions.RoundingMode, round_dist: float) -> GoshapePath:
 	var point_count = path.points.size()
 	var points = PackedVector3Array()
@@ -316,6 +288,56 @@ static func bevel_path(path: GoshapePath, taper: float) -> PackedVector3Array:
 		var forward = right.cross(up)
 		result[i * 2] = a + forward * taper
 		result[i * 2 + 1] = bp + forward * taper
+	return result
+	
+	
+static func split_path_by_corner(path: GoshapePath) -> Array[GoshapePath]:
+	var corner_count := 0
+	var prev_corner = -1
+	var corner_sizes := PackedInt32Array()
+	for corner in path.corners:
+		if corner != prev_corner:
+			corner_sizes.append(1)
+			corner_count += 1
+			prev_corner = corner
+		else:
+			corner_sizes.set(corner_count - 1, corner_sizes[corner_count - 1] + 1)
+	var result: Array[GoshapePath] = []
+	result.resize(corner_count)
+	var corner_offset := 0
+	for corner in range(corner_count):
+		var point_count := corner_sizes[corner] + 1
+		var cp := GoshapePath.new()
+		cp.set_point_count(point_count)
+		for i in range(point_count):
+			var pi := (i + corner_offset) % path.point_count
+			cp.points.set(i, path.get_point(pi))
+			cp.ups.set(i, path.get_up(pi))
+			cp.corners.set(i, 0)
+		result[corner] = cp
+		corner_offset += point_count - 1
+	return result
+	
+	
+static func duplicate_paths(paths: Array[GoshapePath]) -> Array[GoshapePath]:
+	var result: Array[GoshapePath] = []
+	result.resize(paths.size())
+	for i in range(paths.size()):
+		result[i] = paths[i].duplicate()
+	return result
+	
+	
+static func overlap_paths(paths: Array[GoshapePath], overlap: float) -> Array[GoshapePath]:
+	var result := duplicate_paths(paths)
+	for path in paths:
+		var a = path.get_point(0)
+		var b = path.get_point(1)
+		a += (a - b).normalized() * overlap
+		path.points.set(0, a)
+		a = path.get_point(path.point_count - 1)
+		b = path.get_point(path.point_count - 2)
+		a += (a - b).normalized() * overlap
+		path.points.set(path.point_count - 1, a)
 	return result
 	
 	
