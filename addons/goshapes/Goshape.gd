@@ -113,8 +113,8 @@ func _edit_end() -> void:
 	
 	
 func _init_curve() -> void:
-	if not curve is Curve3D:
-		curve = Curve3D.new()
+	if curve == null:
+		curve = GoCurve3D.new()
 	curve.clear_points()
 	if path_options.line > 0.0:
 		var extent = path_options.line * 0.5
@@ -150,8 +150,16 @@ func recenter_points():
 func on_curve_changed():
 	if not _get_is_editing():
 		return
+		
 	if is_dirty:
 		return
+		
+	if edit_proxy.use_y_lock:
+		for i in curve.point_count:
+			var p = curve.get_point_position(i)
+			if last_curve_points[i].y != p.y:
+				p.y = last_curve_points[i].y
+				curve.set_point_position(i, p)
 	
 	# manual curve change detection
 	var has_change = false
@@ -172,9 +180,9 @@ func on_curve_changed():
 	is_dirty = true
 	curve.updating = true
 	
-	if axis_matched_editing:
-		var edited_point = curve.edited_point
-		var edited_pos = curve.get_point_position(edited_point)
+	if edit_proxy.use_axis_matching:
+		var edited_point: int = curve.edited_point
+		var edited_pos := curve.get_point_position(edited_point)
 		if edited_point != axis_match_index:
 			axis_match_index = edited_point
 			axis_match_points = PackedInt32Array()
