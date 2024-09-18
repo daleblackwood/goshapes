@@ -3,17 +3,16 @@ extends EditorPlugin
 
 const GDBPATH = "res://addons/gdblocks"
 var editor = get_editor_interface()
-var editor_util: GoshEditorUtil
+var editor_util: GoshapeEditorUtil
 var selection_handler = editor.get_selection()
 
-var block_select = true
 var reselecting = false
 var toolbar: HBoxContainer
-var block_menu_button: MenuButton
-var block_menu_items = []
+var toolbar_menu_button: MenuButton
 var tools_default: Array[MenuButton] = []
 var tools_block: Array[MenuButton] = []
 var create_i: int = 0
+var toolbar_menu
 
 class BlockAttributes:
 	
@@ -51,9 +50,12 @@ class EditorProxy:
 	var attributes_copied := BlockAttributes.new()
 	var selected_block: Goshape = null
 	var last_selected: Goshape = null
-	var mouse_down = false
-	var mouse_pos = Vector2.ZERO
-	var scene_mouse_pos = Vector3.ZERO
+	var mouse_down := false
+	var mouse_pos := Vector2.ZERO
+	var scene_mouse_pos := Vector3.ZERO
+	var use_shape_select := true
+	var use_axis_matching := false
+	var use_y_lock := false
 	
 	func set_selected(block: Goshape) -> void:
 		if block == selected_block:
@@ -98,39 +100,22 @@ class EditorProxy:
 			return resource.duplicate()
 		return resource
 		
+	func set_shape_select(on: bool) -> void:
+		use_shape_select = on
+		
+	func set_axis_matching(on: bool) -> void:
+		use_axis_matching = on
+		
+	func set_y_lock(on: bool) -> void:
+		use_y_lock = on
+		
 	
-var proxy: EditorProxy = EditorProxy.new()
+var proxy := EditorProxy.new()
 
 enum MenuSet { NORMAL, BLOCK, DEFAULT }
 
-func get_menuset(menuset: MenuSet):
-	var result = [
-		["Add New BlockShape", self, "add_block"],
-		["Add New ScatterShape", self, "add_scatter"],
-		["Select All Blocks", self, "select_all_blocks"],
-		["%s Block Select" % ("[x]" if block_select else "[-]"), self, "toggle_block_select"]
-	]
-	if menuset == MenuSet.BLOCK:
-		result = [
-			["Redraw Selected", self, "modify_selected"],
-			["Copy Attributes", proxy, "copy_attributes"],
-			["Paste Attributes", proxy, "paste_attributes"],
-			["Paste Shaper", proxy, "paste_shaper"],
-			["Paste Path Mods", proxy, "paste_path_options"],
-			["Reset Shaper", proxy, "reset_shaper"],
-			["Remove Control Points", self, "modify_selected", "remove_control_points"],
-			["Recenter Shape", self, "modify_selected", "recenter_points"],
-			["Add New Similar", self, "add_block_similar"]
-		] + result
-	if menuset != MenuSet.DEFAULT:
-		result += [
-			["Place Objects on Ground", self, "ground_objects"]
-		]
-	return result
-	
-
 func _enter_tree() -> void:
-	editor_util = GoshEditorUtil.new(editor)
+	editor_util = GoshapeEditorUtil.new(editor)
 	
 	add_custom_type("Goshape", "Path3D", preload("Goshape.gd"), null)
 	selection_handler.selection_changed.connect(_on_selection_changed)
@@ -138,10 +123,9 @@ func _enter_tree() -> void:
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
 	
-	block_menu_button = MenuButton.new()
-	block_menu_button.set_text("Goshape")
-	block_menu_button.get_popup().id_pressed.connect(_menu_item_selected)
-	toolbar.add_child(block_menu_button)
+	toolbar_menu_button = MenuButton.new()
+	toolbar_menu_button.set_text("Goshape")
+	toolbar.add_child(toolbar_menu_button)
 	
 	tools_default = []
 	tools_block = [
@@ -150,40 +134,51 @@ func _enter_tree() -> void:
 		editor_util.toolbar_button("Paste Attributes", "ActionPaste", proxy.paste_attributes),
 	]
 	
-	set_menu_items(get_menuset(MenuSet.DEFAULT), tools_default)
-	
+	set_menu(MenuSet.DEFAULT, tools_default)
 	print("Goshapes addon intialized.")
+			
+			
+func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
+	var popup := toolbar_menu_button.get_popup()
+	var menu := GoshapeMenus.GSMenu.new()
+	var create_menu := GoshapeMenus.GSMenu.new()
+	create_menu.add_items([
+		GoshapeMenus.GSButton.new("Create Blockshape", add_block),
+		GoshapeMenus.GSButton.new("Create ScatterShape", add_scatter)
+	])
+	if menuset == MenuSet.BLOCK:
+		create_menu.add_item(GoshapeMenus.GSButton.new("Create Similar", add_block_similar), 0)
+	menu.add_item(GoshapeMenus.GMPopup.new("Create", create_menu))
 	
+	if menuset == MenuSet.BLOCK:
+		var block_menu := GoshapeMenus.GSMenu.new()
+		block_menu.add_items([
+			GoshapeMenus.GSButton.new("Copy Attributes", proxy.copy_attributes),
+			GoshapeMenus.GSButton.new("Paste Attributes", proxy.paste_attributes),
+			GoshapeMenus.GSButton.new("Paste Shaper", proxy.paste_shaper),
+			GoshapeMenus.GSButton.new("Paste Path Mods", proxy.paste_path_options),
+			GoshapeMenus.GSButton.new("Remove Control Points", modify_selected, "remove_control_points"),
+			GoshapeMenus.GSButton.new("Recenter Shape", modify_selected, "recenter_points"),
+			GoshapeMenus.GSButton.new("Place on Ground", ground_objects)
+		])
+		menu.add_item(GoshapeMenus.GMPopup.new("Shape", block_menu))
+		menu.add_item(GoshapeMenus.GSButton.new("Redraw Selected", modify_selected))
 	
-func set_menu_items(menu_items: Array, tools: Array[MenuButton] = []) -> void:
-	var popup = block_menu_button.get_popup()
-	popup.clear()
-	block_menu_items = menu_items
-	for i in range(menu_items.size()):
-		popup.add_item(menu_items[i][0], i)
-	if toolbar.get_child_count() > 1:
-		for i in range(1, toolbar.get_child_count() - 1, 1):
-			var child = toolbar.get_child(i)
-			if not child in tools:
-				toolbar.remove_child(child)
+	menu.add_items([
+		GoshapeMenus.GSButton.new("Select All Shapes", select_all_blocks),
+	])
+	
+	menu.add_items([
+		GoshapeMenus.GSToggle.new("Shape Selection", proxy, "use_shape_select"),
+		GoshapeMenus.GSToggle.new("Axis Matching", proxy, "use_axis_matching"),
+		GoshapeMenus.GSToggle.new("Y-Axis Locking", proxy, "use_y_lock")
+	])
+		
+	menu.populate(popup)
+	toolbar_menu = menu
 	for item in tools:
 		if item.get_parent() != toolbar:
 			toolbar.add_child(item)
-	
-	
-func _menu_item_selected(index: int) -> void:
-	var mi = block_menu_items[index]
-	if mi.size() > 4:
-		mi[1].call(mi[2], mi[3], mi[4])
-	elif mi.size() > 3:
-		mi[1].call(mi[2], mi[3])
-	else:
-		mi[1].call(mi[2])
-	
-	
-func toggle_block_select() -> void:
-	block_select = not block_select
-	_on_selection_changed()
 	
 		
 func add_blank() -> Goshape:
@@ -204,7 +199,7 @@ func add_blank() -> Goshape:
 	result.set_owner(parent)
 	if proxy.last_selected != null and parent == proxy.last_selected.get_parent():
 		result.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
-	select_block(result)
+	select_block.call_deferred(result)
 	return result
 	
 	
@@ -272,21 +267,21 @@ func _on_selection_changed() -> void:
 				block = selected_parent as Goshape
 				break
 			else:
-				if not block_select:
+				if not proxy.use_shape_select:
 					break
 				selected_parent = selected_parent.get_parent()
 		if block and proxy.selected_block != selected_node:
 			select_block(block)
 			
-	var block_selected = false
+	var shape_selected = false
 	for node in selected_nodes:
 		if node is Goshape:
-			block_selected = true
+			shape_selected = true
 	
-	if block_selected:
-		set_menu_items(get_menuset(MenuSet.BLOCK), tools_block)
+	if shape_selected:
+		set_menu(MenuSet.BLOCK, tools_block)
 	else:
-		set_menu_items(get_menuset(MenuSet.DEFAULT), tools_default)
+		set_menu(MenuSet.DEFAULT, tools_default)
 				
 				
 func _on_tree_exiting() -> void:

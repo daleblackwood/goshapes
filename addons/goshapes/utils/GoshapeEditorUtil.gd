@@ -1,5 +1,5 @@
 @tool
-class_name GoshEditorUtil
+class_name GoshapeEditorUtil
 
 var editor: EditorInterface:
 	get:
