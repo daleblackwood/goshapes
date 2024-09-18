@@ -29,13 +29,6 @@ var watcher_model_source := ResourceWatcher.new(emit_changed)
 		if spread != value:
 			spread = value
 			emit_changed()
-		
-## A seed to feed the randomiser	
-@export var seed: int = 0:
-	set(value):
-		if seed != value:
-			seed = value
-			emit_changed()
 			
 ## Causes objects to be placed on underlying ground
 @export var place_on_ground: bool = true:
@@ -57,17 +50,6 @@ var watcher_model_source := ResourceWatcher.new(emit_changed)
 		if random_angle != value:
 			random_angle = value
 			emit_changed()
-	
-var watcher_noise := ResourceWatcher.new(emit_changed)
-		
-## Allows a noise texture to be used instead of random seed
-@export var noise: Noise:
-	set(value):
-		if noise != value:
-			noise = value
-			watcher_noise.watch(noise)
-			emit_changed()
-			
 
 ## Random differences in scale up to this theshhold	
 @export_range(0.0, 2.0) var scale_variance: float = 0.0:
@@ -89,8 +71,29 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 		if evenness != value:
 			evenness = value
 			emit_changed()
+			
+
+@export_group("RNG")
+var watcher_noise := ResourceWatcher.new(emit_changed)
+		
+## Allows a noise texture to be used instead of random seed
+@export var noise: Noise:
+	set(value):
+		if noise != value:
+			noise = value
+			watcher_noise.watch(noise)
+			emit_changed()
+		
+## A seed to feed the randomiser	
+@export var seed: int = 0:
+	set(value):
+		if seed != value:
+			seed = value
+			emit_changed()
+			
 
 
+@export_group("Collisions & Groups")
 ## Physics layers to ignore when placing objects			
 @export_flags_3d_physics var collision_layer: int = 0:
 	set(value):
@@ -105,6 +108,24 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 		if group_name != value:
 			group_name = value
 			emit_changed()
+			
+
+@export_group("Height Clamping")
+@export var clamp_heights := false:
+	set(value):
+		clamp_heights = value
+		emit_changed()
+
+
+@export var height_min := -1000.0:
+	set(value):
+		height_min = value
+		emit_changed()
+	
+@export var height_max := 1000.0:
+	set(value):
+		height_max = value
+		emit_changed()
 			
 			
 func _init():
@@ -244,6 +265,9 @@ class ScatterBuilder extends ShapeBuilder:
 				elif placement_mask > 0:
 					continue
 				basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
+			if style.clamp_heights:
+				if pos.y < style.height_min or pos.y > style.height_max:
+					continue
 			inst.transform.origin = pos
 			inst.transform.basis = basis
 			if style.group_name != null and style.group_name.length() > 0:
