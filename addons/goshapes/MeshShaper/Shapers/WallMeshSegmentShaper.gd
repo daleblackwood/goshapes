@@ -127,8 +127,7 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		
 		var paths := PathUtils.split_path_by_corner(data.path)
 		if style.overlap != null and style.overlap != 0.0:
-			#paths = PathUtils.overlap_paths(paths, style.overlap)
-			print(paths)
+			paths = PathUtils.overlap_paths(paths, style.overlap)
 		var path_count = paths.size()
 		
 		applied_gaps.resize(path_count)

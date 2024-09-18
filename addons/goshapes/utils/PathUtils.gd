@@ -328,8 +328,8 @@ static func duplicate_paths(paths: Array[GoshapePath]) -> Array[GoshapePath]:
 	
 	
 static func overlap_paths(paths: Array[GoshapePath], overlap: float) -> Array[GoshapePath]:
-	var result := duplicate_paths(paths)
-	for path in paths:
+	var results := duplicate_paths(paths)
+	for path in results:
 		var a = path.get_point(0)
 		var b = path.get_point(1)
 		a += (a - b).normalized() * overlap
@@ -338,7 +338,7 @@ static func overlap_paths(paths: Array[GoshapePath], overlap: float) -> Array[Go
 		b = path.get_point(path.point_count - 2)
 		a += (a - b).normalized() * overlap
 		path.points.set(path.point_count - 1, a)
-	return result
+	return results
 	
 	
 static func get_length(points: PackedVector3Array) -> float:

@@ -96,4 +96,4 @@ func invert():
 	
 	
 func duplicate():
-	return get_script().new(points, ups, corners)
+	return GoshapePath.new(points, ups, corners)
