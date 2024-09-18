@@ -9,8 +9,8 @@ class GSMenuItem:
 		self.label = label
 		self.id = get_instance_id()
 		
-	func populate(popup: PopupMenu) -> void:
-		popup.add_item(label, id)
+	func populate(parent: PopupMenu) -> void:
+		parent.add_item(label, id)
 		
 	func select() -> void:
 		pass
@@ -19,6 +19,7 @@ class GSMenuItem:
 class GSButton extends GSMenuItem:
 	var callable: Callable
 	var arg: Variant
+	
 	func _init(label: String, callable: Callable, arg: Variant = null) -> void:
 		super(label)
 		self.callable = callable
@@ -29,6 +30,7 @@ class GSButton extends GSMenuItem:
 			callable.call()
 		else:
 			callable.call(arg)
+			
 		
 class GSToggle extends GSButton:
 	var value := false
@@ -37,9 +39,9 @@ class GSToggle extends GSButton:
 		super._init(label, callable)
 		self.value = value
 		
-	func populate(popup: PopupMenu) -> void:
-		popup.add_check_item(label, id)
-		popup.set_item_checked(popup.get_item_index(id), value)
+	func populate(parent: PopupMenu) -> void:
+		parent.add_check_item(label, id)
+		parent.set_item_checked(parent.get_item_index(id), value)
 		
 	func select() -> void:
 		callable.call(not value)
@@ -47,13 +49,13 @@ class GSToggle extends GSButton:
 
 class GSMenu:
 	var items: Array[GSMenuItem] = []
-	var popup: PopupMenu
+	var parent: PopupMenu
 	
-	func _init(popup: PopupMenu) -> void:
-		self.popup = popup
-	
-	func add_item(item: GSMenuItem) -> GSMenu:
-		items.append(item)
+	func add_item(item: GSMenuItem, index := -1) -> GSMenu:
+		if index > 0:
+			items.insert(index, item)
+		else:
+			items.append(item)
 		return self
 		
 	func add_items(items: Array[GSMenuItem]) -> GSMenu:
@@ -61,24 +63,30 @@ class GSMenu:
 			add_item(item)
 		return self
 		
-	func populate() -> void:
-		popup.clear()
-		if popup.index_pressed.is_connected(_on_selected):
-			popup.index_pressed.disconnect(_on_selected)
+	func populate(parent: PopupMenu) -> void:
+		self.parent = parent
+		parent.clear()
 		for item in items:
-			item.populate(popup)
-		popup.index_pressed.connect(_on_selected)
+			item.populate(parent)
+		if not parent.index_pressed.is_connected(_on_press):
+			parent.index_pressed.connect(_on_press)
 		
-	func _on_selected(index: int) -> void:
-		print("selected ", index)
+	func _on_press(index: int) -> void:
 		items[index].select()
-		populate.call_deferred()
+		populate.call_deferred(parent)
 		
 
 class GMPopup extends GSMenuItem:
 	var menu: GSMenu
+	var popup: PopupMenu
 	
 	func _init(label: String, menu: GSMenu) -> void:
 		super._init(label)
 		self.menu = menu
+		popup = PopupMenu.new()
 		
+	func populate(parent: PopupMenu) -> void:
+		menu.populate(popup)
+		parent.add_submenu_node_item(label, popup, id)
+		
+	
