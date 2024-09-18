@@ -22,7 +22,7 @@ const BLOCKING = false
 			recenter_points()
 	
 ## The PathOptions Resource that contains the options for this shape
-@export var path_options: PathOptions:
+@export var path_options := PathOptions.new():
 	set = set_path_options
 
 ## The Shaper Resource that configures how to build this Goshape
@@ -49,7 +49,7 @@ var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
 var last_curve_points := PackedVector3Array()
-var last_edited_point := 0
+var last_edited_point := -1
 
 func _ready() -> void:
 	if curve == null:
@@ -84,6 +84,7 @@ func _edit_begin(edit_proxy) -> void:
 	watcher_pathmod.watch(path_options)
 	
 	
+	
 func _edit_update() -> void:
 	if not Engine.is_editor_hint():
 		return
@@ -99,6 +100,10 @@ func _edit_update() -> void:
 	curve = ResourceUtils.make_local(self, curve)
 	shaper = ResourceUtils.make_local(self, shaper)
 	path_options = ResourceUtils.make_local(self, path_options)
+	last_edited_point = -1
+	last_curve_points.resize(curve.point_count)
+	for i in curve.point_count:
+		last_curve_points.set(i, curve.get_point_position(i))
 	
 	
 func _edit_end() -> void:
@@ -113,7 +118,7 @@ func _init_curve() -> void:
 	if curve == null:
 		curve = GoCurve3D.new()
 	curve.clear_points()
-	if path_options.line > 0.0:
+	if path_options != null and path_options.line > 0.0:
 		var extent = path_options.line * 0.5
 		curve.add_point(Vector3(extent, 0, 0))
 		curve.add_point(Vector3(-extent, 0, 0))

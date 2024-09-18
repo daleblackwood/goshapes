@@ -198,6 +198,7 @@ func create_blank() -> Goshape:
 	result.set_owner(parent)
 	if proxy.last_selected != null and parent == proxy.last_selected.get_parent():
 		result.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
+	result._init_curve()
 	return result
 	
 		
@@ -228,6 +229,8 @@ func add_multishaper() -> Goshape:
 	
 	
 func complete_new_shape(shape: Goshape) -> Goshape:
+	if shape.path_options == null:
+		shape.set_path_options(PathOptions.new())
 	select_block(shape)
 	modify_selected()
 	return shape

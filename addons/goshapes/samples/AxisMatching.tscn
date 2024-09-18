@@ -1,0 +1,225 @@
+[gd_scene load_steps=25 format=4 uid="uid://netjetnfochk"]
+
+[ext_resource type="Script" path="res://addons/goshapes/base/GoCurve3D.gd" id="1_mawd2"]
+[ext_resource type="Script" path="res://addons/goshapes/Goshape.gd" id="2_gwdj2"]
+[ext_resource type="Script" path="res://addons/goshapes/base/PathOptions.gd" id="3_p4nh7"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="4_kiiyp"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="5_d84rh"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="6_um41f"]
+
+[sub_resource type="Curve3D" id="Curve3D_su6y6"]
+resource_name = "BlockShape1-GoCurve3D"
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -4, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, -4, 0, 0, 0, 0, 0, 0, -4, 0, -4),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+script = ExtResource("1_mawd2")
+
+[sub_resource type="Resource" id="Resource_a7s0e"]
+resource_name = "BlockShape1-PathOptions"
+script = ExtResource("3_p4nh7")
+flatten = false
+twist = false
+line = 0.0
+rounding = 0.0
+rounding_mode = 0
+interpolate = 1
+points_on_ground = false
+offset_y = 0.0
+ground_placement_mask = 0
+
+[sub_resource type="Resource" id="Resource_h0mk7"]
+script = ExtResource("4_kiiyp")
+conform_to_wall = false
+build_collider = true
+collision_layer = 1
+group_name = ""
+enabled = true
+
+[sub_resource type="Resource" id="Resource_sp2qy"]
+script = ExtResource("6_um41f")
+height = 1.0
+bevel = 0.0
+taper = 0.0
+build_collider = true
+collision_layer = 1
+group_name = ""
+enabled = true
+
+[sub_resource type="Resource" id="Resource_rf7uu"]
+resource_name = "BlockShape1-BlockShaper"
+script = ExtResource("5_d84rh")
+cap_shaper = SubResource("Resource_h0mk7")
+wall_shaper = SubResource("Resource_sp2qy")
+bottom_depth = 0.0
+collider_type = 2
+collider_ridge = 0.0
+enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_lj43t"]
+resource_name = "BlockShape1Cap0"
+_surfaces = [{
+"aabb": AABB(-4, 0, -4, 8, 1e-05, 8),
+"attribute_data": PackedByteArray("AACAwAAAgEAAAIBAAACAQAAAgEAAAIDAAACAwAAAgMA="),
+"format": 34359742487,
+"index_count": 6,
+"index_data": PackedByteArray("AAADAAIAAgABAAAA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("AACAwAAAAAAAAIBAAACAQAAAAAAAAIBAAACAQAAAAAAAAIDAAACAwAAAAAAAAIDA/3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/78=")
+}]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_e1t01"]
+resource_name = "BlockShape1Wall0"
+_surfaces = [{
+"aabb": AABB(-4, -1, -4, 8, 1, 8),
+"attribute_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAAAAAAAAAAAAAgD8AAIBAAACAPwAAgEAAAAAAAAAAQQAAAAAAAIBAAACAPwAAAEEAAIA/AAAAQQAAAAAAAEBBAAAAAAAAAEEAAIA/AABAQQAAgD8AAEBBAAAAAAAAAAAAAAAAAABAQQAAgD8AAAAAAACAPw=="),
+"format": 34359742487,
+"index_count": 48,
+"index_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAARABMAEgAQABMAFAAVABcAFgAUABcAGAAZABsAGgAYABsAHAAdAB8AHgAcAB8A"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwAAAAAAAAIBAAACAQAAAAAAAAIBAAACAwAAAgL8AAIBAAACAQAAAgL8AAIBAAACAQAAAAAAAAIBAAACAQAAAAAAAAIDAAACAQAAAgL8AAIBAAACAQAAAgL8AAIDAAACAQAAAAAAAAIDAAACAwAAAAAAAAIDAAACAQAAAgL8AAIDAAACAwAAAgL8AAIDAAACAwAAAAAAAAIDAAACAwAAAAAAAAIBAAACAwAAAgL8AAIDAAACAwAAAgL8AAIBA/3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//P/9/qqqpqv+//39UVamqVFX/f5GkbZuqqv9/bVttm/+//39UVamq////v6qqqapU1f9/bVvatv//qaqRpNq2////v6qqqaoAAP+/VFWpqv//VNWRpG2bAABU1W1bbZsAAP+/VFWpqv8//3+qqqmqAACpqm1b2raqKv9/kaTatg==")
+}]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_002iy"]
+data = PackedVector3Array(-4, 0, 4, -4, 0, -4, 4, 0, -4, 4, 0, -4, 4, 0, 4, -4, 0, 4)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0ww7v"]
+data = PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0, 4, 4, 0, 4, 4, -1, 4, -4, -1, 4, -4, 0, 4, 4, -1, 4, 4, 0, 4, 4, 0, -4, 4, -1, -4, 4, -1, 4, 4, 0, 4, 4, -1, -4, 4, 0, -4, -4, 0, -4, -4, -1, -4, 4, -1, -4, 4, 0, -4, -4, -1, -4, -4, 0, -4, -4, 0, 4, -4, -1, 4, -4, -1, -4, -4, 0, -4, -4, -1, 4)
+
+[sub_resource type="Curve3D" id="Curve3D_dp0e4"]
+resource_name = "BlockShape2-GoCurve3D"
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -3.22207, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, -10.2706, 0, 0, 0, 0, 0, 0, -3.22207, 0, -10.2706),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+script = ExtResource("1_mawd2")
+
+[sub_resource type="Resource" id="Resource_gt8ba"]
+resource_name = "BlockShape2-PathOptions"
+script = ExtResource("3_p4nh7")
+flatten = false
+twist = false
+line = 0.0
+rounding = 0.0
+rounding_mode = 0
+interpolate = 1
+points_on_ground = false
+offset_y = 0.0
+ground_placement_mask = 0
+
+[sub_resource type="Resource" id="Resource_rhbae"]
+script = ExtResource("4_kiiyp")
+conform_to_wall = false
+build_collider = true
+collision_layer = 1
+group_name = ""
+enabled = true
+
+[sub_resource type="Resource" id="Resource_ifnay"]
+script = ExtResource("6_um41f")
+height = 1.0
+bevel = 0.0
+taper = 0.0
+build_collider = true
+collision_layer = 1
+group_name = ""
+enabled = true
+
+[sub_resource type="Resource" id="Resource_luapm"]
+resource_name = "BlockShape2-BlockShaper"
+script = ExtResource("5_d84rh")
+cap_shaper = SubResource("Resource_rhbae")
+wall_shaper = SubResource("Resource_ifnay")
+bottom_depth = 0.0
+collider_type = 2
+collider_ridge = 0.0
+enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_2e61o"]
+resource_name = "BlockShape2Cap0"
+_surfaces = [{
+"aabb": AABB(-3.22207, 0, -10.2706, 7.22207, 1e-05, 14.2706),
+"attribute_data": PackedByteArray("YjZOwAAAgEAAAIBAAACAQAAAgEBlVCTBYjZOwGVUJME="),
+"format": 34359742487,
+"index_count": 6,
+"index_data": PackedByteArray("AAADAAIAAgABAAAA"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 4,
+"vertex_data": PackedByteArray("YjZOwAAAAAAAAIBAAACAQAAAAAAAAIBAAACAQAAAAABlVCTBYjZOwAAAAABlVCTB/3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/78=")
+}]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_4xcgq"]
+resource_name = "BlockShape2Wall0"
+_surfaces = [{
+"aabb": AABB(-3.22207, -1, -10.2706, 7.22207, 1, 14.2706),
+"attribute_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPrYaEAAAAAAAAAAAAAAgD/62GhAAACAP/rYaEAAAAAAqDwtQQAAAAD62GhAAACAP6g8LUEAAIA/qDwtQQAAAADmcmdBAAAAAKg8LUEAAIA/5nJnQQAAgD/mcmdBAAAAAAAAAAAAAAAA5nJnQQAAgD8AAAAAAACAPw=="),
+"format": 34359742487,
+"index_count": 48,
+"index_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAARABMAEgAQABMAFAAVABcAFgAUABcAGAAZABsAGgAYABsAHAAdAB8AHgAcAB8A"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 32,
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYjZOwAAAAAAAAIBAAACAQAAAAAAAAIBAYjZOwAAAgL8AAIBAAACAQAAAgL8AAIBAAACAQAAAAAAAAIBAAACAQAAAAABlVCTBAACAQAAAgL8AAIBAAACAQAAAgL9lVCTBAACAQAAAAABlVCTBYjZOwAAAAABlVCTBAACAQAAAgL9lVCTBYjZOwAAAgL9lVCTBYjZOwAAAAABlVCTBYjZOwAAAAAAAAIBAYjZOwAAAgL9lVCTBYjZOwAAAgL8AAIBA/3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//P/9/qqqpqv+//39UVamqVFX/f5GkbZuqqv9/bVttm/+//39UVamq////v6qqqapU1f9/bVvatv//qaqRpNq2////v6qqqaoAAP+/VFWpqv//VNWRpG2bAABU1W1bbZsAAP+/VFWpqv8//3+qqqmqAACpqm1b2raqKv9/kaTatg==")
+}]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_am68c"]
+data = PackedVector3Array(-3.2221, 0, 4, -3.2221, 0, -10.2706, 4, 0, -10.2706, 4, 0, -10.2706, 4, 0, 4, -3.2221, 0, 4)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7hird"]
+data = PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -3.2221, 0, 4, 4, 0, 4, 4, -1, 4, -3.2221, -1, 4, -3.2221, 0, 4, 4, -1, 4, 4, 0, 4, 4, 0, -10.2706, 4, -1, -10.2706, 4, -1, 4, 4, 0, 4, 4, -1, -10.2706, 4, 0, -10.2706, -3.2221, 0, -10.2706, -3.2221, -1, -10.2706, 4, -1, -10.2706, 4, 0, -10.2706, -3.2221, -1, -10.2706, -3.2221, 0, -10.2706, -3.2221, 0, 4, -3.2221, -1, 4, -3.2221, -1, -10.2706, -3.2221, 0, -10.2706, -3.2221, -1, 4)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="BlockShape1" type="Path3D" parent="."]
+curve = SubResource("Curve3D_su6y6")
+script = ExtResource("2_gwdj2")
+path_options = SubResource("Resource_a7s0e")
+shaper = SubResource("Resource_rf7uu")
+metadata/_edit_group_ = true
+
+[node name="BlockShape1Cap0Mesh" type="MeshInstance3D" parent="BlockShape1"]
+mesh = SubResource("ArrayMesh_lj43t")
+
+[node name="BlockShape1Wall0Mesh" type="MeshInstance3D" parent="BlockShape1"]
+mesh = SubResource("ArrayMesh_e1t01")
+
+[node name="BlockShape1Cap0Body" type="StaticBody3D" parent="BlockShape1"]
+
+[node name="BlockShape1Cap0Collider" type="CollisionShape3D" parent="BlockShape1/BlockShape1Cap0Body"]
+shape = SubResource("ConcavePolygonShape3D_002iy")
+
+[node name="BlockShape1Wall0Body" type="StaticBody3D" parent="BlockShape1"]
+
+[node name="BlockShape1Wall0Collider" type="CollisionShape3D" parent="BlockShape1/BlockShape1Wall0Body"]
+shape = SubResource("ConcavePolygonShape3D_0ww7v")
+
+[node name="BlockShape2" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.74241, 0, 0)
+curve = SubResource("Curve3D_dp0e4")
+script = ExtResource("2_gwdj2")
+path_options = SubResource("Resource_gt8ba")
+shaper = SubResource("Resource_luapm")
+metadata/_edit_group_ = true
+
+[node name="BlockShape2Cap0Mesh" type="MeshInstance3D" parent="BlockShape2"]
+mesh = SubResource("ArrayMesh_2e61o")
+
+[node name="BlockShape2Wall0Mesh" type="MeshInstance3D" parent="BlockShape2"]
+mesh = SubResource("ArrayMesh_4xcgq")
+
+[node name="BlockShape2Cap0Body" type="StaticBody3D" parent="BlockShape2"]
+
+[node name="BlockShape2Cap0Collider" type="CollisionShape3D" parent="BlockShape2/BlockShape2Cap0Body"]
+shape = SubResource("ConcavePolygonShape3D_am68c")
+
+[node name="BlockShape2Wall0Body" type="StaticBody3D" parent="BlockShape2"]
+
+[node name="BlockShape2Wall0Collider" type="CollisionShape3D" parent="BlockShape2/BlockShape2Wall0Body"]
+shape = SubResource("ConcavePolygonShape3D_7hird")
