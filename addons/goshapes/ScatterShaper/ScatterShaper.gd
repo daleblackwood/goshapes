@@ -224,14 +224,15 @@ class ScatterBuilder extends ShapeBuilder:
 				var inst = style.model_source.instantiate()
 				instance_count += 1
 				inst.name = "%s%d" % [inst.name, instance_count]
-				inst.transform.origin = pos
+				inst.transform.origin = pos + style.model_source.offset
 				if collision_layer > 0 and inst is CollisionObject3D:
 					inst.collision_layer = collision_layer
 				var basis = Basis()
-				var angle = PI * 2.0 * r_angle
+				var angle = PI * 2.0 * r_angle + deg_to_rad(style.model_source.angle)
 				if random_angle:
 					basis = basis.rotated(Vector3.UP, angle)
 				var scale = scale_multiplier + r_scale * scale_variance * 2.0 - scale_variance
+				scale *= style.model_source.scale
 				basis = basis.scaled(Vector3.ONE * scale)
 				inst.transform.basis = basis
 				instances.append(inst)

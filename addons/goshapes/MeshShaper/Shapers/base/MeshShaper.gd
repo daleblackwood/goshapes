@@ -4,6 +4,7 @@ extends Shaper
 ## The base shaper for all shapers
 
 ## Toggles whether or not to build a collider
+@export_group("Groups & Collisions")
 @export var build_collider: bool = true:
 	set(value):
 		if build_collider != value:

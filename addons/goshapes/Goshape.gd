@@ -20,9 +20,6 @@ const BLOCKING = false
 	set(value):
 		if value:
 			recenter_points()
-			
-## An editing option that causes aligned points to move together
-@export var axis_matched_editing = false
 	
 ## The PathOptions Resource that contains the options for this shape
 @export var path_options: PathOptions:

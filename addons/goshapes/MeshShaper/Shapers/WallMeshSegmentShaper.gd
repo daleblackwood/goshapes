@@ -46,6 +46,7 @@ extends WallShaper
 		set_dirty(true)
 		
 ## Built from a certain part of the mesh
+@export_group("Gaps")
 @export var gap_from := 0:
 	set(value):
 		gap_from = value
@@ -63,9 +64,13 @@ extends WallShaper
 		gaps = value
 		set_dirty()
 		
+
+var gap_end_item_watcher := ResourceWatcher.new(set_dirty)
+		
 @export var gap_end_item: ScatterSource:
 	set(value):
 		gap_end_item = value
+		gap_end_item_watcher.watch(gap_end_item)
 		set_dirty()
 		
 @export var mesh_caching := true:
@@ -282,7 +287,12 @@ class WallMeshSegmentBuilder extends WallBuilder:
 			was_gap = is_gap
 			var end_position := builds[i].path.get_point(0) + builds[i].anchor
 			var instance := style.gap_end_item.instantiate(i)
-			instance.transform.origin = end_position
+			var face_angle := builds[i].path.get_point(0).signed_angle_to(builds[i].path.get_point(2), Vector3.UP)
+			var angle = face_angle + deg_to_rad(style.gap_end_item.angle)
+			var basis = Basis(Vector3.UP, angle)
+			basis = basis.scaled(Vector3.ONE * style.gap_end_item.scale)
+			instance.transform.basis = basis
+			instance.transform.origin = end_position + face_angle * style.gap_end_item.offset
 			SceneUtils.add_child(data.parent, instance)
 	
 		
