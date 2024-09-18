@@ -49,7 +49,7 @@ var watcher_pathmod := ResourceWatcher.new(mark_dirty)
 var axis_match_index = -1
 var axis_match_points := PackedInt32Array()
 var last_curve_points := PackedVector3Array()
-
+var last_edited_point := 0
 
 func _ready() -> void:
 	if curve == null:
@@ -150,55 +150,59 @@ func on_curve_changed():
 		
 	if is_dirty:
 		return
-		
-	if edit_proxy.use_y_lock:
-		for i in curve.point_count:
-			var p = curve.get_point_position(i)
-			if last_curve_points[i].y != p.y:
-				p.y = last_curve_points[i].y
-				curve.set_point_position(i, p)
 	
 	# manual curve change detection
 	var has_change = false
+	var edited_point_changed = false
 	if last_curve_points.size() != curve.point_count:
 		last_curve_points.resize(curve.point_count)
 		has_change = true
-	else:
-		for i in curve.point_count:
-			if last_curve_points[i] != curve.get_point_position(i):
-				has_change = true
-				break
 	for i in curve.point_count:
-		last_curve_points.set(i, curve.get_point_position(i))
+		if last_curve_points[i] != curve.get_point_position(i):
+			if last_edited_point != i:
+				edited_point_changed
+			last_edited_point = i
+			has_change = true
+			break
 		
 	if not has_change:
 		return
-
+		
 	is_dirty = true
 	curve.updating = true
-	
+		
+	if edit_proxy.use_y_lock:
+		var p = curve.get_point_position(last_edited_point)
+		if last_curve_points.size() > last_edited_point and last_curve_points[last_edited_point].y != p.y:
+			p.y = last_curve_points[last_edited_point].y
+			curve.set_point_position(last_edited_point, p)
+
 	if edit_proxy.use_axis_matching:
-		var edited_point: int = curve.edited_point
-		var edited_pos := curve.get_point_position(edited_point)
+		var edited_point := last_edited_point
+		var edited_pos := last_curve_points[edited_point]
 		if edited_point != axis_match_index:
 			axis_match_index = edited_point
 			axis_match_points = PackedInt32Array()
 			# find matching axis points
-			for i in range(curve.point_count):
-				if i == edited_point:
-					continue
-				var p = curve.get_point_position(i)
+			var neighbours = [
+				(edited_point + curve.point_count - 1) % curve.point_count,
+				(edited_point + 1) % curve.point_count
+			]
+			for i in neighbours:
+				var p = last_curve_points[i]
 				var axis_match = 0
-				if abs(p.x - edited_pos.x) < 1.0:
+				if absf(p.x - edited_pos.x) < 0.5:
 					axis_match |= AXIS_X
-				if abs(p.y - edited_pos.y) < 1.0:
+				if absf(p.y - edited_pos.y) < 0.5:
 					axis_match |= AXIS_Y
-				if abs(p.z - edited_pos.z) < 1.0:
+				if absf(p.z - edited_pos.z) < 0.5:
 					axis_match |= AXIS_Z
 				if axis_match != 0:
 					axis_match_points.append(i)
 					axis_match_points.append(axis_match)
+		
 		# apply matching axis points
+		edited_pos = curve.get_point_position(edited_point)
 		for i in range(0, axis_match_points.size(), 2):
 			var index = axis_match_points[i]
 			var axis_match = axis_match_points[i + 1]
@@ -210,6 +214,9 @@ func on_curve_changed():
 			if (axis_match & AXIS_Z) != 0:
 				p.z = edited_pos.z
 			curve.set_point_position(index, p)
+			
+	for i in curve.point_count:
+		last_curve_points.set(i, curve.get_point_position(i))
 			
 	if path_options.flatten:
 		PathUtils.flatten_curve(curve)
@@ -243,8 +250,8 @@ func _update() -> void:
 		return
 		
 	if not edit_proxy.mouse_down:
-		axis_match_index = -1
-		axis_match_points = PackedInt32Array()
+		pass#axis_match_index = -1
+		#axis_match_points = PackedInt32Array()
 	
 	var runner = edit_proxy.runner
 	if BLOCKING and runner.is_busy:

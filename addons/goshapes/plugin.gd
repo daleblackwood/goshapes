@@ -144,7 +144,8 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 	var create_menu := GoshapeMenus.GSMenu.new()
 	create_menu.add_items([
 		GoshapeMenus.GSButton.new("Create Blockshape", add_block),
-		GoshapeMenus.GSButton.new("Create ScatterShape", add_scatter)
+		GoshapeMenus.GSButton.new("Create ScatterShape", add_scatter),
+		GoshapeMenus.GSButton.new("Create MultiShaper", add_multishaper)
 	])
 	if menuset == MenuSet.BLOCK:
 		create_menu.add_item(GoshapeMenus.GSButton.new("Create Similar", add_block_similar), 0)
@@ -179,9 +180,8 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 	for item in tools:
 		if item.get_parent() != toolbar:
 			toolbar.add_child(item)
-	
-		
-func add_blank() -> Goshape:
+
+func create_blank() -> Goshape:
 	var parent = proxy.selected_block as Node3D
 	if parent == null:
 		var selected_nodes = selection_handler.get_selected_nodes()
@@ -191,39 +191,59 @@ func add_blank() -> Goshape:
 		parent = editor.get_edited_scene_root()
 	if parent is Goshape:
 		parent = parent.get_parent_node_3d()
-	var result = Path3D.new()
+	var result = Goshape.new()
 	create_i += 1
 	result.name = StringName("Shape%d" % create_i)
-	result.set_script(preload("Goshape.gd"))
 	parent.add_child(result)
 	result.set_owner(parent)
 	if proxy.last_selected != null and parent == proxy.last_selected.get_parent():
 		result.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
-	select_block.call_deferred(result)
 	return result
 	
+		
+func add_blank() -> Goshape:
+	var shape := create_blank()
+	return complete_new_shape(shape)
 	
-func add_block() -> void:
-	var shape = add_blank()
+	
+func add_block() -> Goshape:
+	var shape := create_blank()
 	shape.name = StringName("BlockShape%d" % shape.get_parent().get_child_count())
 	shape.set_shaper(BlockShaper.new())
+	return complete_new_shape(shape)
 	
 	
-func add_block_similar() -> void:
-	proxy.copy_attributes()
-	var name = ResourceUtils.inc_name_number(proxy.last_selected.name)
-	var shape = add_blank()
-	shape.name = StringName(name)
-	proxy.set_selected(shape)
-	proxy.paste_attributes()
-	
-	
-func add_scatter() -> void:
-	var shape = add_blank()
+func add_scatter() -> Goshape:
+	var shape := create_blank()
 	shape.name = StringName("ScatterShape%d" % shape.get_parent().get_child_count())
 	shape.set_shaper(ScatterShaper.new())
+	return complete_new_shape(shape)
+	
+	
+func add_multishaper() -> Goshape:
+	var shape := create_blank()
+	shape.name = StringName("MultiShape%d" % shape.get_parent().get_child_count())
+	shape.set_shaper(MultiShaper.new())
+	return complete_new_shape(shape)
+	
+	
+func complete_new_shape(shape: Goshape) -> Goshape:
+	select_block(shape)
+	modify_selected()
+	return shape
 
 
+func add_block_similar() -> Goshape:
+	var attributes = BlockAttributes.new()
+	var target = proxy.last_selected
+	attributes.copy(target)
+	var shape := create_blank()
+	attributes.apply(shape)
+	var name := ResourceUtils.inc_name_number(target.name)
+	shape.name = StringName(name)
+	return complete_new_shape(shape)
+	
+	
 func modify_selected(method: String = "", arg = null) -> void:
 	var selected_nodes = selection_handler.get_selected_nodes()
 	
