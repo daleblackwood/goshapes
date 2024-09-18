@@ -6,11 +6,9 @@ var editor = get_editor_interface()
 var editor_util: GoshapeEditorUtil
 var selection_handler = editor.get_selection()
 
-var block_select = true
 var reselecting = false
 var toolbar: HBoxContainer
-var block_menu_button: MenuButton
-var block_menu_items = []
+var toolbar_menu_button: MenuButton
 var tools_default: Array[MenuButton] = []
 var tools_block: Array[MenuButton] = []
 var create_i: int = 0
@@ -52,9 +50,12 @@ class EditorProxy:
 	var attributes_copied := BlockAttributes.new()
 	var selected_block: Goshape = null
 	var last_selected: Goshape = null
-	var mouse_down = false
-	var mouse_pos = Vector2.ZERO
-	var scene_mouse_pos = Vector3.ZERO
+	var mouse_down := false
+	var mouse_pos := Vector2.ZERO
+	var scene_mouse_pos := Vector3.ZERO
+	var use_shape_select := true
+	var use_axis_matching := false
+	var use_y_lock := false
 	
 	func set_selected(block: Goshape) -> void:
 		if block == selected_block:
@@ -99,11 +100,19 @@ class EditorProxy:
 			return resource.duplicate()
 		return resource
 		
+	func set_shape_select(on: bool) -> void:
+		use_shape_select = on
+		
+	func set_axis_matching(on: bool) -> void:
+		use_axis_matching = on
+		
+	func set_y_lock(on: bool) -> void:
+		use_y_lock = on
+		
 	
-var proxy: EditorProxy = EditorProxy.new()
+var proxy := EditorProxy.new()
 
 enum MenuSet { NORMAL, BLOCK, DEFAULT }
-	
 
 func _enter_tree() -> void:
 	editor_util = GoshapeEditorUtil.new(editor)
@@ -114,9 +123,9 @@ func _enter_tree() -> void:
 	toolbar = HBoxContainer.new()
 	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, toolbar)
 	
-	block_menu_button = MenuButton.new()
-	block_menu_button.set_text("Goshape")
-	toolbar.add_child(block_menu_button)
+	toolbar_menu_button = MenuButton.new()
+	toolbar_menu_button.set_text("Goshape")
+	toolbar.add_child(toolbar_menu_button)
 	
 	tools_default = []
 	tools_block = [
@@ -126,12 +135,11 @@ func _enter_tree() -> void:
 	]
 	
 	set_menu(MenuSet.DEFAULT, tools_default)
-	
 	print("Goshapes addon intialized.")
 			
 			
 func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
-	var popup := block_menu_button.get_popup()
+	var popup := toolbar_menu_button.get_popup()
 	var menu := GoshapeMenus.GSMenu.new()
 	var create_menu := GoshapeMenus.GSMenu.new()
 	create_menu.add_items([
@@ -158,7 +166,12 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 	
 	menu.add_items([
 		GoshapeMenus.GSButton.new("Select All Shapes", select_all_blocks),
-		GoshapeMenus.GSToggle.new("Shape Selection", block_select, toggle_block_select)
+	])
+	
+	menu.add_items([
+		GoshapeMenus.GSToggle.new("Shape Selection", proxy, "use_shape_select"),
+		GoshapeMenus.GSToggle.new("Axis Matching", proxy, "use_axis_matching"),
+		GoshapeMenus.GSToggle.new("Y-Axis Locking", proxy, "use_y_lock")
 	])
 		
 	menu.populate(popup)
@@ -166,11 +179,6 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 	for item in tools:
 		if item.get_parent() != toolbar:
 			toolbar.add_child(item)
-	
-	
-func toggle_block_select() -> void:
-	block_select = not block_select
-	_on_selection_changed()
 	
 		
 func add_blank() -> Goshape:
@@ -191,7 +199,7 @@ func add_blank() -> Goshape:
 	result.set_owner(parent)
 	if proxy.last_selected != null and parent == proxy.last_selected.get_parent():
 		result.global_transform.origin = proxy.last_selected.global_transform.origin + Vector3(5, 0, 0)
-	select_block(result)
+	select_block.call_deferred(result)
 	return result
 	
 	
@@ -259,18 +267,18 @@ func _on_selection_changed() -> void:
 				block = selected_parent as Goshape
 				break
 			else:
-				if not block_select:
+				if not proxy.use_shape_select:
 					break
 				selected_parent = selected_parent.get_parent()
 		if block and proxy.selected_block != selected_node:
 			select_block(block)
 			
-	var block_selected = false
+	var shape_selected = false
 	for node in selected_nodes:
 		if node is Goshape:
-			block_selected = true
+			shape_selected = true
 	
-	if block_selected:
+	if shape_selected:
 		set_menu(MenuSet.BLOCK, tools_block)
 	else:
 		set_menu(MenuSet.DEFAULT, tools_default)

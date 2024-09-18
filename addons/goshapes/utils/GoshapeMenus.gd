@@ -10,7 +10,7 @@ class GSMenuItem:
 		self.id = get_instance_id()
 		
 	func populate(parent: PopupMenu) -> void:
-		parent.add_item(label, id)
+		pass
 		
 	func select() -> void:
 		pass
@@ -25,7 +25,11 @@ class GSButton extends GSMenuItem:
 		self.callable = callable
 		self.arg = arg
 		
+	func populate(parent: PopupMenu) -> void:
+		parent.add_item(label, id)
+		
 	func select() -> void:
+		print_debug("> ", label)
 		if arg == null:
 			callable.call()
 		else:
@@ -34,22 +38,35 @@ class GSButton extends GSMenuItem:
 		
 class GSToggle extends GSButton:
 	var value := false
+	var host: Object
+	var property: String
+	var parent: PopupMenu
 	
-	func _init(label: String, value: bool, callable: Callable) -> void:
+	func _init(label: String, host: Object, property: String) -> void:
 		super._init(label, callable)
-		self.value = value
+		self.host = host
+		self.property = property
 		
 	func populate(parent: PopupMenu) -> void:
+		self.parent = parent
 		parent.add_check_item(label, id)
+		update_value()
+		
+	func update_value() -> void:
+		var value = host.get(property) as bool
 		parent.set_item_checked(parent.get_item_index(id), value)
 		
 	func select() -> void:
-		callable.call(not value)
+		var value = host.get(property) as bool
+		print_debug("> ", label, " set to ", "true" if not value else "false")
+		host.set(property, not value)
+		update_value()
 
 
 class GSMenu:
 	var items: Array[GSMenuItem] = []
 	var parent: PopupMenu
+	var is_populating := false
 	
 	func add_item(item: GSMenuItem, index := -1) -> GSMenu:
 		if index > 0:
@@ -64,12 +81,16 @@ class GSMenu:
 		return self
 		
 	func populate(parent: PopupMenu) -> void:
+		if is_populating:
+			return
+		is_populating = true
 		self.parent = parent
 		parent.clear()
 		for item in items:
 			item.populate(parent)
 		if not parent.index_pressed.is_connected(_on_press):
 			parent.index_pressed.connect(_on_press)
+		is_populating = false
 		
 	func _on_press(index: int) -> void:
 		items[index].select()
