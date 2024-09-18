@@ -177,9 +177,17 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 		
 	menu.populate(popup)
 	toolbar_menu = menu
+	
+	# reset tools
+	if toolbar.get_child_count() > 1:
+		for i in range(1, toolbar.get_child_count() - 1, 1):
+			var child = toolbar.get_child(i)
+			if not child in tools:
+				toolbar.remove_child(child)
 	for item in tools:
 		if item.get_parent() != toolbar:
 			toolbar.add_child(item)
+
 
 func create_blank() -> Goshape:
 	var parent = proxy.selected_block as Node3D
