@@ -18,6 +18,13 @@ extends Shaper
 			collision_layer = value
 			emit_changed()
 			
+## Sets a group name for the mesh and colliders
+@export var group_name := "":
+	set(value):
+		if group_name != value:
+			group_name = value
+			emit_changed()
+			
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 	var result: Array[GoshapeJob] = []
