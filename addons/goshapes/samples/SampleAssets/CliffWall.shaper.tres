@@ -1,21 +1,24 @@
-[gd_resource type="Resource" script_class="WallMeshShaper" load_steps=4 format=3 uid="uid://kgmarqqeputi"]
+[gd_resource type="Resource" script_class="WallMeshSegmentShaper" load_steps=5 format=3 uid="uid://kgmarqqeputi"]
 
+[ext_resource type="ArrayMesh" uid="uid://cw715gq7kfsyf" path="res://addons/goshapes/samples/SampleAssets/CliffFaceModelLow.obj" id="1_gd0wx"]
 [ext_resource type="Material" uid="uid://c2cqyi3fjigxj" path="res://addons/goshapes/samples/SampleAssets/CliffMat.tres" id="1_ijhax"]
 [ext_resource type="ArrayMesh" uid="uid://cprh1f8pbew4q" path="res://addons/goshapes/samples/SampleAssets/CliffFaceModel.obj" id="2_lh2w6"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshShaper.gd" id="4_qevbg"]
+[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallMeshSegmentShaper.gd" id="4_v7w1j"]
 
 [resource]
-script = ExtResource("4_qevbg")
-warning = "EXPERIMENTAL SHAPER"
+script = ExtResource("4_v7w1j")
 mesh = ExtResource("2_lh2w6")
-scale = 0.9
+scale = 1.0
+overlap = 0.001
 closed = true
 material = ExtResource("1_ijhax")
-lod_distance = 100.0
+lod_distance = 500.0
+low_poly_mesh = ExtResource("1_gd0wx")
 gap_from = 0
 gap_to = 0
 gaps = Array[int]([])
 mesh_caching = true
 build_collider = true
 collision_layer = 1
+group_name = ""
 enabled = true

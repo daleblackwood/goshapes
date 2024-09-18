@@ -19,6 +19,15 @@ extends Resource
 	set(value):
 		offset = value
 		emit_changed()
+		
+		
+func _init() -> void:
+	if scale == null:
+		scale = 1.0
+	if angle == null:
+		angle = 0.0
+	if offset == null:
+		offset = Vector3.ZERO
 
 	
 func instantiate(pick: int = 0) -> Node3D:

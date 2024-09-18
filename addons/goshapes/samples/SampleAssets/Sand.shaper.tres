@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="BlockShaper" load_steps=7 format=3 uid="uid://crmkyitge0fwa"]
+[gd_resource type="Resource" script_class="BlockShaper" load_steps=6 format=3 uid="uid://crmkyitge0fwa"]
 
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/CapFlatShaper.gd" id="2_dh0ri"]
 [ext_resource type="Material" uid="uid://b770vfl4vul8p" path="res://addons/goshapes/samples/SampleAssets/SandMat.mat.tres" id="2_yuv2d"]
 [ext_resource type="Script" path="res://addons/goshapes/MeshShaper/BlockShaper.gd" id="3_f6xbb"]
-[ext_resource type="Script" path="res://addons/goshapes/MeshShaper/Shapers/WallBevelShaper.gd" id="4_yc5gg"]
+[ext_resource type="Resource" uid="uid://kgmarqqeputi" path="res://addons/goshapes/samples/SampleAssets/CliffWall.shaper.tres" id="4_cpndl"]
 
 [sub_resource type="Resource" id="Resource_03q4f"]
 script = ExtResource("2_dh0ri")
@@ -14,21 +14,11 @@ collision_layer = 1
 group_name = ""
 enabled = true
 
-[sub_resource type="Resource" id="Resource_1a87j"]
-script = ExtResource("4_yc5gg")
-height = 1.0
-bevel = 0.0
-taper = 0.0
-build_collider = true
-collision_layer = 1
-group_name = ""
-enabled = true
-
 [resource]
 resource_name = "Sand.shaper.tres:BlockShaper"
 script = ExtResource("3_f6xbb")
 cap_shaper = SubResource("Resource_03q4f")
-wall_shaper = SubResource("Resource_1a87j")
+wall_shaper = ExtResource("4_cpndl")
 bottom_depth = 0.0
 collider_type = 4
 collider_ridge = 0.0
