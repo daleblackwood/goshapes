@@ -15,7 +15,6 @@ var watcher_model_source := ResourceWatcher.new(emit_changed)
 			model_source = value
 			watcher_model_source.watch(model_source)
 			emit_changed()
-			
 
 ## How densely to populate the area with the objects
 @export_range(0.0, 1.0) var density: float = 3.0:
@@ -24,14 +23,12 @@ var watcher_model_source := ResourceWatcher.new(emit_changed)
 			density = value
 			emit_changed()
 			
-			
 ## How far to spread the objects apart
 @export_range(0.5, 10.0, 0.25) var spread: float = 3.0:
 	set(value):
 		if spread != value:
 			spread = value
 			emit_changed()
-			
 		
 ## A seed to feed the randomiser	
 @export var seed: int = 0:
@@ -40,14 +37,12 @@ var watcher_model_source := ResourceWatcher.new(emit_changed)
 			seed = value
 			emit_changed()
 			
-			
 ## Causes objects to be placed on underlying ground
 @export var place_on_ground: bool = true:
 	set(value):
 		if place_on_ground != value:
 			place_on_ground = value
 			emit_changed()
-			
 
 ## How much to conform the object to the ground angle		
 @export_range(0.0, 1.0) var ground_angle_conformance: float = 0.0:
@@ -56,14 +51,12 @@ var watcher_model_source := ResourceWatcher.new(emit_changed)
 			ground_angle_conformance = value
 			emit_changed()
 
-
 ## Rotates the objects randomly around up		
 @export var random_angle: bool = true:
 	set(value):
 		if random_angle != value:
 			random_angle = value
 			emit_changed()
-			
 	
 var watcher_noise := ResourceWatcher.new(emit_changed)
 		
@@ -83,14 +76,12 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 			scale_variance = value
 			emit_changed()
 			
-			
 ## Scales all generated objects
 @export_range(0.1, 5.0) var scale_multiplier: float = 1.0:
 	set(value):
 		if scale_multiplier != value:
 			scale_multiplier = value
 			emit_changed()
-			
 		
 ## Higher values place objects more evenly	
 @export_range(0.0, 1.0) var evenness: float = 0.0:
@@ -105,6 +96,14 @@ var watcher_noise := ResourceWatcher.new(emit_changed)
 	set(value):
 		if collision_layer != value:
 			collision_layer = value
+			emit_changed()
+
+
+## Sets a group name for the mesh and colliders
+@export var group_name := "":
+	set(value):
+		if group_name != value:
+			group_name = value
 			emit_changed()
 			
 			
@@ -231,8 +230,8 @@ class ScatterBuilder extends ShapeBuilder:
 			var pos = inst.transform.origin
 			var basis = inst.transform.basis
 			if place_on_ground:
-				var space = parent.get_world_3d().direct_space_state
-				var ray = PhysicsRayQueryParameters3D.new()
+				var space := parent.get_world_3d().direct_space_state
+				var ray := PhysicsRayQueryParameters3D.new()
 				ray.from = parent.global_transform * Vector3(pos.x, 1000, pos.z)
 				ray.to = parent.global_transform * Vector3(pos.x, -1000, pos.z)
 				ray.collision_mask = 0xFF & (~collision_layer)
@@ -247,6 +246,8 @@ class ScatterBuilder extends ShapeBuilder:
 				basis = _conform_basis_y_to_normal(basis, normal, ground_angle_conformance)
 			inst.transform.origin = pos
 			inst.transform.basis = basis
+			if style.group_name != null and style.group_name.length() > 0:
+				inst.add_to_group(style.group_name)
 			SceneUtils.add_child(parent, inst)
 			
 

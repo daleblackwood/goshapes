@@ -47,21 +47,24 @@ func apply_mesh(parent: Node3D, new_mesh: ArrayMesh, name_tag := "Mesh") -> Mesh
 	var mesh_node := MeshInstance3D.new()
 	mesh_node.mesh = new_mesh
 	mesh_node.name = "%s%s" % [new_mesh.resource_name, name_tag]
+	commit_to_group(mesh_node)
 	return SceneUtils.add_child(parent, mesh_node) as MeshInstance3D
 		
 		
 func apply_collider(parent: Node3D, collision_mesh: ArrayMesh) -> StaticBody3D:
 	if collision_mesh == null:
 		return
-	var collider_body = StaticBody3D.new()
+	var collider_body := StaticBody3D.new()
 	collider_body.name = "%sBody" % collision_mesh.resource_name
 	collider_body.collision_layer = base_style.collision_layer
 	SceneUtils.add_child(parent, collider_body)
-	var collider_shape = CollisionShape3D.new()
+	var collider_shape := CollisionShape3D.new()
 	collider_shape.name = "%sCollider" % collision_mesh.resource_name
 	collider_shape.shape = collision_mesh.create_trimesh_shape()
 	SceneUtils.add_child(collider_body, collider_shape)
 	collider_body.set_display_folded(true)
+	commit_to_group(collider_shape)
+	commit_to_group(collider_body)
 	return collider_body
 	
 	
@@ -73,6 +76,11 @@ func get_build_jobs(data: GoshapeBuildData, offset: int) -> Array[GoshapeJob]:
 		result.append(GoshapeJob.new(self, data, commit_colliders, offset + 10, GoshapeJob.Mode.Scene))
 	return result
 	
+	
+func commit_to_group(node: Node3D) -> void:
+	if base_style.group_name != null and base_style.group_name.length() > 0:
+		node.add_to_group(base_style.group_name, true)
+		
 	
 func should_build_colliders() -> bool:
 	return base_style != null and base_style.build_collider
