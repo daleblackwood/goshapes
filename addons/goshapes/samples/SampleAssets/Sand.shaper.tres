@@ -11,6 +11,7 @@ conform_to_wall = false
 material = ExtResource("2_yuv2d")
 build_collider = true
 collision_layer = 1
+group_name = ""
 enabled = true
 
 [resource]

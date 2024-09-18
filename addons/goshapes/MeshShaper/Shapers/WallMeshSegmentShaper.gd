@@ -14,6 +14,12 @@ extends WallShaper
 	set(value):
 		scale = value
 		set_dirty(true)
+		
+## The scale to apply to each mesh segment	
+@export var overlap := 0.001:
+	set(value):
+		overlap = value
+		set_dirty(true)
 	
 ## Causes the path to close between the first and last point
 @export var closed := true:
@@ -120,6 +126,8 @@ class WallMeshSegmentBuilder extends WallBuilder:
 		build_low_poly = style.low_poly_mesh != null
 		
 		var paths := PathUtils.split_path_by_corner(data.path)
+		if style.overlap != null and style.overlap != 0.0:
+			paths = PathUtils.overlap_paths(paths, style.overlap)
 		var path_count = paths.size()
 		
 		applied_gaps.resize(path_count)

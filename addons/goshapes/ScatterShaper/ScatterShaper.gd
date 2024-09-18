@@ -138,8 +138,8 @@ class ScatterBuilder extends ShapeBuilder:
 		
 	func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 		var jobs: Array[GoshapeJob] = []
-		jobs.append(GoshapeJob.new(self, data, build, 100))
-		jobs.append(GoshapeJob.new(self, data, commit, 101, GoshapeJob.Mode.Scene))
+		jobs.append(GoshapeJob.new(self, data, build, 1000))
+		jobs.append(GoshapeJob.new(self, data, commit, 1001, GoshapeJob.Mode.Scene))
 		return jobs	
 
 
