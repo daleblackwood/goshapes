@@ -41,7 +41,7 @@ enum MoundType { HILL, PEAK, STEPS, STRAIGHT, STEEP, ROUGH }
 			height_map_multiplier = value
 			emit_changed()
 			
-@export_range(0.0, 1.0) var plateau: float = 1.0:
+@export_range(0.0, 1.0) var plateau: float = 0.3:
 	set(value):
 		if plateau != value:
 			plateau = value
