@@ -253,10 +253,6 @@ func _update() -> void:
 		return
 	if not is_dirty:
 		return
-		
-	if not edit_proxy.mouse_down:
-		pass#axis_match_index = -1
-		#axis_match_points = PackedInt32Array()
 	
 	var runner = edit_proxy.runner
 	if BLOCKING and runner.is_busy:
@@ -306,6 +302,13 @@ func build_run(runner: GoshapeRunner, rebuild := false) -> void:
 	
 func remove_control_points() -> void:
 	PathUtils.remove_control_points(curve)
+	mark_dirty()
+	
+	
+func bake_path() -> void:
+	var path := get_path_data(path_options.interpolate)
+	curve = path.to_curve()
+	path_options.rounding = 0.0
 	mark_dirty()
 	
 	

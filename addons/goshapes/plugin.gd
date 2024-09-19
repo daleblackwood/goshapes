@@ -131,7 +131,7 @@ func _enter_tree() -> void:
 	tools_block = [
 		editor_util.toolbar_button("Add Shape", "New", add_block_similar),
 		editor_util.toolbar_button("Copy Attributes", "ActionCopy", proxy.copy_attributes),
-		editor_util.toolbar_button("Paste Attributes", "ActionPaste", proxy.paste_attributes),
+		editor_util.toolbar_button("Paste Attributes", "ActionPaste", paste_all_attributes),
 	]
 	
 	set_menu(MenuSet.DEFAULT, tools_default)
@@ -149,21 +149,41 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 	])
 	if menuset == MenuSet.BLOCK:
 		create_menu.add_item(GoshapeMenus.GSButton.new("Create Similar", add_block_similar), 0)
-	menu.add_item(GoshapeMenus.GMPopup.new("Create", create_menu))
+	menu.add_item(GoshapeMenus.GSSubMenu.new("Create", create_menu))
 	
 	if menuset == MenuSet.BLOCK:
-		var block_menu := GoshapeMenus.GSMenu.new()
-		block_menu.add_items([
-			GoshapeMenus.GSButton.new("Copy Attributes", proxy.copy_attributes),
-			GoshapeMenus.GSButton.new("Paste Attributes", proxy.paste_attributes),
-			GoshapeMenus.GSButton.new("Paste Shaper", proxy.paste_shaper),
-			GoshapeMenus.GSButton.new("Paste Path Mods", proxy.paste_path_options),
-			GoshapeMenus.GSButton.new("Remove Control Points", modify_selected, "remove_control_points"),
-			GoshapeMenus.GSButton.new("Recenter Shape", modify_selected, "recenter_points"),
-			GoshapeMenus.GSButton.new("Place on Ground", ground_objects)
-		])
-		menu.add_item(GoshapeMenus.GMPopup.new("Shape", block_menu))
-		menu.add_item(GoshapeMenus.GSButton.new("Redraw Selected", modify_selected))
+		var selection_count = selection_handler.get_selected_nodes().size()
+		var paste_attributes: Array[GoshapeMenus.GSMenuItem] = []
+		if proxy.attributes_copied != null:
+			paste_attributes += [
+				GoshapeMenus.GSButton.new("Paste All Attributes", paste_all_attributes),
+				GoshapeMenus.GSButton.new("Paste Shaper(s)", apply_to_selected, proxy.attributes_copied.apply_shaper),
+				GoshapeMenus.GSButton.new("Paste Path Mods", apply_to_selected, proxy.attributes_copied.apply_path_options)
+			]
+		if selection_count == 1:
+			var block_menu := GoshapeMenus.GSMenu.new()
+			block_menu.add_items([
+				GoshapeMenus.GSButton.new("Rebuild Shape", modify_selected),
+				GoshapeMenus.GSButton.new("Copy Attributes", proxy.copy_attributes)
+			])
+			block_menu.add_items(paste_attributes)
+			block_menu.add_items([
+				GoshapeMenus.GSButton.new("Remove Control Points", modify_selected, "remove_control_points"),
+				GoshapeMenus.GSButton.new("Recenter Shape", modify_selected, "recenter_points"),
+				GoshapeMenus.GSButton.new("Bake Path", modify_selected, "bake_path")
+			])
+			menu.add_item(GoshapeMenus.GSSubMenu.new("Shape", block_menu))
+		elif selection_count > 1:
+			var select_menu := GoshapeMenus.GSMenu.new()
+			select_menu.add_item(
+				GoshapeMenus.GSButton.new("Rebuild Selected", modify_selected)
+			)
+			select_menu.add_items(paste_attributes)
+			select_menu.add_items([
+				GoshapeMenus.GSButton.new("Recenter Shapes", modify_selected, "recenter_points"),
+				GoshapeMenus.GSButton.new("Bake Paths", modify_selected, "bake_path")
+			])
+			menu.add_item(GoshapeMenus.GSSubMenu.new("Selection", select_menu))
 	
 	menu.add_items([
 		GoshapeMenus.GSButton.new("Select All Shapes", select_all_blocks),
@@ -256,25 +276,45 @@ func add_block_similar() -> Goshape:
 	
 	
 func modify_selected(method: String = "", arg = null) -> void:
-	var selected_nodes = selection_handler.get_selected_nodes()
-	
-	var nodes_to_modify: Array[Goshape] = []
-	for node in selected_nodes:
-		if node is Goshape:
-			nodes_to_modify.push_back(node as Goshape)
+	var shapes := get_selected_shapes()
 
-	for node in nodes_to_modify:
-		var was_editing = node.is_editing
+	for shape in shapes:
+		var was_editing = shape.is_editing
 		if was_editing:
-			node._edit_end()
+			shape._edit_end()
 		if method != "":
 			if arg != null:
-				node.call(method, arg)
+				shape.call(method, arg)
 			else:
-				node.call(method)
-		node._build(proxy.runner)
+				shape.call(method)
+		shape._build(proxy.runner)
 		if was_editing:
-			node._edit_begin(proxy)
+			shape._edit_begin(proxy)
+			
+			
+func paste_all_attributes() -> void:
+	if proxy.attributes_copied == null:
+		return
+	apply_to_selected(proxy.attributes_copied.apply)
+	
+			
+func apply_to_selected(callable: Callable) -> void:
+	var shapes := get_selected_shapes()
+	for shape in shapes:
+		var was_editing = shape.is_editing
+		callable.call(shape)
+		shape._build(proxy.runner)
+		if was_editing:
+			shape._edit_begin(proxy)
+			
+			
+func get_selected_shapes() -> Array[Goshape]:
+	var selected_nodes = selection_handler.get_selected_nodes()
+	var result: Array[Goshape] = []
+	for node in selected_nodes:
+		if node is Goshape:
+			result.append(node as Goshape)
+	return result
 	
 	
 func _on_selection_changed() -> void:
