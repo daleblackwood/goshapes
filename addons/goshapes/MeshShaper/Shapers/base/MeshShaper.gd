@@ -25,6 +25,13 @@ extends Shaper
 		if group_name != value:
 			group_name = value
 			emit_changed()
+
+@export_group("")
+@export var offset_y := 0.0:
+	set(value):
+		if offset_y != value:
+			offset_y = value
+			emit_changed()
 			
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
