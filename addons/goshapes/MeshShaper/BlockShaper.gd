@@ -32,6 +32,15 @@ var watcher_bottom := ResourceWatcher.new(mark_dirty)
 		watcher_bottom.watch(bottom_shaper)
 		mark_dirty()
 		
+var watcher_skirt := ResourceWatcher.new(mark_dirty)
+
+## The Shaper used for the building the walls
+@export var skirt_shaper: WallShaper:
+	set(value):
+		skirt_shaper = value
+		skirt_shaper.watch(skirt_shaper)
+		mark_dirty()
+		
 
 ## Controls the depth of the shape
 @export_range(0.0, 20.0, 0.5) var bottom_depth = 0.0:
@@ -66,6 +75,7 @@ func _init() -> void:
 	watcher_cap.watch(cap_shaper)
 	watcher_wall.watch(wall_shaper)
 	watcher_bottom.watch(bottom_shaper)
+	watcher_skirt.watch(skirt_shaper)
 
 	
 func mark_dirty():
@@ -86,6 +96,8 @@ func create_builders() -> Array[ShapeBuilder]:
 		result += cap_shaper.create_builders()
 	if wall_shaper != null and wall_shaper.enabled:
 		result += wall_shaper.create_builders()
+	if skirt_shaper != null and skirt_shaper.enabled:
+		result += skirt_shaper.create_builders()
 	if bottom_shaper != null and bottom_shaper.enabled:
 		bottom_shaper.cap_shaper = cap_shaper
 		result += bottom_shaper.create_builders()
@@ -100,6 +112,8 @@ func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 		result += cap_shaper.get_build_jobs(local_data)
 	if wall_shaper != null and wall_shaper.enabled:
 		result += wall_shaper.get_build_jobs(local_data)
+	if skirt_shaper != null and skirt_shaper.enabled:
+		result += skirt_shaper.get_build_jobs(local_data)
 	if bottom_shaper != null and bottom_shaper.enabled:
 		bottom_shaper.cap_shaper = cap_shaper
 		result += bottom_shaper.get_build_jobs(local_data)
