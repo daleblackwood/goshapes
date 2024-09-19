@@ -97,7 +97,7 @@ class GSMenu:
 		populate.call_deferred(parent)
 		
 
-class GMPopup extends GSMenuItem:
+class GSSubMenu extends GSMenuItem:
 	var menu: GSMenu
 	var popup: PopupMenu
 	

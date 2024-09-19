@@ -89,11 +89,18 @@ func set_point_count(count: int) -> void:
 	corners.resize(count)
 	
 
-func invert():
+func invert() -> void:
 	points.reverse()
 	ups.reverse()
 	corners.reverse()
 	
 	
-func duplicate():
+func duplicate() -> GoshapePath:
 	return GoshapePath.new(points, ups, corners)
+	
+	
+func to_curve() -> GoCurve3D:
+	var curve = GoCurve3D.new()
+	for i in range(point_count):
+		curve.add_point(points[i])
+	return curve
