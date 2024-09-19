@@ -4,7 +4,7 @@ extends WallShaper
 ## A Shaper that draws a simple wall around the path
 		
 ## The height to make the wall
-@export_range(0.0, 100.0, 0.2) var height := 1.0:
+@export_range(0.0, 100.0, 0.2) var height := 10.0:
 	set(value):
 		if height != value:
 			height = value
