@@ -38,7 +38,7 @@ var watcher_skirt := ResourceWatcher.new(mark_dirty)
 @export var skirt_shaper: WallShaper:
 	set(value):
 		skirt_shaper = value
-		skirt_shaper.watch(skirt_shaper)
+		watcher_skirt.watch(skirt_shaper)
 		mark_dirty()
 		
 
