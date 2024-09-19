@@ -151,8 +151,8 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 		create_menu.add_item(GoshapeMenus.GSButton.new("Create Similar", add_block_similar), 0)
 	menu.add_item(GoshapeMenus.GSSubMenu.new("Create", create_menu))
 	
+	var selection_count = selection_handler.get_selected_nodes().size()
 	if menuset == MenuSet.BLOCK:
-		var selection_count = selection_handler.get_selected_nodes().size()
 		var paste_attributes: Array[GoshapeMenus.GSMenuItem] = []
 		if proxy.attributes_copied != null:
 			paste_attributes += [
@@ -185,13 +185,18 @@ func set_menu(menuset: MenuSet, tools: Array[MenuButton] = []) -> void:
 			])
 			menu.add_item(GoshapeMenus.GSSubMenu.new("Selection", select_menu))
 	
-	menu.add_items([
+	menu.add_item(
 		GoshapeMenus.GSButton.new("Select All Shapes", select_all_blocks),
-	])
+	)
+	
+	if selection_count > 0:
+		menu.add_item(
+			GoshapeMenus.GSButton.new("Rebuild Selected", modify_selected)
+		)
 	
 	menu.add_items([
 		GoshapeMenus.GSToggle.new("Shape Selection", proxy, "use_shape_select"),
-		GoshapeMenus.GSToggle.new("Axis Matching", proxy, "use_axis_matching"),
+		GoshapeMenus.GSToggle.new("Squared Editing", proxy, "use_axis_matching"),
 		GoshapeMenus.GSToggle.new("Y-Axis Locking", proxy, "use_y_lock")
 	])
 		
