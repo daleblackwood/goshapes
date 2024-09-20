@@ -207,7 +207,7 @@ func on_curve_changed():
 					axis_match_points.append(axis_match)
 		
 		# apply matching axis points
-		edited_pos = curve.get_point_position(edited_point)
+		edited_pos = curve.get_point_position(axis_match_index)
 		for i in range(0, axis_match_points.size(), 2):
 			var index = axis_match_points[i]
 			var axis_match = axis_match_points[i + 1]
