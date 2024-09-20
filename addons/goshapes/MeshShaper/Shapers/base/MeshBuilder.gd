@@ -47,7 +47,6 @@ func apply_mesh(parent: Node3D, new_mesh: ArrayMesh, name_tag := "Mesh") -> Mesh
 	var mesh_node := MeshInstance3D.new()
 	mesh_node.mesh = new_mesh
 	mesh_node.name = "%s%s" % [new_mesh.resource_name, name_tag]
-	mesh_node.transform.origin += base_style.offset_y * Vector3.UP
 	commit_to_group(mesh_node)
 	return SceneUtils.add_child(parent, mesh_node) as MeshInstance3D
 		
@@ -58,7 +57,6 @@ func apply_collider(parent: Node3D, collision_mesh: ArrayMesh) -> StaticBody3D:
 	var collider_body := StaticBody3D.new()
 	collider_body.name = "%sBody" % collision_mesh.resource_name
 	collider_body.collision_layer = base_style.collision_layer
-	collider_body.transform.origin += base_style.offset_y * Vector3.UP
 	SceneUtils.add_child(parent, collider_body)
 	var collider_shape := CollisionShape3D.new()
 	collider_shape.name = "%sCollider" % collision_mesh.resource_name

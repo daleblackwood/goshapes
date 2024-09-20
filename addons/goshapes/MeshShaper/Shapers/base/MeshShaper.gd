@@ -25,13 +25,6 @@ extends Shaper
 		if group_name != value:
 			group_name = value
 			emit_changed()
-
-@export_group("")
-@export var offset_y := 0.0:
-	set(value):
-		if offset_y != value:
-			offset_y = value
-			emit_changed()
 			
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
@@ -41,8 +34,9 @@ func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
 		clear_builders(owner_id)
 	var builders := get_builders(owner_id)
 	var offset = get_order_offset()
+	var local_data = apply_path_mods(data)
 	for builder in builders:
-		result += builder.get_build_jobs(data, offset)
+		result += builder.get_build_jobs(local_data, offset)
 	return result
 	
 	

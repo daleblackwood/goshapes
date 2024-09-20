@@ -49,7 +49,7 @@ func create_builders() -> Array[ShapeBuilder]:
 	
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
-	var local_data = data.duplicate()
+	var local_data = apply_path_mods(data)
 	local_data.owner = self
 	var result: Array[GoshapeJob] = []
 	for shaper in shapers:
