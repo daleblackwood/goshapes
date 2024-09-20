@@ -162,13 +162,19 @@ func on_curve_changed():
 	if last_curve_points.size() != curve.point_count:
 		last_curve_points.resize(curve.point_count)
 		has_change = true
-	for i in curve.point_count:
-		if last_curve_points[i] != curve.get_point_position(i):
-			if last_edited_point != i:
-				edited_point_changed
-			last_edited_point = i
-			has_change = true
-			break
+	var prev_last_edited_point = last_edited_point
+	if last_edited_point > curve.point_count:
+		last_edited_point = -1
+	if last_curve_points[last_edited_point] != curve.get_point_position(last_edited_point):
+		has_change = true
+	else:
+		for i in curve.point_count:
+			if last_curve_points[i] != curve.get_point_position(i):
+				last_edited_point = i
+				has_change = true
+				break
+	if prev_last_edited_point != last_edited_point:
+		edited_point_changed = true
 		
 	if not has_change:
 		return
