@@ -105,7 +105,7 @@ func create_builders() -> Array[ShapeBuilder]:
 	
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
-	var local_data = apply_path_mods(data)
+	var local_data = data.duplicate()
 	local_data.owner = self
 	var result: Array[GoshapeJob] = []
 	if cap_shaper != null and cap_shaper.enabled:

@@ -13,6 +13,8 @@ build_collider = true
 collision_layer = 1
 group_name = ""
 enabled = true
+path_offset_y = 0.0
+path_inset = 0.0
 
 [resource]
 resource_name = "Sand.shaper.tres:BlockShaper"
@@ -23,3 +25,5 @@ bottom_depth = 0.0
 collider_type = 4
 collider_ridge = 0.0
 enabled = true
+path_offset_y = 0.0
+path_inset = 0.0
