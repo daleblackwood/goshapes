@@ -32,24 +32,24 @@ ground_placement_mask = 0
 [sub_resource type="Resource" id="Resource_h0mk7"]
 script = ExtResource("4_kiiyp")
 conform_to_wall = false
+path_offset = Vector3(0, 0, 0)
+path_inset = 0.0
 build_collider = true
 collision_layer = 1
 group_name = ""
 enabled = true
-path_offset_y = 0.0
-path_inset = 0.0
 
 [sub_resource type="Resource" id="Resource_7belo"]
 script = ExtResource("6_um41f")
 height = 10.0
 bevel = 0.0
 taper = 0.0
+path_offset = Vector3(0, 0, 0)
+path_inset = 0.0
 build_collider = true
 collision_layer = 1
 group_name = ""
 enabled = true
-path_offset_y = 0.0
-path_inset = 0.0
 
 [sub_resource type="Resource" id="Resource_rf7uu"]
 resource_name = "BlockShape1-BlockShaper"
@@ -60,8 +60,6 @@ bottom_depth = 0.0
 collider_type = 2
 collider_ridge = 0.0
 enabled = true
-path_offset_y = 0.0
-path_inset = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_6je3l"]
 resource_name = "BlockShape1Cap0"
@@ -122,24 +120,24 @@ ground_placement_mask = 0
 [sub_resource type="Resource" id="Resource_rhbae"]
 script = ExtResource("4_kiiyp")
 conform_to_wall = false
+path_offset = Vector3(0, 0, 0)
+path_inset = 0.0
 build_collider = true
 collision_layer = 1
 group_name = ""
 enabled = true
-path_offset_y = 0.0
-path_inset = 0.0
 
 [sub_resource type="Resource" id="Resource_ifnay"]
 script = ExtResource("6_um41f")
 height = 1.0
 bevel = 0.0
 taper = 0.0
+path_offset = Vector3(0, 0, 0)
+path_inset = 0.0
 build_collider = true
 collision_layer = 1
 group_name = ""
 enabled = true
-path_offset_y = 0.0
-path_inset = 0.0
 
 [sub_resource type="Resource" id="Resource_luapm"]
 resource_name = "BlockShape2-BlockShaper"
@@ -150,8 +148,6 @@ bottom_depth = 0.0
 collider_type = 2
 collider_ridge = 0.0
 enabled = true
-path_offset_y = 0.0
-path_inset = 0.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_gr6nx"]
 resource_name = "BlockShape2Cap0"

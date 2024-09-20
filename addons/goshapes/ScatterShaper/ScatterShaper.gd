@@ -139,9 +139,8 @@ func create_builders() -> Array[ShapeBuilder]:
 	
 	
 func get_build_jobs(data: GoshapeBuildData) -> Array[GoshapeJob]:
-	var local_data = apply_path_mods(data)
-	var builder = get_builders(local_data.get_owner_id())[0]
-	return builder.get_build_jobs(local_data)
+	var builder = get_builders(data.get_owner_id())[0]
+	return builder.get_build_jobs(data)
 	
 			
 class ScatterBuilder extends ShapeBuilder:

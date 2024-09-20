@@ -6,10 +6,10 @@ extends Shaper
 @export_group("Path Mods")
 
 ## Offsets the path by a certain vertical distance		
-@export var path_offset_y := 0.0:
+@export var path_offset := Vector3.ZERO:
 	set(value):
-		if path_offset_y != value:
-			path_offset_y = value
+		if path_offset != value:
+			path_offset = value
 			emit_changed()
 	
 ## Offsets the path by a certain vertical distance		
@@ -46,8 +46,8 @@ extends Shaper
 
 func apply_path_mods(data: GoshapeBuildData) -> GoshapeBuildData:
 	var result = data.duplicate()
-	if path_offset_y != 0.0:
-		result.path = PathUtils.move_path(result.path, Vector3.UP * path_offset_y)
+	if path_offset.length_squared() > 0.01:
+		result.path = PathUtils.move_path(result.path, path_offset)
 	if path_inset != 0.0:
 		result.path = PathUtils.taper_path(result.path, -path_inset)
 	return result
