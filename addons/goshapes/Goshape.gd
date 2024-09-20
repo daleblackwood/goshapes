@@ -165,7 +165,7 @@ func on_curve_changed():
 	var prev_last_edited_point = last_edited_point
 	if last_edited_point > curve.point_count:
 		last_edited_point = -1
-	if last_curve_points[last_edited_point] != curve.get_point_position(last_edited_point):
+	if last_edited_point >= 0 and last_curve_points[last_edited_point] != curve.get_point_position(last_edited_point):
 		has_change = true
 	else:
 		for i in curve.point_count:
