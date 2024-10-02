@@ -26,7 +26,11 @@ static func create(parent: Node, name: String, type: Object) -> Node:
 static func add_child(parent: Node, child: Node) -> Node:
 	if not parent:
 		return null
-	parent.add_child(child)
+	var existing_parent = child.get_parent()
+	if existing_parent and existing_parent != parent:
+		existing_parent.remove_child(child)
+	if existing_parent != parent:
+		parent.add_child(child)
 	var owner = parent
 	if Engine.is_editor_hint():
 		owner = parent.get_tree().edited_scene_root
